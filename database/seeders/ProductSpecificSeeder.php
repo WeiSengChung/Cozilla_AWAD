@@ -22,7 +22,7 @@ class ProductSpecificSeeder extends Seeder
         foreach ($products as $product) {
             foreach ($sizes as $size) {
                 foreach ($colors as $color) {
-                    ProductSpecific::create(['product_id' => $product->id, 'size' => $size, 'color' => $color]);
+                    ProductSpecific::create(['product_id' => $product->id, 'size' => $size, 'color' => $color, 'stock_quantity'=>100]);
                 }
             }
         }
