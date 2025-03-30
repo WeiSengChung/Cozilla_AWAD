@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCartitemsTable extends Migration
+class CreateUserprofilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateCartitemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('cartitems', function (Blueprint $table) {
+        Schema::create('user_profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cart_id')->constrained('carts', 'id')->onDelete('cascade');
-            $table->foreignId('product_id')->constrained('products', 'id')->onDelete('cascade');
-            $table->integer('quantity')->default(1);
+            $table->foreignId('user_id')->constrained('users', 'id')->onDelete('cascade');
+            $table->string('first_name', 50);
+            $table->string('last_name', 50);
+            $table->string('phone', 20)->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateCartitemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cartitems');
+        Schema::dropIfExists('userprofiles');
     }
 }

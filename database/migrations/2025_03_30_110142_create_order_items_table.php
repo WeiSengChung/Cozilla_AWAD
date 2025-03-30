@@ -13,7 +13,7 @@ class CreateOrderitemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('orderitems', function (Blueprint $table) {
+        Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained('orders', 'id')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products', 'product_id');

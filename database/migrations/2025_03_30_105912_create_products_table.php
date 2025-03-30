@@ -18,10 +18,7 @@ class CreateProductsTable extends Migration
             $table->foreignId('category_id')->constrained('categories', 'id')->onDelete('cascade');
             $table->string('name', 100);
             $table->text('description')->nullable();
-            $table->decimal('price', 10, 2);
-            $table->enum('size', ['XS', 'S', 'M', 'L', 'XL']);
-            $table->enum('color', ['black', 'white', 'red', 'blue', 'green']);
-            $table->integer('stock_quantity')->default(0);
+            $table->decimal('price', 10, 5);
             $table->timestamps();
         });
     }
