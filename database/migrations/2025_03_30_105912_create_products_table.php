@@ -15,10 +15,12 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('categories', 'id')->onDelete('cascade');
             $table->string('name', 100);
             $table->text('description')->nullable();
             $table->decimal('price', 10, 5);
+            $table->string('gender_category', 100);
+            $table->string('top_bottom_category', 100);
+            $table->string('clothes_category', 100);
             $table->timestamps();
         });
     }
