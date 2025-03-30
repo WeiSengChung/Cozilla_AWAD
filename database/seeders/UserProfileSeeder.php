@@ -24,29 +24,30 @@ class UserProfileSeeder extends Seeder
             $lastName = "";
             $phone = "";
             $email = $user->email;
-            if (Str::startsWith($email, "x")) {
+            if (Str::startsWith($email, "x") && ! Str::contains($email, "admin")) {
                 $firstName = "XuanYing";
                 $lastName = "Chia";
                 $phone = "0123456789";
-            } elseif (Str::startsWith($email, "a")) {
+            } elseif (Str::startsWith($email, "a") && ! Str::contains($email, "admin")) {
                 $firstName = "Aik Suan";
                 $lastName = "Tan";
                 $phone = "0123456789";
-            } elseif (Str::startsWith($email, "c")) {
+            } elseif (Str::startsWith($email, "c") && ! Str::contains($email, "admin")) {
                 $firstName = "Chien How";
                 $lastName = "Ooi";
                 $phone = "0123456789";
-            } elseif (Str::startsWith($email, "w")) {
+            } elseif (Str::startsWith($email, "w") && ! Str::contains($email, "admin")) {
                 $firstName = "Wei Seng";
                 $lastName = "Chung";
                 $phone = "0123456789";
             }
-            UserProfile::create([
-                'user_id' => $user->id,
-                'first_name' => $firstName,
-                'last_name' => $lastName,
-                'phone' => $phone
-            ]);
+            if ($firstName !== "")
+                UserProfile::create([
+                    'user_id' => $user->id,
+                    'first_name' => $firstName,
+                    'last_name' => $lastName,
+                    'phone' => $phone
+                ]);
         }
     }
 }

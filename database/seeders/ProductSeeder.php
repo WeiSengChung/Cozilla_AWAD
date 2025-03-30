@@ -72,6 +72,7 @@ class ProductSeeder extends Seeder
                     foreach ($clothesCategories['items'] as $clotheName) {
                         Product::create([
                             'name' => $clotheName,
+                            'description'=>'👍',
                             'price' => $clothesCategories['price'],
                             'gender_category' => $genderKey,
                             'top_bottom_category' => $top_or_bottom_key,
