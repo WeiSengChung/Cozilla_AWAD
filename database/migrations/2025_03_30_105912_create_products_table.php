@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->string('gender_category', 100);
             $table->string('top_bottom_category', 100);
             $table->string('clothes_category', 100);
+            $table->string('image_path', 100);
             $table->timestamps();
         });
     }

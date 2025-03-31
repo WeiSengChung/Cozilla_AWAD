@@ -69,14 +69,17 @@ class ProductSeeder extends Seeder
         foreach ($clothes_category as $genderKey => $gender) {
             foreach ($gender as $top_or_bottom_key => $topOrBottom) {
                 foreach ($topOrBottom as $clothesCategoryKey => $clothesCategories) {
+                    $i = 1;
                     foreach ($clothesCategories['items'] as $clotheName) {
+                        $firstChar = substr($clothesCategoryKey, 0, 1);
                         Product::create([
                             'name' => $clotheName,
                             'description'=>'👍',
                             'price' => $clothesCategories['price'],
                             'gender_category' => $genderKey,
                             'top_bottom_category' => $top_or_bottom_key,
-                            'clothes_category' => $clothesCategoryKey
+                            'clothes_category' => $clothesCategoryKey,
+                            'image_path' => $genderKey . "\\" . $top_or_bottom_key . "\\" . $clothesCategoryKey . "\\" . $firstChar . $i++ . ".jpg"
                         ]);
                     }
                 }

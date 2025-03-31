@@ -11,7 +11,7 @@ class TestDB extends Controller
 {
     //
     public function testDB(){
-        $productspecifics = UserProfile::all();
+        $productspecifics = Product::all();
         return view('welcome', ['data'=> $productspecifics]);
     }
 }
