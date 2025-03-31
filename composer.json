@@ -16,6 +16,7 @@
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",
+        "laravel/ui": "^3.4",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",
         "phpunit/phpunit": "^9.5.10"
@@ -45,6 +46,15 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "migrate":[
+            "php artisan migrate:fresh"
+        ],
+        "seed":[
+            "php artisan db:seed --class=ProductSeeder",
+            "php artisan db:seed --class=ProductSpecificSeeder",
+            "php artisan db:seed --class=UserSeeder",
+            "php artisan db:seed --class=UserProfileSeeder"
         ]
     },
     "extra": {
