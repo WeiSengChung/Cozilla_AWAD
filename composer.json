@@ -51,10 +51,7 @@
             "php artisan migrate:fresh"
         ],
         "seed":[
-            "php artisan db:seed --class=ProductSeeder",
-            "php artisan db:seed --class=ProductSpecificSeeder",
-            "php artisan db:seed --class=UserSeeder",
-            "php artisan db:seed --class=UserProfileSeeder"
+            "php artisan db:seed"
         ]
     },
     "extra": {
