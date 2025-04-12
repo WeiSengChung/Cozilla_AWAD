@@ -37,7 +37,7 @@ class LoginController extends Controller
             return '/admin/manageproducts';
         }
     
-        return '/home';
+        return '/homepage';
     }
     /**
      * Create a new controller instance.
@@ -48,10 +48,12 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
     public function showAdminLoginForm()
     {
         return view('auth.login', ['url' => 'admin']);
     }
+    
     public function adminLogin(Request $request)
     {
         $this->validate($request, [
