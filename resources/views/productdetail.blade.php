@@ -307,7 +307,34 @@
             align-items: center;
             margin-bottom: 25px;
         }
-        
+        .cart-button {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            margin-left: 20px;
+            position: relative;
+        }
+
+        .cart-icon {
+            font-size: 24px;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #4a574b;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         .quantity-btn {
             width: 40px;
             height: 40px;
@@ -386,10 +413,10 @@
             
             @if(request()->has('query') && request('query') != '')
                 <div class="search-results active" id="search-results">
-                    @if(isset($products) && count($products) > 0)
+                    @if(isset($products) && count($products ?? []) > 0)
                         @foreach($products as $searchProduct)
                             <a href="{{ route('products.show', $searchProduct->id) }}" class="search-result-item">
-                                <img src="{{ asset('images/image/'.$searchProduct->image_path) }}" alt="{{ $searchProduct->name }}" class="search-result-img">
+                                <img src="{{ asset('images/'.$searchProduct->image_path) }}" alt="{{ $searchProduct->name }}" class="search-result-img">
                                 <div class="search-result-info">
                                     <div class="search-result-title">{{ $searchProduct->name }}</div>
                                     <div class="search-result-category">{{ $searchProduct->gender_category }} > {{ $searchProduct->top_bottom_category }} > {{ str_replace('_', ' ', $searchProduct->clothes_category) }}</div>
@@ -406,6 +433,10 @@
         <div class="logo">
             <img src="{{ asset('images/image/logo.jpg') }}" alt="COZILLA">
         </div>
+        <a href="{{ route('cart') }}" class="cart-button">
+            <div class="cart-icon">🛒</div>
+            <div class="cart-count">{{ $cartItemCount ?? 0 }}</div>
+        </a>
     </div>
     
     <div class="container">
@@ -454,80 +485,87 @@
                     </div>
                 </div>
                 
-                <div class="product-options">
-                    <div class="option-label">Size:</div>
-                    <div class="size-options">
-                        <div class="size-option">S</div>
-                        <div class="size-option active">M</div>
-                        <div class="size-option">L</div>
-                        <div class="size-option">XL</div>
+                <form action="{{ route('cart.add') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    
+                    <div class="product-options">
+                        <div class="option-label">Size:</div>
+                        <div class="size-options">
+                            <div class="size-option" data-size="S" onclick="selectSize(this, 'S')">S</div>
+                            <div class="size-option active" data-size="M" onclick="selectSize(this, 'M')">M</div>
+                            <div class="size-option" data-size="L" onclick="selectSize(this, 'L')">L</div>
+                            <div class="size-option" data-size="XL" onclick="selectSize(this, 'XL')">XL</div>
+                        </div>
+                        <input type="hidden" name="size" id="selected-size" value="M">
+                        
+                        <div class="option-label">Color:</div>
+                        <div class="color-options">
+                            <div class="color-option active" data-color="Black" style="background-color: #000;" onclick="selectColor(this, 'Black')"></div>
+                            <div class="color-option" data-color="White" style="background-color: #fff; border: 1px solid #ddd;" onclick="selectColor(this, 'White')"></div>
+                            <div class="color-option" data-color="Navy" style="background-color: #2d4a58;" onclick="selectColor(this, 'Navy')"></div>
+                            <div class="color-option" data-color="Brown" style="background-color: #924a3f;" onclick="selectColor(this, 'Brown')"></div>
+                        </div>
+                        <input type="hidden" name="color" id="selected-color" value="Black">
                     </div>
                     
-                    <div class="option-label">Color:</div>
-                    <div class="color-options">
-                        <div class="color-option active" style="background-color: #000;"></div>
-                        <div class="color-option" style="background-color: #fff; border: 1px solid #ddd;"></div>
-                        <div class="color-option" style="background-color: #2d4a58;"></div>
-                        <div class="color-option" style="background-color: #924a3f;"></div>
+                    <div class="quantity-control">
+                        <div class="quantity-btn minus" onclick="changeQuantity(-1)">-</div>
+                        <input type="text" name="quantity" id="quantity" class="quantity-input" value="1" readonly>
+                        <div class="quantity-btn plus" onclick="changeQuantity(1)">+</div>
                     </div>
-                </div>
-                
-                <div class="quantity-control">
-                    <div class="quantity-btn minus">-</div>
-                    <input type="text" class="quantity-input" value="1" readonly>
-                    <div class="quantity-btn plus">+</div>
-                </div>
-                
-                <div class="action-buttons">
-                    <button class="add-to-cart-btn">Add to Cart</button>
-                </div>
-                
-
+                    
+                    <div class="action-buttons">
+                        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
     
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-
-            
-            // Size selection
-            const sizeOptions = document.querySelectorAll('.size-option');
-            sizeOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    sizeOptions.forEach(o => o.classList.remove('active'));
-                    this.classList.add('active');
-                });
+        // Size selection
+        function selectSize(element, size) {
+            // Remove active class from all size options
+            document.querySelectorAll('.size-option').forEach(option => {
+                option.classList.remove('active');
             });
             
-            // Color selection
-            const colorOptions = document.querySelectorAll('.color-option');
-            colorOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    colorOptions.forEach(o => o.classList.remove('active'));
-                    this.classList.add('active');
-                });
+            // Add active class to selected option
+            element.classList.add('active');
+            
+            // Update hidden input with selected size
+            document.getElementById('selected-size').value = size;
+        }
+        
+        // Color selection
+        function selectColor(element, color) {
+            // Remove active class from all color options
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('active');
             });
             
-            // Quantity controls
-            const minusBtn = document.querySelector('.quantity-btn.minus');
-            const plusBtn = document.querySelector('.quantity-btn.plus');
-            const quantityInput = document.querySelector('.quantity-input');
+            // Add active class to selected option
+            element.classList.add('active');
             
-            minusBtn.addEventListener('click', function() {
-                let value = parseInt(quantityInput.value);
-                if (value > 1) {
-                    quantityInput.value = value - 1;
-                }
-            });
+            // Update hidden input with selected color
+            document.getElementById('selected-color').value = color;
+        }
+        
+        // Quantity controls
+        function changeQuantity(change) {
+            const quantityInput = document.getElementById('quantity');
+            let quantity = parseInt(quantityInput.value);
             
-            plusBtn.addEventListener('click', function() {
-                let value = parseInt(quantityInput.value);
-                quantityInput.value = value + 1;
-            });
+            quantity += change;
             
-
-        });
+            // Ensure quantity is at least 1
+            if (quantity < 1) {
+                quantity = 1;
+            }
+            
+            quantityInput.value = quantity;
+        }
     </script>
 </body>
 </html>

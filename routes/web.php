@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,10 +29,27 @@ Route::get('/', function () {return redirect('/homepage');});
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Product routes
+// Home routes
+Route::get('/', function () {return redirect('/homepage');});
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+// Product routes
 Route::view('/homepage', 'homepage')->name('homepage');
-Route::view('/productdetail', 'productdetail');
-Route::get('/search', [ProductController::class, 'search'])->name('products.search');
+Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
+
+// Cart routes - KEEP ONLY THESE CART ROUTES
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+
+// Product routes
+Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
+
+// Checkout route
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::get('/', [TestDB::class, 'testDB']);
 
 Route::get('/navigation', function() {return view('navigation');});

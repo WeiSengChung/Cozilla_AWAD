@@ -259,7 +259,7 @@
                     @if(isset($products) && count($products) > 0)
                         @foreach($products as $product)
                             <a href="{{ route('products.show', $product->id) }}" class="search-result-item">
-                                <img src="{{ asset('images/image/'.$product->image_path) }}" alt="{{ $product->name }}" class="search-result-img">
+                                <img src="{{ asset('images/'.$product->image_path) }}" alt="{{ $product->name }}" class="search-result-img">
                                 <div class="search-result-info">
                                     <div class="search-result-title">{{ $product->name }}</div>
                                     <div class="search-result-category">{{ $product->gender_category }} > {{ $product->top_bottom_category }} > {{ str_replace('_', ' ', $product->clothes_category) }}</div>
