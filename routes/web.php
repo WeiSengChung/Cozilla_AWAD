@@ -2,14 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestDB;
-<<<<<<< HEAD
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Auth;
-=======
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 
->>>>>>> 2aa744249295d9f1a45cd810fd977d35914ed717
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,3 +33,20 @@ Route::group(['middleware' => 'auth:admin'], function () {
 });
 Route::get('logout', [LoginController::class, 'logout']);
 Route::view("homepage", "homepage");
+
+Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
+Route::get('/cart', function () {
+    return view('cart');
+})->name('cart');
+
+Route::get('/status', function () {
+    return view('status');
+})->name('status');
+
+Route::get('/history', function () {
+    return view('history');
+})->name('history');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
