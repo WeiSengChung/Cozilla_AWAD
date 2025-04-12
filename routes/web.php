@@ -33,7 +33,7 @@ Route::view('/productdetail', 'productdetail');
 Route::get('/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/', [TestDB::class, 'testDB']);
-
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/navigation', function() {return view('navigation');});
 
 Route::get('/category/{gender_category}', function ($gender_category) {

@@ -60,4 +60,20 @@ class ProductController extends Controller
             
         return view('productdetail', compact('product', 'relatedProducts'));
     }
+
+    public function index(Request $request)
+    {
+        $category = $request ->query('category');
+
+        $products = Product::when($category, function ($query, $category) {
+            return $query->where('clothes_category', $category);
+        })->get();
+
+        $category = Product::select('clothes_category')->distinct()->get();
+
+        return view('product',[
+            'products' => $products,
+            'category' => $category,
+        ]);
+    }
 }
