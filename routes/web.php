@@ -24,7 +24,8 @@ Auth::routes();
 
 // Home routes
 Route::get('/', function () {
-    return redirect('/homepage'); });
+    return redirect('/homepage');
+});
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Product routes
@@ -35,7 +36,8 @@ Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.
 Route::get('/', [TestDB::class, 'testDB']);
 
 Route::get('/navigation', function () {
-    return view('navigation'); });
+    return view('navigation');
+});
 
 Route::get('/category/{gender_category}', function ($gender_category) {
     $gender_category = strtolower($gender_category);
@@ -54,7 +56,8 @@ Route::get('/category/{gender_category}', function ($gender_category) {
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/profile', function () {
-    return view('profile'); })->name('profile');
+    return view('profile');
+})->name('profile');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -89,3 +92,5 @@ Route::get('/contact', function () {
 
 Route::get('/add-address', [UserController::class, 'showAddressForm'])->name('address.form');
 Route::post('/store-address', [UserController::class, 'storeAddress'])->name('address.store');
+
+Route::get('admin/manageproducts', [ProductController::class, 'index'])->name('admin.manageproducts')->middleware('auth.admin');
