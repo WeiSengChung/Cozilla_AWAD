@@ -2,10 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestDB;
+<<<<<<< HEAD
+use App\Http\Controllers\LoginController;
+=======
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
+>>>>>>> 758a7fdeb0402afb7814a5e0d2163d0729e32bdb
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +24,25 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [TestDB::class, 'testDB']);
 
+Route::get('/navigation', function() {return view('navigation');});
+
+Route::get('/category/{gender_category}', function ($gender_category) {
+    $gender_category = strtolower($gender_category);
+
+    if ($gender_category === 'women') {
+        return view('women');
+    } elseif ($gender_category === 'men') {
+        return view('men');
+    } elseif ($gender_category === 'kids') {
+        return view('kids');
+    }
+
+    return redirect('/');
+})->name('category');
+
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/profile', function () { return view('profile'); })->name('profile');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
