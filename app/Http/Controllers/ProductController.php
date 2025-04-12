@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function indexAdmin()
     {
         // Fetch all products from the database
         $products = Product::all();
