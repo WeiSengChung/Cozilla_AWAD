@@ -28,8 +28,17 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
-
+    // protected $redirectTo = RouteServiceProvider::HOME;
+    protected function redirectTo()
+    {
+        $user = Auth::user();
+    
+        if ($user->role === 'admin') {
+            return '/admin/manageproducts';
+        }
+    
+        return '/home';
+    }
     /**
      * Create a new controller instance.
      *
@@ -52,7 +61,7 @@ class LoginController extends Controller
             'password' => 'required|min:6'
         ]);
         if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-            return redirect()->intended('/admin');
+            return redirect()->intended('/admin/manageproducts');
         }
         return back()->withInput($request->only('email', 'remember'));
     }
