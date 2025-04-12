@@ -93,4 +93,12 @@ Route::get('/contact', function () {
 Route::get('/add-address', [UserController::class, 'showAddressForm'])->name('address.form');
 Route::post('/store-address', [UserController::class, 'storeAddress'])->name('address.store');
 
-Route::get('admin/manageproducts', [ProductController::class, 'index'])->name('admin.manageproducts')->middleware('auth.admin');
+// Route::get('admin/manageproducts', [ProductController::class, 'index'])->name('admin.manageproducts')->middleware('auth.admin');
+Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/manageproducts', [ProductController::class, 'index'])->name('manageproducts');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('createproduct');
+    Route::post('/products', [ProductController::class, 'store'])->name('storeproduct');
+    Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('editproduct');
+    Route::put('/products/{id}', [ProductController::class, 'update'])->name('updateproduct');
+    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('deleteproduct');
+});

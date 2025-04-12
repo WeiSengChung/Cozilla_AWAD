@@ -68,4 +68,64 @@ class ProductController extends Controller
 
         return view('productdetail', compact('product', 'relatedProducts'));
     }
+
+    public function create()
+    {
+        return view('admin.addproduct');
+    }
+
+    public function edit($id)
+    {
+        $product = DB::table('products')->where('id', $id)->first();
+
+        if (! $product) {
+            return redirect()->route('homepage')->with('error', 'Product not found');
+        }
+
+        return view('admin.editproduct', compact('product'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'description' => 'required|string|max:1000',
+        ]);
+
+        $product = new Product();
+        $product->name = $request->input('name');
+        $product->price = $request->input('price');
+        $product->description = $request->input('description');
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'description' => 'required|string|max:1000',
+        ]);
+        $product = Product::find($request->id);
+        if (! $product) {
+            return redirect()->route('homepage')->with('error', 'Product not found');
+        }
+        $product->name = $request->input('name');
+        $product->price = $request->input('price');
+        $product->description = $request->input('description');
+        $product->save();
+
+        return redirect(route('admin.manageproducts'))->with('success', 'Product updated successfully!');
+    }
+
+    public function destroy($id)
+    {
+        $product = Product::find($id);
+        if (! $product) {
+            return redirect()->route('homepage')->with('error', 'Product not found');
+        }
+        $product->delete();
+
+        return redirect(route('admin.manageproducts'))->with('success', 'Product deleted successfully!');
+    }
 }
