@@ -37,7 +37,7 @@ class LoginController extends Controller
             return '/admin/manageproducts';
         }
     
-        return '/home';
+        return '/homepage';
     }
     /**
      * Create a new controller instance.
