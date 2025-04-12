@@ -11,7 +11,7 @@ class ProductController extends Controller
     public function indexAdmin()
     {
         // Fetch all products from the database
-        $products = Product::all();
+        $products = Product::orderBy('id', 'asc')->get();
 
         // Return the view with the products data
         return view('admin.manageproducts', ['products' => $products]);
@@ -89,14 +89,18 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
             'description' => 'required|string|max:1000',
+            'price' => 'required|numeric|min:0',
+            'gender_category' => 'required|string|max:255',
+            'top_bottom_category' => 'required|string|max:255',
+            'clothes_category' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+        $imagePath = $request->file('image')->store('images', 'public');
 
         $product = new Product();
-        $product->name = $request->input('name');
-        $product->price = $request->input('price');
-        $product->description = $request->input('description');
+        $product->fill($request->all());
+        $product->image_path = $imagePath;
         $product->save();
         return redirect(route('admin.manageproducts'))->with('success', 'Product added successfully!');
     }
