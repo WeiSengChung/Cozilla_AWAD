@@ -13,7 +13,7 @@
         }
         
         body {
-            background-color: #f5f5f5;
+            background-color: #fff;
         }
         
         .header {
@@ -22,21 +22,25 @@
             align-items: center;
             padding: 20px;
             background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             position: sticky;
             top: 0;
             z-index: 100;
         }
         
         .menu-icon {
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
             width: 30px;
         }
         
-        .search-bar {
+        .search-container {
             flex-grow: 1;
             margin: 0 20px;
+            position: relative;
+        }
+        
+        .search-bar {
+            width: 100%;
             position: relative;
         }
         
@@ -51,51 +55,141 @@
         
         .search-icon {
             position: absolute;
-            left: 15px;
+            right: 15px;
             top: 50%;
             transform: translateY(-50%);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 16px;
+        }
+        
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .search-results.active {
+            display: block;
+        }
+        
+        .search-result-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .search-result-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .search-result-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .search-result-info {
+            flex-grow: 1;
+        }
+        
+        .search-result-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .search-result-category {
+            font-size: 12px;
+            color: #777;
+        }
+        
+        .search-result-price {
+            font-weight: bold;
+            color: #4a574b;
         }
         
         .logo {
             font-size: 24px;
             font-weight: bold;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
         }
         
-        .carousel {
+        .logo img {
+            height: 30px;
+            margin-right: 5px;
+        }
+        
+        .carousel-container {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
+            padding: 0;
+            margin: 0;
+            gap: 10px;
+            padding: 10px;
         }
         
-        .carousel::-webkit-scrollbar {
+        .carousel-container::-webkit-scrollbar {
             display: none;
         }
         
         .carousel-item {
-            flex: 0 0 280px;
-            margin-right: 15px;
-            /* other styles */
+            flex: 0 0 auto;
+            width: 33.333%;
+            position: relative;
+            scroll-snap-align: start;
         }
         
         .carousel-item img {
             width: 100%;
-            height: auto;
+            height: 300px;
             object-fit: cover;
+            border-radius: 0;
+        }
+        
+        .carousel-content {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
         }
         
         .testimonials {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            padding: 20px;
-            gap: 20px;
+            padding: 10px;
+            gap: 10px;
+            margin-top: 20px;
         }
         
         .testimonial-card {
-            background-color: #323d33;
+            background-color: #4a574b;
             color: white;
             border-radius: 10px;
             padding: 20px;
@@ -107,12 +201,12 @@
         .testimonial-header {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         
         .testimonial-avatar {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             margin-right: 15px;
             object-fit: cover;
@@ -121,20 +215,28 @@
         .testimonial-name {
             font-weight: bold;
             font-size: 18px;
+            color: white;
         }
         
         .testimonial-text {
-            margin-top: 10px;
-            line-height: 1.4;
+            margin-top: 0;
+            line-height: 1.5;
             font-style: italic;
+            font-size: 16px;
         }
         
         .rating {
-            color: #e2d0a8;
-            margin-top: 10px;
+            color: white;
+            margin-top: 15px;
+            font-size: 18px;
+            letter-spacing: 2px;
         }
         
         @media (max-width: 768px) {
+            .carousel-item {
+                width: 100%;
+            }
+            
             .testimonials {
                 flex-direction: column;
             }
@@ -144,39 +246,62 @@
 <body>
     <div class="header">
         <div class="menu-icon">≡</div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search...">
+        <div class="search-container">
+            <form action="{{ route('products.search') }}" method="GET">
+            <div class="search-bar">
+                <input type="text" name="query" id="search-input" placeholder="Search..." value="{{ request('query') }}">
+                <button type="submit" class="search-icon">🔍</button>
+            </div>
+            </form>
+            
+            @if(request()->has('query') && request('query') != '')
+                <div class="search-results active" id="search-results">
+                    @if(isset($products) && count($products) > 0)
+                        @foreach($products as $product)
+                            <a href="{{ route('products.show', $product->id) }}" class="search-result-item">
+                                <img src="{{ asset('images/image/'.$product->image_path) }}" alt="{{ $product->name }}" class="search-result-img">
+                                <div class="search-result-info">
+                                    <div class="search-result-title">{{ $product->name }}</div>
+                                    <div class="search-result-category">{{ $product->gender_category }} > {{ $product->top_bottom_category }} > {{ str_replace('_', ' ', $product->clothes_category) }}</div>
+                                </div>
+                                <div class="search-result-price">${{ number_format($product->price, 2) }}</div>
+                            </a>
+                        @endforeach
+                    @else
+                        <div class="search-result-item">No products found</div>
+                    @endif
+                </div>
+            @endif
         </div>
-        <div class="logo">COZILLA</div>
+        <div class="logo">
+            <img src="{{ asset('images/image/logo.jpg') }}" alt="COZILLA">
+        </div>
     </div>
     
-    <div class="carousel">
+    <div class="carousel-container">
         <div class="carousel-item">
-            <img src={{ asset("images/image/fashionSale.jpg") }} alt="Summer Fashion Sale">
+            <img src="{{ asset('images/image/fashionsale.jpg') }}" alt="Summer Fashion Sale">
             <div class="carousel-content">
                 <h2>Summer FASHION SALE</h2>
                 <p>UP TO 70% OFF</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src={{ asset("images/image/summerClassic.jpg") }} alt="Summer Classics">
+            <img src="{{ asset('images/image/summerClassic.jpg') }}" alt="Summer Classics">
             <div class="carousel-content">
-                <h2>SUMMER CLASSICS</h2>
             </div>
         </div>
         <div class="carousel-item">
-            <img src={{ asset("images/image/offer50.jpg") }} alt="H&M Sale">
+            <img src="{{ asset('images/image/offer50.jpg') }}" alt="H&M Sale">
             <div class="carousel-content">
-                <h2>SALE 50% OFF</h2>
-                <p>VEN YA A TU TIENDA H&M</p>
             </div>
         </div>
     </div>
-    
+
     <div class="testimonials">
         <div class="testimonial-card">
             <div class="testimonial-header">
-                <img src="../image/julia.jpg" alt="Julia" class="testimonial-avatar">
+                <img src="{{ asset('images/image/julie.jpg') }}" alt="Julia" class="testimonial-avatar">
                 <h3 class="testimonial-name">Julia</h3>
             </div>
             <p class="testimonial-text">"The quality of this attire is exceptional; it feels durable and well-made."</p>
@@ -185,7 +310,7 @@
         
         <div class="testimonial-card">
             <div class="testimonial-header">
-                <img src="/api/placeholder/40/40" alt="Amerson" class="testimonial-avatar">
+                <img src="{{ asset('images/image/emerson.jpg') }}" alt="Amerson" class="testimonial-avatar">
                 <h3 class="testimonial-name">Amerson</h3>
             </div>
             <p class="testimonial-text">"I love the design of this outfit; it's stylish and unique."</p>
@@ -194,32 +319,12 @@
         
         <div class="testimonial-card">
             <div class="testimonial-header">
-                <img src="/api/placeholder/40/40" alt="Elicia" class="testimonial-avatar">
+                <img src="{{ asset('images/image/pewds.jpg') }}" alt="Elicia" class="testimonial-avatar">
                 <h3 class="testimonial-name">Elicia</h3>
             </div>
             <p class="testimonial-text">Confortable price and fast shipping</p>
             <div class="rating">★★★★★</div>
         </div>
     </div>
-
-    <script>
-        // Simple carousel functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const carousel = document.querySelector('.carousel');
-            const items = document.querySelectorAll('.carousel-item');
-            let currentIndex = 0;
-            
-            function moveToNextSlide() {
-                currentIndex = (currentIndex + 1) % items.length;
-                carousel.scrollTo({
-                    left: items[currentIndex].offsetLeft,
-                    behavior: 'smooth'
-                });
-            }
-            
-            // Auto-scroll carousel every 5 seconds
-            setInterval(moveToNextSlide, 5000);
-        });
-    </script>
 </body>
 </html>

@@ -1,7 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TestDB;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +17,15 @@ use App\Http\Controllers\TestDB;
 |
 */
 
-Route::get('/', [TestDB::class, 'testDB']);
-
+// Auth routes
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::view("homepage", "homepage");
+// Home routes
+Route::get('/', function () {return redirect('/homepage');});
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+// Product routes
+Route::view('/homepage', 'homepage')->name('homepage');
+Route::view('/productdetail', 'productdetail');
+Route::get('/search', [ProductController::class, 'search'])->name('products.search');
+Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
