@@ -2,14 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestDB;
-<<<<<<< HEAD
-use App\Http\Controllers\LoginController;
-=======
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
->>>>>>> 758a7fdeb0402afb7814a5e0d2163d0729e32bdb
 
 /*
 |--------------------------------------------------------------------------
