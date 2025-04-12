@@ -50,3 +50,7 @@ Route::get('/history', function () {
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+
+
+Route::get('/add-address', [UserController::class, 'showAddressForm'])->name('address.form');
+Route::post('/store-address', [UserController::class, 'storeAddress'])->name('address.store');
