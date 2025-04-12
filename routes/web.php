@@ -15,3 +15,21 @@ use App\Http\Controllers\TestDB;
 */
 
 Route::get('/', [TestDB::class, 'testDB']);
+
+Route::get('/navigation', function() {return view('navigation');});
+
+Route::get('/category/{gender_category}', function ($gender_category) {
+    $gender_category = strtolower($gender_category);
+
+    if ($gender_category === 'women') {
+        return view('women');
+    } elseif ($gender_category === 'men') {
+        return view('men');
+    } elseif ($gender_category === 'kids') {
+        return view('kids');
+    }
+
+    return redirect('/');
+})->name('category');
+
+
