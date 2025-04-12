@@ -32,8 +32,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Product routes
 // Home routes
-Route::get('/', function () {return redirect('/homepage');});
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', function () {
+    return redirect('/homepage'); });
 
 // Product routes
 Route::view('/homepage', 'homepage')->name('homepage');
@@ -55,7 +55,8 @@ Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 Route::get('/', [TestDB::class, 'testDB']);
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/navigation', function() {return view('navigation');});
+Route::get('/navigation', function () {
+    return view('navigation'); });
 
 Route::get('/category/{gender_category}', function ($gender_category) {
     $gender_category = strtolower($gender_category);
