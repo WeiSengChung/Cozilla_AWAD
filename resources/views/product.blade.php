@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+<script src="{{ asset('js/navigation.js') }}"></script>
     <style>
+        .large-component {
+            margin-left: 80px;
+            padding:20px;
+        }
+
         .category-btn {
         background-color: #3d4239;
         color: white;
@@ -25,46 +32,57 @@
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
+            padding-top:10px;
         }
+
+        .product-grid a {
+            text-decoration:none;
+        }
+
         .product-card {
             width: 200px;
             text-align: center;
+            text-decoration: none;
+            color: black;
         }
+
         img {
             width: 100%;
             height: 150px;
             object-fit: cover;
         }
+        
     </style>
 </head>
 <body>
 
-    <!-- Category Buttons
-    @foreach ($category as $cat)
-    <a href="{{ route('products.index', ['category' => $cat['clothes_category']]) }}" class="category-btn">
-    {{ ucwords(str_replace('_', ' ', str_replace('-', ' ', $cat['clothes_category']))) }}
-    </a>
-    @endforeach -->
-    @foreach ($category as $cat)
-    @if (!empty($cat['clothes_category']))
-        <a href="{{ route('category', ['gender_category' => request()->gender_category ?? $products->first()->gender_category ?? '']) }}?category={{ $cat['clothes_category'] }}" class="category-btn">
-            {{ ucwords(str_replace(['_', '-'], ' ', $cat['clothes_category'])) }}
-        </a>
-    @endif
-    @endforeach
+        <div class = container>
+        @include('partials.navigation')
+        <div class="large-component">
+                @foreach ($category as $cat)
+                @if (!empty($cat['clothes_category']))
+                    <a href="{{ route('category', ['gender_category' => request()->gender_category ?? $products->first()->gender_category ?? '']) }}?category={{ $cat['clothes_category'] }}" class="category-btn">
+                        {{ ucwords(str_replace(['_', '-'], ' ', $cat['clothes_category'])) }}
+                    </a>
+                @endif
+                @endforeach
+            
 
+            <!-- Products Grid -->
+            <div class="product-grid">
+                @foreach ($products as $product)
+                <a href = '{{route("products.show", $product -> id)}}'>
+                        <div class="product-card">
+                            <img src="{{ asset('images/' . $product->image_path) }}" alt="{{ $product->name }}">
+                            <h3>{{ $product->name }}</h3>
+                            <p>RM {{ number_format($product->price, 2) }}</p>
+                        </div>
 
-    <!-- Products Grid -->
-    <div class="product-grid">
-        @foreach ($products as $product)
-            <div class="product-card">
-                <img src="{{ asset('images/' . $product->image_path) }}" alt="{{ $product->name }}">
-                <h3>{{ $product->name }}</h3>
-                <p>RM {{ number_format($product->price, 2) }}</p>
+                    </a>
+                @endforeach
             </div>
-        @endforeach
+        </div>
     </div>
-
 
 </body>
 </html>
