@@ -86,7 +86,8 @@ use App\Http\Controllers\CategoryController;
 Route::get('/category/{gender_category}', [CategoryController::class, 'showGenderCategories'])->name('category');
 
 
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('logout', [LoginController::class, 'logout']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout.post');
 
 Route::get('/profile', function () {
     return view('profile');
@@ -112,7 +113,6 @@ Route::middleware(['auth'])->group(function () {
 Route::group(['middleware' => 'auth:admin'], function () {
     Route::view('/admin', 'admin');
 });
-Route::get('logout', [LoginController::class, 'logout']);
 Route::view("homepage", "homepage");
 
 Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
@@ -143,3 +143,5 @@ Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(functi
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('updateproduct');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('deleteproduct');
 });
+
+

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class ProductController extends Controller
 {
@@ -16,8 +17,13 @@ class ProductController extends Controller
         // Return the view with the products data
         return view('admin.manageproducts', ['products' => $products]);
     }
+
     public function search(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect('/login')->with('message', "You must log in before search products");
+        }
+
         $query = $request->input('query');
         $referer = $request->header('referer');
 

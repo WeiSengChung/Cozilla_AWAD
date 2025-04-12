@@ -60,6 +60,22 @@
             .action-buttons form {
                 margin: 0;
             }
+
+            .delete-button {
+                background-color: #c0392b; /* red */
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 25px;
+                font-weight: bold;
+                text-decoration: none;
+                font-family: 'Times New Roman', Times, serif;
+            }
+
+            .delete-button:hover {
+                background-color: #a93226; /* darker red on hover */
+            }
+
         </style>
 
         <h3 class="mt-5" style="font-family: 'Times New Roman', Times, serif;"><strong>Product Overview</strong></h3>
@@ -87,7 +103,7 @@
                                 <form action="{{ route('admin.deleteproduct', $product->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="custom-button">Delete</button>
+                                    <button type="submit" class="delete-button">Delete</button>
                                 </form>
                             </div>
                         </td>
