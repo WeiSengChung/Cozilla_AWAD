@@ -130,4 +130,20 @@ class ProductController extends Controller
 
         return redirect(route('admin.manageproducts'))->with('success', 'Product deleted successfully!');
     }
+
+    public function index(Request $request)
+    {
+        $category = $request->query('category');
+
+        $products = Product::when($category, function ($query, $category) {
+            return $query->where('clothes_category', $category);
+        })->get();
+
+        $category = Product::select('clothes_category')->distinct()->get();
+
+        return view('product', [
+            'products' => $products,
+            'category' => $category,
+        ]);
+    }
 }
