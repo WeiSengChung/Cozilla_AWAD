@@ -231,8 +231,8 @@
         .cart-summary {
             background-color: white;
             padding: 25px;
-            border-radius: 4px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
         
         .summary-row {
@@ -252,35 +252,59 @@
             color: #333;
         }
         
+        /* Updated checkout button styles */
         .checkout-btn {
-            background-color: #484848;
+            background-color: #4a574b;
             color: white;
             border: none;
             padding: 15px 20px;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             width: 100%;
             margin-top: 20px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
+        .checkout-btn:hover {
+            background-color: #3d4a3e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Updated add more items button styles */
         .add-more-btn {
-            background-color: #484848;
-            color: white;
-            border: none;
-            padding: 15px 20px;
-            font-size: 16px;
-            font-weight: 500;
+            background-color: white;
+            color: #4a574b;
+            border: 2px solid #4a574b;
+            padding: 14px 20px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
             width: 100%;
             margin-top: 15px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            display: block;
-            text-align: center;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-decoration: none;
+        }
+        
+        .add-more-btn:hover {
+            background-color: #f5f8f5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
         }
         
         .empty-cart {
@@ -295,14 +319,30 @@
             color: #ddd;
         }
         
+        /* Updated continue shopping button for empty cart */
         .continue-shopping {
-            background-color: #eee;
-            color: #333;
+            background-color: #4a574b;
+            color: white;
             display: inline-block;
-            padding: 12px 25px;
-            margin-top: 20px;
+            padding: 14px 28px;
+            margin-top: 25px;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .continue-shopping:hover {
+            background-color: #3d4a3e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Add button icons */
+        .btn-icon {
+            margin-right: 8px;
+            font-size: 18px;
         }
         
         @media (max-width: 768px) {
@@ -414,8 +454,8 @@
                             <div>RM {{ number_format($total, 2) }}</div>
                         </div>
                         
-                        <a href="#" class="checkout-btn">Check Out</a>
-                        <a href="/" class="add-more-btn">Add more items</a>
+                        <a href="#" class="checkout-btn"><span class="btn-icon">✓</span> Check Out</a>
+                        <a href="/" class="add-more-btn"><span class="btn-icon">+</span> Add More Items</a>
                     </div>
                 </div>
             </div>
@@ -424,7 +464,7 @@
                 <div class="empty-cart-icon">🛒</div>
                 <h2>Your cart is empty</h2>
                 <p>Looks like you haven't added any products to your cart yet.</p>
-                <a href="/" class="continue-shopping">Start Shopping</a>
+                <a href="/" class="continue-shopping"><span class="btn-icon">🛍️</span> Start Shopping</a>
             </div>
         @endif
     </div>
