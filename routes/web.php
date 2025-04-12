@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrdersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,13 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+Route::middleware(['auth'])->group(function () {
+    // Show payment page
+    Route::get('/payment', [OrdersController::class, 'payment'])->name('payment');
+    
+    // Store a new order
+    Route::post('/orders', [OrdersController::class, 'store'])->name('orders.store');
+});
 
 // Product routes
 Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
@@ -90,6 +98,16 @@ Route::get('/login/admin', [LoginController::class, 'showAdminLoginForm']);
 Route::post('/login/admin', [LoginController::class, 'adminLogin']);
 Route::get('/register/admin', [RegisterController::class, 'showAdminRegisterForm']);
 Route::post('/register/admin', [RegisterController::class, 'createAdmin']);
+Route::middleware(['auth'])->group(function () {
+    // Show payment page
+    Route::get('/payment', [OrdersController::class, 'payment'])->name('payment');
+    
+    // Store a new order
+    Route::post('/orders', [OrdersController::class, 'store'])->name('orders.store');
+    
+    // Show order confirmation
+    Route::get('/orders/confirmation/{id}', [OrdersController::class, 'confirmation'])->name('orders.confirmation');
+});
 
 Route::group(['middleware' => 'auth:admin'], function () {
     Route::view('/admin', 'admin');
