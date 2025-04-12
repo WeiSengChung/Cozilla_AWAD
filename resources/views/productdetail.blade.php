@@ -429,7 +429,8 @@
                                     <div class="search-result-title">{{ $searchProduct->name }}</div>
                                     <div class="search-result-category">{{ $searchProduct->gender_category }} >
                                         {{ $searchProduct->top_bottom_category }} >
-                                        {{ str_replace('_', ' ', $searchProduct->clothes_category) }}</div>
+                                        {{ str_replace('_', ' ', $searchProduct->clothes_category) }}
+                                    </div>
                                 </div>
                                 <div class="search-result-price">${{ number_format($searchProduct->price, 2) }}</div>
                             </a>
@@ -470,7 +471,8 @@
             <div class="product-info">
                 <h1 class="product-title">{{ $product->name }}</h1>
                 <div class="product-category">{{ $product->gender_category }} > {{ $product->top_bottom_category }} >
-                    {{ str_replace('_', ' ', $product->clothes_category) }}</div>
+                    {{ str_replace('_', ' ', $product->clothes_category) }}
+                </div>
                 <div class="product-price">${{ number_format($product->price, 2) }}</div>
 
                 <div class="product-description">
@@ -488,17 +490,20 @@
                     <div class="product-meta-item">
                         <div class="meta-label">SKU:</div>
                         <div class="meta-value">
-                            {{ strtoupper(substr($product->clothes_category, 0, 3)) }}{{ $product->id }}</div>
+                            {{ strtoupper(substr($product->clothes_category, 0, 3)) }}{{ $product->id }}
+                        </div>
                     </div>
                     <div class="product-meta-item">
                         <div class="meta-label">Category:</div>
                         <div class="meta-value">{{ $product->gender_category }}, {{ $product->top_bottom_category }},
-                            {{ str_replace('_', ' ', $product->clothes_category) }}</div>
+                            {{ str_replace('_', ' ', $product->clothes_category) }}
+                        </div>
                     </div>
                     <div class="product-meta-item">
                         <div class="meta-label">Tags:</div>
                         <div class="meta-value">{{ strtolower($product->gender_category) }}, fashion,
-                            {{ strtolower(str_replace('_', ' ', $product->clothes_category)) }}</div>
+                            {{ strtolower(str_replace('_', ' ', $product->clothes_category)) }}
+                        </div>
                     </div>
                 </div>
 
@@ -520,14 +525,16 @@
                         <div class="option-label">Color:</div>
                         <div class="color-options">
                             <div class="color-option active" data-color="Black" style="background-color: #000;"
-                                onclick="selectColor(this, 'Black')"></div>
+                                onclick="selectColor(this, 'black')"></div>
                             <div class="color-option" data-color="White"
                                 style="background-color: #fff; border: 1px solid #ddd;"
-                                onclick="selectColor(this, 'White')"></div>
-                            <div class="color-option" data-color="Navy" style="background-color: #2d4a58;"
-                                onclick="selectColor(this, 'Navy')"></div>
-                            <div class="color-option" data-color="Brown" style="background-color: #924a3f;"
-                                onclick="selectColor(this, 'Brown')"></div>
+                                onclick="selectColor(this, 'white')"></div>
+                            <div class="color-option" data-color="Red" style="background-color: red;"
+                                onclick="selectColor(this, 'red')"></div>
+                            <div class="color-option" data-color="Green" style="background-color: green;"
+                                onclick="selectColor(this, 'green')"></div>
+                            <div class="color-option" data-color="Blue" style="background-color: blue;"
+                                onclick="selectColor(this, 'blue')"></div>
                         </div>
                         <input type="hidden" name="color" id="selected-color" value="Black">
                     </div>

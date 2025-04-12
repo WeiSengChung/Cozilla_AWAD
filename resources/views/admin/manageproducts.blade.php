@@ -1,16 +1,18 @@
-<div class="container mt-5">
+<div class="container mt-5" style="font-family: 'Times New Roman', Times, serif;">
     <h1 class="mb-4">Manage Products</h1>
 
-    <a style="font-size:25px;font-family:Arial; background-color: #4a5643; color: white; padding: 10px 20px; border-radius: 15px; text-decoration: none;" href="{{ route('admin.createproduct') }}">
+    <a style="font-size:25px; font-family: 'Times New Roman', Times, serif; background-color: #4a5643; color: white; padding: 10px 20px; border-radius: 15px; text-decoration: none;" href="{{ route('admin.createproduct') }}">
         Add New Product
     </a>
 
     @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div style="margin-top: 10px; font-size: 25px; font-family: 'Times New Roman', Times, serif; color: green;">
+            {{ session('success') }}
+        </div>
     @endif
 
     @if ($products->isEmpty())
-        <p>No products found.</p>
+        <p style="font-family: 'Times New Roman', Times, serif;">No products found.</p>
     @else
         <style>
             .custom-bordered-table {
@@ -18,6 +20,7 @@
                 width: 100%;
                 text-align: left;
                 margin-top: 20px;
+                font-family: 'Times New Roman', Times, serif;
             }
 
             .custom-bordered-table th,
@@ -40,6 +43,7 @@
                 font-weight: bold;
                 text-decoration: none;
                 display: inline-block;
+                font-family: 'Times New Roman', Times, serif;
             }
 
             .custom-button:hover {
@@ -50,14 +54,31 @@
                 display: flex;
                 gap: 10px;
                 align-items: center;
+                font-family: 'Times New Roman', Times, serif;
             }
 
             .action-buttons form {
                 margin: 0;
             }
+
+            .delete-button {
+                background-color: #c0392b; /* red */
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 25px;
+                font-weight: bold;
+                text-decoration: none;
+                font-family: 'Times New Roman', Times, serif;
+            }
+
+            .delete-button:hover {
+                background-color: #a93226; /* darker red on hover */
+            }
+
         </style>
 
-        <h3 class="mt-5"><strong>Product Overview</strong></h3>
+        <h3 class="mt-5" style="font-family: 'Times New Roman', Times, serif;"><strong>Product Overview</strong></h3>
 
         <table class="custom-bordered-table">
             <thead>
@@ -82,7 +103,7 @@
                                 <form action="{{ route('admin.deleteproduct', $product->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="custom-button">Delete</button>
+                                    <button type="submit" class="delete-button">Delete</button>
                                 </form>
                             </div>
                         </td>

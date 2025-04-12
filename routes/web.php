@@ -39,6 +39,8 @@ Route::get('/', function () {
 Route::view('/homepage', 'homepage')->name('homepage');
 Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/homepage', function () {return view('homepage');
+});
 
 // Cart routes - KEEP ONLY THESE CART ROUTES
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
@@ -58,19 +60,23 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 Route::get('/navigation', function () {
     return view('navigation'); });
 
-Route::get('/category/{gender_category}', function ($gender_category) {
-    $gender_category = strtolower($gender_category);
+// Route::get('/category/{gender_category}', function ($gender_category) {
+//     $gender_category = strtolower($gender_category);
 
-    if ($gender_category === 'women') {
-        return view('women');
-    } elseif ($gender_category === 'men') {
-        return view('men');
-    } elseif ($gender_category === 'kids') {
-        return view('kids');
-    }
+//     if ($gender_category === 'women') {
+//         return view('women');
+//     } elseif ($gender_category === 'men') {
+//         return view('men');
+//     } elseif ($gender_category === 'kids') {
+//         return view('kids');
+//     }
 
-    return redirect('/');
-})->name('category');
+//     return redirect('/');
+// })->name('category');
+use App\Http\Controllers\CategoryController;
+
+Route::get('/category/{gender_category}', [CategoryController::class, 'showGenderCategories'])->name('category');
+
 
 Route::get('logout', [LoginController::class, 'logout']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout.post');

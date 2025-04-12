@@ -141,19 +141,35 @@ class ProductController extends Controller
         return redirect(route('admin.manageproducts'))->with('success', 'Product deleted successfully!');
     }
 
+    // public function index(Request $request)
+    // {
+    //     $category = $request->query('category');
+
+    //     $products = Product::when($category, function ($query, $category) {
+    //         return $query->where('clothes_category', $category);
+    //     })->get();
+
+    //     $category = Product::select('clothes_category')->distinct()->get();
+
+    //     return view('product', [
+    //         'products' => $products,
+    //         'category' => $category,
+    //     ]);
+    // }
     public function index(Request $request)
     {
-        $category = $request->query('category');
+    $query = Product::query();
 
-        $products = Product::when($category, function ($query, $category) {
-            return $query->where('clothes_category', $category);
-        })->get();
-
-        $category = Product::select('clothes_category')->distinct()->get();
-
-        return view('product', [
-            'products' => $products,
-            'category' => $category,
-        ]);
+    if ($request->has('category')) {
+        $query->where('clothes_category', $request->category);
     }
+
+    $products = $query->get();
+
+    // Optional: load all categories for display
+    $category = Product::select('clothes_category')->distinct()->get()->toArray();
+
+    return view('product', compact('products', 'category'));
+    }
+
 }
