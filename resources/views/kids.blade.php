@@ -1,0 +1,1 @@
+<h1> Hello here is kids category page</h1>

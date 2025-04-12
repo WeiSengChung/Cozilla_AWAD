@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestDB;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,6 @@ Route::get('/category/{gender_category}', function ($gender_category) {
     return redirect('/');
 })->name('category');
 
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+Route::get('/profile', function () { return view('profile'); })->name('profile');
