@@ -9,7 +9,8 @@ class UserProfile extends Model
 {
     use HasFactory;
 
-    protected $table = 'user_profiles'; 
+    protected $table = 'user_profiles';
+
     protected $fillable = [
         'user_id',
         'first_name',
@@ -21,6 +22,9 @@ class UserProfile extends Model
         'zip_code',
     ];
 
+    /**
+     * Each user profile belongs to one user.
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
