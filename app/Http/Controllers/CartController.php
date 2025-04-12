@@ -4,107 +4,162 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Session;
+use App\Models\Cart;
+use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
+use App\Models\CartItem;
 
 class CartController extends Controller
 {
     // Show the cart contents
     public function index()
     {
-        $cart = Session::get('cart', []);
-        return view('cart', compact('cart')); // Changed from 'cart.index' to 'cart'
+        // Get the user's cart
+        $cart = Cart::where('user_id', Auth::id())->first();
+        
+        $cartItems = [];
+        $subtotal = 0;
+        $shipping = 0;
+        $total = 0;
+        
+        if ($cart) {
+            // Get cart items with product details
+            $cartItems = CartItem::where('cart_id', $cart->id)
+                ->with('product')
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'product' => $item->product,
+                        'quantity' => $item->quantity,
+                        'size' => $item->size,
+                        'color' => $item->color
+                    ];
+                })
+                ->toArray();
+                
+            // Calculate totals
+            foreach ($cartItems as $item) {
+                $subtotal += $item['product']->price * $item['quantity'];
+            }
+            
+            // Set shipping cost (could be dynamic based on rules)
+            $shipping = count($cartItems) > 0 ? 10.00 : 0;
+            
+            // Calculate total
+            $total = $subtotal + $shipping;
+        }
+        
+        // Get cart item count for header display
+        $cartItemCount = $this->getCartItemCount();
+        
+        return view('cart', compact('cartItems', 'subtotal', 'shipping', 'total', 'cartItemCount'));
     }
+    
     // Add an item to the cart
     public function addToCart(Request $request)
-{
-    $request->validate([
-        'product_id' => 'required|integer|exists:products,id',
-        'quantity' => 'required|integer|min:1',
-        'size' => 'required|string',
-        'color' => 'required|string',
-    ]);
-
-    $product = \App\Models\Product::findOrFail($request->product_id);
-    $cart = Session::get('cart', []);
-    $id = $request->product_id;
-
-    if (isset($cart[$id])) {
-        $cart[$id]['quantity'] += $request->quantity;
-    } else {
-        $cart[$id] = [
-            'product_id' => $id,
-            'quantity' => $request->quantity,
-            'name' => $product->name,
-            'price' => $product->price,
-            'size' => $request->size,
-            'color' => $request->color,
-        ];
-    }
-
-    Session::put('cart', $cart);
-    return redirect()->route('cart')->with('success', 'Item added to cart successfully!');
-}
-    // Update an item in the cart
-    public function update(Request $request, $id)
     {
-        $change = $request->input('change');
-        $cart = Session::get('cart', []);
+        $request->validate([
+            'product_id' => 'required|integer|exists:products,id',
+            'quantity' => 'required|integer|min:1',
+            'size' => 'required|string',
+            'color' => 'required|string',
+        ]);
 
-        if (isset($cart[$id])) {
-            // Change the quantity of the cart item
-            $newQuantity = $cart[$id]['quantity'] + $change;
-
-            // Ensure the quantity is positive
-            if ($newQuantity > 0) {
-                $cart[$id]['quantity'] = $newQuantity;
-            } else {
-                unset($cart[$id]);
-            }
-
-            // Update session with the new cart
-            Session::put('cart', $cart);
+        $product = Product::findOrFail($request->product_id);
+        
+        // Get or create user's cart
+        $cart = Cart::where('user_id', Auth::id())->first();
+        if (!$cart) {
+            $cart = new Cart();
+            $cart->user_id = Auth::id();
+            $cart->save();
         }
 
-        // Redirect to the cart page
+        // Check if this exact same cart item already exists
+        $existingCartItem = CartItem::where([
+            'cart_id' => $cart->id, 
+            'product_id' => $request->product_id, 
+            'size' => $request->size, 
+            'color' => $request->color
+        ])->first();
+
+        if ($existingCartItem) {
+            // Update the quantity of existing item
+            $existingCartItem->quantity += $request->quantity;
+            $existingCartItem->save();
+        } else {
+            // Create a new cart item
+            $newCartItem = new CartItem();
+            $newCartItem->product_id = $request->product_id;
+            $newCartItem->quantity = $request->quantity;
+            $newCartItem->size = $request->size;
+            $newCartItem->color = $request->color;
+            $newCartItem->cart_id = $cart->id;
+            $newCartItem->save();
+        }
+
+        return redirect()->route('cart')->with('success', 'Item added to cart successfully!');
+    }
+    
+    // Update item quantity in cart
+    public function update(Request $request, $id)
+    {
+        $change = $request->input('change_quantity');
+        
+        $cartItem = CartItem::findOrFail($id);
+        $newQuantity = $cartItem->quantity + $change;
+        
+        if ($newQuantity > 0) {
+            $cartItem->quantity = $newQuantity;
+            $cartItem->save();
+        } else {
+            // If quantity would be 0 or less, remove the item
+            $cartItem->delete();
+        }
+
         return redirect()->route('cart');
     }
 
     // Remove an item from the cart
     public function remove($id)
     {
-        $cart = Session::get('cart', []);
+        $cartItem = CartItem::findOrFail($id);
+        $cartItem->delete();
 
-        if (isset($cart[$id])) {
-            unset($cart[$id]);
-            Session::put('cart', $cart);
-        }
-
-        // Redirect to the cart page
-        return redirect()->route('cart');
+        return redirect()->route('cart')->with('success', 'Item removed from cart!');
     }
 
     // Helper method to get cart item count for displaying in the header
-    public function getCartCount()
-    {
-        $cart = Session::get('cart', []);
-        $count = 0;
-
-        foreach ($cart as $item) {
-            $count += $item['quantity'];
-        }
-
-        return $count;
-    }
-
-    // Get the total number of items in the cart
     public function getCartItemCount()
     {
-        $cart = Session::get('cart', []);
-        $itemCount = 0;
-
-        foreach ($cart as $details) {
-            $itemCount += $details['quantity'];
+        if (!Auth::check()) {
+            return 0;
         }
-
-        return $itemCount;
+        
+        $cart = Cart::where('user_id', Auth::id())->first();
+        
+        if (!$cart) {
+            return 0;
+        }
+        
+        // Sum the quantities of all items in the cart
+        return CartItem::where('cart_id', $cart->id)->sum('quantity');
+    }
+    
+    // Method to retrieve cart item count for middleware or view composers
+    public static function getCartCount()
+    {
+        if (!Auth::check()) {
+            return 0;
+        }
+        
+        $cart = Cart::where('user_id', Auth::id())->first();
+        
+        if (!$cart) {
+            return 0;
+        }
+        
+        return CartItem::where('cart_id', $cart->id)->sum('quantity');
     }
 }

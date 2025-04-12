@@ -2,9 +2,14 @@
 <html lang="en">
 
 <head>
+    
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+    <script src="{{ asset('js/navigation.js') }}"></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COZILLA</title>
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}">
     <style>
         * {
             margin: 0;
@@ -246,8 +251,9 @@
 </head>
 
 <body>
+    <!-- @include('partials.navigation') -->
     <div class="header">
-        <div class="menu-icon">≡</div>
+        <div class="menu-icon">@include('partials.navigation')</div>
         <div class="search-container">
             <form action="{{ route('products.search') }}" method="GET">
                 <div class="search-bar">
@@ -278,9 +284,9 @@
                 </div>
             @endif
         </div>
-        <div class="logo">
+        <!-- <div class="logo">
             <img src="{{ asset('images/image/logo.jpg') }}" alt="COZILLA">
-        </div>
+        </div> -->
     </div>
 
     <div class="carousel-container">

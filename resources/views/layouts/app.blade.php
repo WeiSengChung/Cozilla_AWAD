@@ -22,15 +22,16 @@
 <body>
     <div id="app">
         <img src="{{ asset('images/Cozilla.jpg') }}" alt="Cozilla Logo" class="logo">
-        
-
         <main class="py-4">
             @yield('content')
         </main>
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
         <div class="logo-container">
     </div>
+        <div class="logo-container">
+    </div>
             <div class="container">
+                
                 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -43,22 +44,18 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="login&register">
                         <!-- Authentication Links -->
                         @guest
                             @php
                                 $currentRoute = Route::currentRouteName();
                             @endphp
-
-                            @if ($currentRoute === 'login' && Route::has('register'))
-                                <a class="nav-link-register" href="{{ route('register') }}">{{ __('Register') }}</a>
-                            @elseif ($currentRoute === 'register' && Route::has('login'))
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            @endif
                         @endguest
 
                         @auth
                             <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
@@ -66,6 +63,8 @@
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                document.getElementById('logout-form').submit();">
                                     onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}

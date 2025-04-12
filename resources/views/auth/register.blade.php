@@ -93,11 +93,17 @@
                                 </div>
 
                                 <div class="row mb-0">
-                                    <div class="col-md-6 offset-md-4">
-                                        <button type="submit" class="btn btn-primary">
+                                    <div class="register-Button-Container">
+                                        <button type="submit" class="register-Button">
                                             {{ __('Register') }}
                                         </button>
                                     </div>
+                                        <h3>or</h3>
+                                        <div class="loginButtonContainer">
+                                            <div class="loginButton">
+                                                <a href="{{ route('login') }}" class="register-Button">Login</a>
+                                            </div>
+                                        </div>
                                 </div>
                             </form>
                     </div>
