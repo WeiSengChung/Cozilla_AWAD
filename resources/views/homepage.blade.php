@@ -268,8 +268,7 @@
                                     <div class="search-result-title">{{ $product->name }}</div>
                                     <div class="search-result-category">{{ $product->gender_category }} >
                                         {{ $product->top_bottom_category }} >
-                                        {{ str_replace('_', ' ', $product->clothes_category) }}
-                                    </div>
+                                        {{ str_replace('_', ' ', $product->clothes_category) }}</div>
                                 </div>
                                 <div class="search-result-price">${{ number_format($product->price, 2) }}</div>
                             </a>
@@ -333,11 +332,6 @@
             <div class="rating">★★★★★</div>
         </div>
     </div>
-    <script>
-        @foreach ($data as $product)
-            console.log("{{ $product->name }}");
-        @endforeach
-    </script>
 </body>
 
 </html>
