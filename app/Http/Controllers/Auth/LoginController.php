@@ -39,10 +39,12 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
     public function showAdminLoginForm()
     {
         return view('auth.login', ['url' => 'admin']);
     }
+    
     public function adminLogin(Request $request)
     {
         $this->validate($request, [

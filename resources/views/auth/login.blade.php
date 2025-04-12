@@ -1,3 +1,5 @@
+
+<img src = "{{asset('images/Cozilla.jpg')}}" alt = "Cozilla Logo" >
 @extends('layouts.app')
 
 @section('content')

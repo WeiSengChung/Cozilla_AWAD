@@ -1,22 +1,50 @@
+
 body {
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Times New Roman';
     margin: 0;
     padding: 0;
 }
 
 .navbar {
-    background:transparent;
-    padding: 15px;
+    background: transparent;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    z-index: 999;
+    width: 220px; /* Sidebar width */
+    height: 100vh; /* Full viewport height */
+    padding: 20px 15px;
     display: flex;
-    justify-content: space-between; 
-    align-items: center;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: flex-start;
+    align-items: flex-start;
+    z-index: 999;
 }
 
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 900;
+    display: none;
+}
+
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -250px; 
+    width: 250px;
+    height: 100%;
+    background-color: white;
+    transition: 0.5s ease;
+    z-index: 1050; 
+    display: flex;
+    flex-direction: column;  
+    justify-content: flex-start;
+}
 
 .toggle-button {
     background: none;
@@ -28,21 +56,6 @@ body {
 
 .navbar .toggle-button.hide {
     display: none;
-}
-
-.side-menu {
-    position: fixed;
-    top: 0;
-    left: -250px; 
-    width: 250px;
-    height: 100%;
-    background-color: white;
-    overflow-x: hidden;
-    transition: 0.3s ease;
-    z-index: 1050; 
-    display: flex;
-    flex-direction: column;  
-    justify-content: flex-start;
 }
 
 .side-menu ul {
@@ -67,17 +80,6 @@ body {
 
 .side-menu.show {
     left: 0;  
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-    background-color: rgba(0, 0, 0, 0.5); 
-    z-index: 900;
-    display: none;
 }
 
 .overlay.show {
@@ -106,16 +108,15 @@ body {
     margin: 20px;
 }
 
-.topCozillaLogo {
-
-}
-
 .menuArea{
-    flex:2;
+    flex:9;
 }
-
-
 
 .logoutArea{
     flex:1;
+}
+
+.main-content {
+    padding: 100px 20px 20px 20px;
+    transition: margin-left 0.3s ease;
 }
