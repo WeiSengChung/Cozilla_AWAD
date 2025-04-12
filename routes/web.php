@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestDB;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,3 +33,24 @@ Route::group(['middleware' => 'auth:admin'], function () {
 });
 Route::get('logout', [LoginController::class, 'logout']);
 Route::view("homepage", "homepage");
+
+Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
+Route::get('/cart', function () {
+    return view('cart');
+})->name('cart');
+
+Route::get('/status', function () {
+    return view('status');
+})->name('status');
+
+Route::get('/history', function () {
+    return view('history');
+})->name('history');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
+
+Route::get('/add-address', [UserController::class, 'showAddressForm'])->name('address.form');
+Route::post('/store-address', [UserController::class, 'storeAddress'])->name('address.store');
