@@ -42,7 +42,7 @@ Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.
 
 // Cart routes - KEEP ONLY THESE CART ROUTES
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
-Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
@@ -91,9 +91,7 @@ Route::get('logout', [LoginController::class, 'logout']);
 Route::view("homepage", "homepage");
 
 Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
-Route::get('/cart', function () {
-    return view('cart');
-})->name('cart');
+
 
 Route::get('/status', function () {
     return view('status');

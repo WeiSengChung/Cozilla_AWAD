@@ -342,7 +342,6 @@
         </div>
         <a href="/" class="logo">
             <img src="{{ asset('images/image/logo.jpg') }}" alt="COZILLA">
-            COZILLA
         </a>
         <a href="{{ route('cart') }}" class="cart-button">
             <div class="cart-icon">🛒</div>
