@@ -30,3 +30,4 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::view('/admin', 'admin');
 });
 Route::get('logout', [LoginController::class, 'logout']);
+Route::view("homepage", "homepage");
