@@ -39,6 +39,8 @@ Route::get('/', function () {
 Route::view('/homepage', 'homepage')->name('homepage');
 Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/homepage', function () {return view('homepage');
+});
 
 // Cart routes - KEEP ONLY THESE CART ROUTES
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
