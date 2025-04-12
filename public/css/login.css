@@ -1,0 +1,183 @@
+.logo {
+    margin:0 auto;
+    height: 130;
+    width:360;
+    display: block;
+    padding-bottom: 10px;
+}
+
+.logo-container {
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    height:100v;
+}
+
+.nav-link {
+    font-family: "Times New Roman";
+    font-size: 25px;
+    text-align: center;
+    color: black;
+    text-decoration:none;
+}
+
+.card-header{
+    text-align:center;
+    font-family:"Times New Roman";
+    font-size:40px;
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+
+.loginTitle{
+    border-bottom: 2px solid black;
+    width: 30%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.card-body{
+    font-family: "Times New Roman";
+    font-size: 20px;
+    padding: 10px;
+    display: flex;
+    justify-content:center;
+}
+
+.card-body .form-group {
+    margin-bottom: 20px;
+}
+
+.card-sub-container {
+    padding: 10px;
+    
+}
+
+.form-check{
+    padding: 10px;
+    padding-bottom: 40px;
+    padding-left: 30px;
+}
+
+.form-group {
+    text-align: left;
+    padding-left: 35px;
+}
+
+.form-check-label{
+    padding-bottom: 20px;
+}
+
+.col-md-6 {
+    margin: 0 auto;
+}
+
+.col-form-label.text-md-start {
+    text-align: left;
+}
+
+.loginButtonContainer {
+    display: flex;
+    flex-direction: column;        
+    align-items: center;            
+    gap: 10px;                     
+    margin-top: 20px;
+  }
+
+.login-Button {
+    padding: 10px 25px;
+    font-size: 16px;
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: "Times New Roman";
+  }
+
+.login-Button:hover{
+    background-color: black;
+    color: white;
+    font-family: "Times New Roman";
+}
+
+.register-Button-Container {
+    display: flex;
+    justify-content: center; 
+    margin-top: 20px;
+}
+
+
+.register-Button {
+    padding: 10px 25px;
+    font-size: 16px;
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-family: "Times New Roman";
+    text-decoration: none;
+  }
+
+.register-Button:hover{
+    background-color: black;
+    color: white;
+    font-family: "Times New Roman";
+}
+
+.register-Button-Container {
+    display:flex;
+}
+
+.forgetPassword-Container{
+    padding-top: 10px;
+}
+
+.forgetPassword-Container a:hover {
+    text-decoration: underline;
+  }
+
+.btn-btn-link{
+    color: black;
+    font-family: "Times New Romen";
+    text-decoration: none;
+}
+
+.invalid-feedback{
+    color:red;
+}
+
+.nav-link-register {
+    font-size: 20px;
+    color: black;
+    text-decoration: none; 
+}
+
+.nav-link-register:hover {
+    text-decoration: underline;
+}
+
+#email,
+#password,
+#first_name,
+#last_name,
+#password-confirm {
+    height: 10px;
+    font-size: 16px;
+    padding: 10px 10px;
+    font-family: "Times New Roman";
+    margin-bottom: 20px;
+}
+
+.navbar-toggler {
+    display: none;
+}
+
+h3 {
+    font-family : "Times New Roman";
+    text-align:center;
+
+}
