@@ -1,23 +1,31 @@
-@extends('layouts.app')
-
+@extends('layouts.auth')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Dashboard</div>
+                    <div class="card-body">
+                        Welcome to Authentication's web Application
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+                        @if (session('status'))
+                            <div>
+                                {{ session('status') }}
+                            </div>
+                        @endif
 
-                    {{ __('You are logged in!') }}
+                        @can('isAdmin')
+                            <div>
+                                <p>You have admin access.</p>
+                            </div>
+                        @else('isUser')
+                            <div>
+                                <p>You have user access.</p>
+                            </div>
+                        @endcan
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection
