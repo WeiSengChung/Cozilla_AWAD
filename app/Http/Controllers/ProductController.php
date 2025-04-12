@@ -97,6 +97,8 @@ class ProductController extends Controller
         $product->name = $request->input('name');
         $product->price = $request->input('price');
         $product->description = $request->input('description');
+        $product->save();
+        return redirect(route('admin.manageproducts'))->with('success', 'Product added successfully!');
     }
 
     public function update(Request $request)
