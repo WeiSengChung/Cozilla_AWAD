@@ -3,14 +3,24 @@
 <head>
     <style>
         .category-btn {
-            background-color: #3d4239;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 15px;
-            margin: 5px;
-            display: inline-block;
-            text-decoration: none;
-        }
+        background-color: #3d4239;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 15px;
+        margin: 5px;
+        display: inline-block;
+        text-decoration: none;
+        font-family: 'Times New Roman', serif;
+    }
+
+    .category-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+        
         .product-grid {
             display: flex;
             flex-wrap: wrap;
@@ -29,12 +39,20 @@
 </head>
 <body>
 
-    <!-- Category Buttons -->
+    <!-- Category Buttons
     @foreach ($category as $cat)
     <a href="{{ route('products.index', ['category' => $cat['clothes_category']]) }}" class="category-btn">
     {{ ucwords(str_replace('_', ' ', str_replace('-', ' ', $cat['clothes_category']))) }}
     </a>
+    @endforeach -->
+    @foreach ($category as $cat)
+    @if (!empty($cat['clothes_category']))
+        <a href="{{ route('category', ['gender_category' => request()->gender_category ?? $products->first()->gender_category ?? '']) }}?category={{ $cat['clothes_category'] }}" class="category-btn">
+            {{ ucwords(str_replace(['_', '-'], ' ', $cat['clothes_category'])) }}
+        </a>
+    @endif
     @endforeach
+
 
     <!-- Products Grid -->
     <div class="product-grid">
@@ -46,6 +64,7 @@
             </div>
         @endforeach
     </div>
+
 
 </body>
 </html>
