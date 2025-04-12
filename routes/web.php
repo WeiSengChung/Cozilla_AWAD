@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestDB;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,3 +31,4 @@ Route::group(['middleware' => 'auth:admin'], function () {
 });
 Route::get('logout', [LoginController::class, 'logout']);
 Route::view("homepage", "homepage");
+Route::get("admin/manageproducts", [ProductController::class, 'index'])->middleware('auth.admin');
