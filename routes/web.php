@@ -58,19 +58,23 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 Route::get('/navigation', function () {
     return view('navigation'); });
 
-Route::get('/category/{gender_category}', function ($gender_category) {
-    $gender_category = strtolower($gender_category);
+// Route::get('/category/{gender_category}', function ($gender_category) {
+//     $gender_category = strtolower($gender_category);
 
-    if ($gender_category === 'women') {
-        return view('women');
-    } elseif ($gender_category === 'men') {
-        return view('men');
-    } elseif ($gender_category === 'kids') {
-        return view('kids');
-    }
+//     if ($gender_category === 'women') {
+//         return view('women');
+//     } elseif ($gender_category === 'men') {
+//         return view('men');
+//     } elseif ($gender_category === 'kids') {
+//         return view('kids');
+//     }
 
-    return redirect('/');
-})->name('category');
+//     return redirect('/');
+// })->name('category');
+use App\Http\Controllers\CategoryController;
+
+Route::get('/category/{gender_category}', [CategoryController::class, 'showGenderCategories'])->name('category');
+
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
