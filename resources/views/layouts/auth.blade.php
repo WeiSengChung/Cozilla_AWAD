@@ -41,8 +41,6 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 @if(Auth::guard('admin')->check())
                                     Hi {{ Auth::guard('admin')->user()->name }}
-                                @elseif(Auth::guard('author')->check())
-                                    Hi {{ Auth::guard('author')->user()->name }}
                                 @else
                                     Hi {{ Auth::guard('web')->user()->name }}
                                 @endif
