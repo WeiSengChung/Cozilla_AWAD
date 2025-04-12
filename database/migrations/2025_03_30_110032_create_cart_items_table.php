@@ -14,13 +14,14 @@ class CreateCartitemsTable extends Migration
     public function up()
     {
         Schema::create('cart_items', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('cart_id')->constrained('carts', 'id')->onDelete('cascade');
             $table->integer('product_id')->constrained('products_specifics', 'product_id');
             $table->enum('size', ['XS', 'S', 'M', 'L', 'XL']);
             $table->enum('color', ['black', 'white', 'red', 'blue', 'green']);
             $table->integer('quantity');
             $table->timestamps();
-            $table->primary(['cart_id', 'product_id', 'size', 'color']);
+            $table->unique(['cart_id', 'product_id', 'size', 'color']);
 
             $table->foreign(['product_id', 'size', 'color'])
                 ->references(['product_id', 'size', 'color'])

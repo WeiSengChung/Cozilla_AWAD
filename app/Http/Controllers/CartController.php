@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Session;
+use App\Models\Cart;
+use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
+use App\Models\CartItem;
 
 class CartController extends Controller
 {
@@ -15,34 +19,58 @@ class CartController extends Controller
     }
     // Add an item to the cart
     public function addToCart(Request $request)
-{
-    $request->validate([
-        'product_id' => 'required|integer|exists:products,id',
-        'quantity' => 'required|integer|min:1',
-        'size' => 'required|string',
-        'color' => 'required|string',
-    ]);
+    {
+        $request->validate([
+            'product_id' => 'required|integer|exists:products,id',
+            'quantity' => 'required|integer|min:1',
+            'size' => 'required|string',
+            'color' => 'required|string',
+        ]);
 
-    $product = \App\Models\Product::findOrFail($request->product_id);
-    $cart = Session::get('cart', []);
-    $id = $request->product_id;
+        $product = Product::findOrFail($request->product_id);
+        $cart = Cart::where('user_id', Auth::id())->first();
+        if (! $cart) {
+            $cart = new Cart();
+            $cart->user_id = Auth::id();
+            $cart->save();
+        }
 
-    if (isset($cart[$id])) {
-        $cart[$id]['quantity'] += $request->quantity;
-    } else {
-        $cart[$id] = [
-            'product_id' => $id,
-            'quantity' => $request->quantity,
-            'name' => $product->name,
-            'price' => $product->price,
-            'size' => $request->size,
-            'color' => $request->color,
-        ];
+        //check whether this exact same cartitem is already in the table
+        $existingCartItem = CartItem::where(['cart_id' => $cart->id, 'product_id' => $request->product_id, 'size' => $request->size, 'color' => $request->color])->first();
+
+        if ($existingCartItem) {
+            // If it exists, update the quantity instead of creating a new one
+            $existingCartItem->quantity += $request->quantity;
+            $existingCartItem->save();
+            return redirect()->route('cart')->with('success', 'Item quantity updated successfully!');
+        } else {
+            // If it doesn't exist, save the new cart item
+            $newCartItem = new CartItem();
+            $newCartItem->product_id = $request->product_id;
+            $newCartItem->quantity = $request->quantity;
+            $newCartItem->size = $request->size;
+            $newCartItem->color = $request->color;
+            $newCartItem->cart_id = $cart->id;
+            $newCartItem->save();
+        }
+        $id = $request->product_id;
+
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity'] += $request->quantity;
+        } else {
+            $cart[$id] = [
+                'product_id' => $id,
+                'quantity' => $request->quantity,
+                'name' => $product->name,
+                'price' => $product->price,
+                'size' => $request->size,
+                'color' => $request->color,
+            ];
+        }
+
+        Session::put('cart', $cart);
+        return redirect()->route('cart')->with('success', 'Item added to cart successfully!');
     }
-
-    Session::put('cart', $cart);
-    return redirect()->route('cart')->with('success', 'Item added to cart successfully!');
-}
     // Update an item in the cart
     public function update(Request $request, $id)
     {
@@ -102,7 +130,9 @@ class CartController extends Controller
         $itemCount = 0;
 
         foreach ($cart as $details) {
-            $itemCount += $details['quantity'];
+            if (is_array($details) && isset($details['quantity'])) {
+                $itemCount += $details['quantity'];
+            }
         }
 
         return $itemCount;
