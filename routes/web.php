@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,21 +60,6 @@ Route::get('/', [TestDB::class, 'testDB']);
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/navigation', function () {
     return view('navigation'); });
-
-// Route::get('/category/{gender_category}', function ($gender_category) {
-//     $gender_category = strtolower($gender_category);
-
-//     if ($gender_category === 'women') {
-//         return view('women');
-//     } elseif ($gender_category === 'men') {
-//         return view('men');
-//     } elseif ($gender_category === 'kids') {
-//         return view('kids');
-//     }
-
-//     return redirect('/');
-// })->name('category');
-use App\Http\Controllers\CategoryController;
 
 Route::get('/category/{gender_category}', [CategoryController::class, 'showGenderCategories'])->name('category');
 
