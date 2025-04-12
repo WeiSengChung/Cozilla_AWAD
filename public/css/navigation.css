@@ -10,7 +10,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 220px; /* Sidebar width */
+    width: 10px; /* Sidebar width */
     height: 100vh; /* Full viewport height */
     padding: 20px 15px;
     display: flex;
@@ -118,3 +118,8 @@ body {
     padding: 100px 20px 20px 20px;
     transition: margin-left 0.3s ease;
 }
+
+body.side-open .large-component {
+    margin-left: 250px; /* sidebar width */
+}
+
