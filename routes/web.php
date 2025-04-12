@@ -15,3 +15,7 @@ use App\Http\Controllers\TestDB;
 */
 
 Route::get('/', [TestDB::class, 'testDB']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
