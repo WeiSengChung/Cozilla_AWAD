@@ -8,6 +8,24 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (session("message"))
+        <div id="slide-alert" class="slide-alert">
+            {{session("message")}}
+        </div>
+    @endif
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const alertBox = document.getElementById('slide-alert');
+        if (alertBox) {
+            alertBox.classList.add('show');
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 4000);
+        }
+    });
+</script>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -87,4 +105,6 @@
         </div>
     </div>
 </div>
+
+
 @endsection

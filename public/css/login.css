@@ -181,3 +181,22 @@ h3 {
     text-align:center;
 
 }
+
+.slide-alert {
+    position: fixed;
+    top: 20px;
+    right: -400px;
+    background-color: #ffc107;
+    color: #000;
+    padding: 15px 25px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: right 0.5s ease-in-out;
+}
+.slide-alert.show {
+    right: 20px;
+}
+
