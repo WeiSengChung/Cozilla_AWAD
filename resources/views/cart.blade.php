@@ -463,7 +463,7 @@
                         </div>
 
                         <a href="#" class="checkout-btn"><span class="btn-icon">✓</span> Check Out</a>
-                        <a href="/" class="add-more-btn"><span class="btn-icon">+</span> Add More Items</a>
+                        <a href="/homepage" class="add-more-btn"><span class="btn-icon">+</span> Add More Items</a>
                     </div>
                 </div>
             </div>
@@ -472,7 +472,7 @@
                 <div class="empty-cart-icon">🛒</div>
                 <h2>Your cart is empty</h2>
                 <p>Looks like you haven't added any products to your cart yet.</p>
-                <a href="/" class="continue-shopping"><span class="btn-icon">🛍️</span> Start Shopping</a>
+                <a href="/homepage" class="continue-shopping"><span class="btn-icon">🛍️</span> Start Shopping</a>
             </div>
         @endif
     </div>
