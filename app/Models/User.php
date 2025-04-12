@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -33,5 +34,8 @@ class User extends Authenticatable
         'password',
     ];
 
-
+    public function userprofile()
+    {
+        return $this->hasOne(UserProfile::class, 'user_id', 'id');
+    }
 }
