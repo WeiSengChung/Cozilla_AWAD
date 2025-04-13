@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
-
+    // Define possible order statuses
+    const STATUS_PENDING = 'pending';
+    const STATUS_PROCESSING = 'processing';
+    const STATUS_SHIPPED = 'shipped';
+    const STATUS_DELIVERED = 'delivered';
+    const STATUS_CANCELLED = 'cancelled';
     protected $fillable = [
         'user_id',
         'address_id',
@@ -23,7 +28,7 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function items()
+    public function orderItems()
     {
         return $this->hasMany(OrderItem::class);
     }

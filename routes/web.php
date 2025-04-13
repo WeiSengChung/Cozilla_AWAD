@@ -139,6 +139,15 @@ Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(functi
     Route::post('updateinventory', [ProductController::class, 'updateInventory'])->name('updateinventory');
     Route::get('updateinventory/{id}', [ProductController::class, 'updateInventory'])->name('updateinventory.id');
     Route::get('productinventory/{id}', [ProductController::class, 'getProductInventory'])->name('productinventory');
+
+    // List all orders with filters
+    Route::get('/orders', [OrdersController::class, 'index'])->name('manageorders');
+
+    // Get specific order details (for AJAX)
+    Route::get('/order-details/{id}', [OrdersController::class, 'getOrderDetails']);
+
+    // Update order status
+    Route::post('/update-order-status', [OrdersController::class, 'updateStatus'])->name('updateOrderStatus');
 });
 
 Route::get('/contactus', [ContactUsController::class, 'view'])->name('manageContactUs');

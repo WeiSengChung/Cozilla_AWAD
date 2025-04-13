@@ -17,6 +17,72 @@ use Illuminate\Support\Facades\Session;
 
 class OrdersController extends Controller
 {
+    public function index(Request $request)
+    {
+        $query = Order::with(['user', 'orderItems.product']);
+
+        // Apply status filter
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Apply date range filter
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        // Order by latest first
+        $query->orderBy('created_at', 'desc');
+
+        // Paginate results
+        $orders = $query->paginate(10);
+
+        return view('admin.manageorders', compact('orders'));
+    }
+
+    public function getOrderDetails($id)
+    {
+        $order = Order::with([
+            'user',
+            'orderItems.product'
+        ])->findOrFail($id);
+
+        return response()->json($order);
+    }
+
+    /**
+     * Update the status of an order
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function updateStatus(Request $request)
+    {
+        $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'status' => 'required|in:pending,processing,shipped,delivered,cancelled',
+        ]);
+
+        $order = Order::findOrFail($request->order_id);
+        $order->status = $request->status;
+        $order->save();
+
+        // If status is "delivered", you might want to update the delivery date
+        if ($request->status == 'delivered') {
+            $order->delivered_at = now();
+            $order->save();
+        }
+
+        // Optionally, send notification to customer about status change
+        // ... notification code here ...
+
+        return redirect()->route('admin.manageorders')->with('success', "Order #$order->id status updated to ".ucfirst($order->status));
+    }
+
     /**
      * Show the payment page
      */
@@ -136,6 +202,8 @@ class OrdersController extends Controller
                     ProductSpecific::where(['product_id' => $item->product->id, 'size' => $item->size, 'color' => $item->color])->decrement('stock_quantity', $item->quantity);
                     $orderItem = new OrderItem();
                     $orderItem->order_id = $order->id;
+                    $orderItem->color = $item->color; // Assuming color is a string in the order_items table
+                    $orderItem->size = $item->size; // Assuming size is a string in the order_items table
                     $orderItem->product_id = $item->product->id;
                     $orderItem->quantity = $item->quantity;
                     $orderItem->price = $item->product->price;

@@ -575,7 +575,7 @@
                                     <div class="item-details">
                                         <h4 class="item-title">{{ $item['product']->name }}</h4>
                                         <p class="item-meta">Size: {{ $item['size'] }} | Color: {{ $item['color'] }}</p>
-                                        <p class="item-quantity">Qty: {{ $item['quantity'] }}</p>
+                                        <p class="item-quantity">Quantity: {{ $item['quantity'] }}</p>
                                     </div>
                                     <div class="item-price">
                                         RM {{ number_format($item['product']->price * $item['quantity'], 2) }}

@@ -17,6 +17,8 @@ class CreateOrderitemsTable extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained('orders', 'id')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products', 'product_id');
+            $table->string('color');
+            $table->string('size');
             $table->integer('quantity');
             $table->decimal('price', 10, 2); // Price at time of purchase
             $table->timestamps();
