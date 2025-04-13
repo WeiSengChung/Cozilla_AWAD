@@ -1,13 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+    <link rel="stylesheet" href="{{ asset('css/contactUs.css') }}">
     <link rel="stylesheet" href="{{ asset('css/navigationAdmin.css') }}">
     <script src="{{ asset('js/navigation.js') }}"></script>
     @include('partials.navigationAdmin')
 
-    <div class="contact-us-wrapper">
-        <div class="form-card">
-            <h2>Edit Contact Us Information</h2>
+    <div class="contactUs-container">
+        <div class="contactUs-content">
+            <h2 class = 'contactUsTitle'>Edit Contact Us Information</h2>
 
             @if (session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>

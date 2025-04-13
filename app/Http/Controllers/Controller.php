@@ -24,6 +24,9 @@ class UserController extends Controller
 {
     public function profile()
     {
+        if (! Auth::check()) {
+            return redirect('/login')->with('message', "You must log in to access your account.");
+        }
         $user = Auth::user();
         $userProfile = UserProfile::where('user_id', $user->id)->first();
 
@@ -62,4 +65,32 @@ class UserController extends Controller
         return redirect()->route('profile')->with('success', 'Address saved successfully!');
     }
 
+    public function getAddress($id)
+    {
+        $address = Address::findOrFail($id);
+        return response()->json($address);
+    }
+
+    public function editAddress(Request $request, $id)
+    {
+        $address = Address::findOrFail($id);
+        $address->street = $request->input('street');
+        $address->city = $request->input('city');
+        $address->state = $request->input('state');
+        $address->postcode = $request->input('postcode');
+        $address->save();
+        return redirect()->route('profile')->with('success', 'Address updated successfully!');
+    }
+
+    public function updateProfile(Request $request, $userProfileId)
+    {
+        $userProfile = UserProfile::findOrFail($userProfileId);
+        $userProfile->first_name = $request->input('first_name');
+        $userProfile->last_name = $request->input('last_name');
+        $userProfile->save();
+        $user = Auth::user();
+        $user->email = $request->input('email');
+        $user->save();
+        return redirect()->route('profile')->with('success', 'Profile updated successfully!');
+    }
 }

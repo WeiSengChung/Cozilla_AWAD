@@ -1,0 +1,66 @@
+body {
+    font-family: 'Times New Roman';
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
+
+.addressTitle {
+    text-align: center;
+    margin-top: 40px;
+    color: #333;
+    font-size: 28px;
+}
+
+.addressForm {
+    background-color: #fff;
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.addressField {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.addressLabel {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #444;
+    font-size: 16px;
+}
+
+.addressInput {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.addressInput:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.saveButton {
+    padding: 12px;
+    background-color: lightgrey;
+    color: black;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: "Times New Roman";
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.saveButton:hover {
+    background-color: black;
+    color: white;
+}

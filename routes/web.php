@@ -48,7 +48,7 @@ Route::get('/homepage', function () {
 })->name('homepage');
 
 // Cart routes - KEEP ONLY THESE CART ROUTES
-Route::get('/cart', [CartController::class, 'index'])->name('cart')->middleware('auth');
+Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
 Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
@@ -107,7 +107,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
 });
 
 
-Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
+Route::get('/profile', [UserController::class, 'profile'])->name('profile');
 
 
 Route::get('/status', function () {
@@ -148,6 +148,7 @@ Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(functi
 
     // Update order status
     Route::post('/update-order-status', [OrdersController::class, 'updateStatus'])->name('updateOrderStatus');
+    Route::get('address/{id}', [UserController::class, 'getAddress'])->name('address.get');
 });
 
 Route::get('/contactus', [ContactUsController::class, 'view'])->name('manageContactUs');
@@ -157,6 +158,8 @@ Route::put('/contactus', [ContactUsController::class, 'update'])->name('manageCo
 
 Route::get('/status', [OrdersController::class, 'showStatus'])->name('status')->middleware('auth');
 Route::get('/history', [OrdersController::class, 'history'])->name('history')->middleware('auth');
+Route::put('updateAddress/{id}', [UserController::class, 'editAddress'])->name('updateAddress');
+Route::put('updateProfile/{id}', [UserController::class, 'updateProfile'])->name('updateProfile');
 
 
 

@@ -94,6 +94,7 @@
                                                     $currentRoute = Route::currentRouteName();
                                                 @endphp
                         @endguest
+                        
                     </ul>
                 </div>
             </div>

@@ -1,0 +1,201 @@
+.custom-bordered-table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    margin-top: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.custom-bordered-table th,
+.custom-bordered-table td {
+    border: 2px solid black;
+    padding: 12px;
+    vertical-align: middle;
+}
+
+.custom-bordered-table th {
+    background-color: #f2f2f2;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    min-width: 100px;
+}
+
+.status-pending {
+    background-color: #ffeeba;
+    color: #856404;
+}
+
+.status-processing {
+    background-color: #b8daff;
+    color: #004085;
+}
+
+.status-shipped {
+    background-color: #c3e6cb;
+    color: #155724;
+}
+
+.status-delivered {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-cancelled {
+    background-color: #f5c6cb;
+    color: #721c24;
+}
+
+.view-button {
+    background-color: #4a5643;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    font-family: 'Times New Roman', Times, serif;
+    margin-right: 10px;
+}
+
+.view-button:hover {
+    background-color: #3b4437;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 700px;
+    border-radius: 10px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.status-button {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-weight: bold;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.status-button:hover {
+    opacity: 0.9;
+}
+
+.status-button.active {
+    background-color: #28a745;
+}
+
+.btn-pending {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.btn-processing {
+    background-color: #007bff;
+}
+
+.btn-shipped {
+    background-color: #17a2b8;
+}
+
+.btn-delivered {
+    background-color: #28a745;
+}
+
+.btn-cancelled {
+    background-color: #dc3545;
+}
+
+.order-details-section {
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.order-item {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+
+.order-item:last-child {
+    border-bottom: none;
+}
+
+.item-details {
+    flex-grow: 1;
+}
+
+.item-price {
+    min-width: 100px;
+    text-align: right;
+}
+
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination a {
+    color: #4a5643;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+}
+
+.pagination a.active {
+    background-color: #4a5643;
+    color: white;
+    border: 1px solid #4a5643;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
