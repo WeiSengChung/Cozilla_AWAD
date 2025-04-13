@@ -1,4 +1,6 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+    <script src="{{ asset('js/navigation.js') }}"></script>
 
 <nav class="navbar">
     <button onclick="toggleSideMenu()" class="toggle-button">☰</button>
