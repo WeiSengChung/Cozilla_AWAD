@@ -225,4 +225,25 @@ class OrdersController extends Controller
             }
         });
     }
+
+    public function showStatus()
+    {
+        $orders = Order::where('user_id', Auth::id())->with('orderItems.product')->get();
+
+        if ($orders->isEmpty()) {
+            return redirect()->route('homepage')->with('error', 'You have no orders.');
+        }
+
+        return view('status', ['orders' => $orders]); // ✅ use the correct view name
+    }
+
+    public function history()
+    {
+        $orders = Order::where('user_id', Auth::id())
+        ->where('status', 'completed')
+        ->orderByDesc('order_date')
+        ->get();
+
+        return view('history', compact('orders'));
+    }
 }
