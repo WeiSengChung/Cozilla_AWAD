@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +19,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
-    
+
     <!-- Flash Message Styles -->
     <style>
         .alert-success {
@@ -32,7 +33,7 @@
             font-size: 14px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
-        
+
         .alert-error {
             background-color: #fff5f5;
             border-left: 4px solid #ff5252;
@@ -46,10 +47,11 @@
         }
     </style>
 </head>
+
 <body>
     <div id="app">
         <img src="{{ asset('images/Cozilla.jpg') }}" alt="Cozilla Logo" class="logo">
-        
+
         <!-- Flash Messages -->
         @if(session('success'))
             <div class="alert-success">
@@ -62,33 +64,35 @@
                 {{ session('error') }}
             </div>
         @endif
-        
+
         <main class="py-4">
             @yield('content')
         </main>
-        
+
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="logo-container">
             </div>
             <div class="logo-container">
             </div>
             <div class="container">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                
+
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                     </ul>
-                    
+
                     <!-- Right Side Of Navbar -->
                     <ul class="login&register">
                         <!-- Authentication Links -->
                         @guest
-                            @php
-                                $currentRoute = Route::currentRouteName();
-                            @endphp
+                                                @php
+                                                    $currentRoute = Route::currentRouteName();
+                                                @endphp
                         @endguest
                         
                     </ul>
@@ -97,4 +101,5 @@
         </nav>
     </div>
 </body>
+
 </html>

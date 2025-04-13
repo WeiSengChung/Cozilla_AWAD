@@ -105,7 +105,6 @@ Route::middleware(['auth'])->group(function () {
 Route::group(['middleware' => 'auth:admin'], function () {
     Route::view('/admin', 'admin');
 });
-Route::view("homepage", "homepage");
 
 Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
 
