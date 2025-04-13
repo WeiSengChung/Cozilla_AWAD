@@ -65,4 +65,10 @@ class UserController extends Controller
         return redirect()->route('profile')->with('success', 'Address saved successfully!');
     }
 
+    public function getAddress($id)
+    {
+        $address = Address::findOrFail($id);
+        return response()->json($address);
+    }
+
 }
