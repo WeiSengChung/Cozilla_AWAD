@@ -58,7 +58,9 @@ Route::middleware(['auth'])->group(function () {
     // Store a new order
     Route::post('/orders', [OrdersController::class, 'store'])->name('orders.store');
 });
-
+Route::get('/payment', [CartController::class, 'payment'])->name('payment');
+Route::post('/orders', [CartController::class, 'storeOrder'])->name('orders.store');
+Route::get('/order/confirmation/{id}', [CartController::class, 'orderConfirmation'])->name('order.confirmation');
 // Product routes
 Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
