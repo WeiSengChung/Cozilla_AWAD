@@ -123,35 +123,19 @@ class OrdersController extends Controller
             $order = new Order();
             $order->user_id = Auth::id();
             $order->address_id = $selectedAddress->id;
-            $order->payment_method = $request->payment_method;
             $order->status = 'pending';
             $order->order_date = now();
             $order->total_amount = $total;
-            
-            // Store payment details based on the payment method
-            if ($request->payment_method == 'credit_card') {
-                $order->payment_details = json_encode([
-                    'card_name' => $request->card_name,
-                    'card_number' => substr($request->card_number, -4), // Store only last 4 digits for security
-                    'expiry_date' => $request->expiry_date
-                ]);
-            } elseif ($request->payment_method == 'paypal') {
-                $order->payment_details = json_encode(['paypal_email' => $request->paypal_email]);
-            } elseif ($request->payment_method == 'bank_transfer') {
-                $order->payment_details = json_encode(['transfer_reference' => $request->transfer_reference]);
-            }
-            
             $order->save();
             
-            // Add order items
+            // Add order items - removed size and color fields
             foreach ($cartItems as $item) {
                 $orderItem = new OrderItem();
                 $orderItem->order_id = $order->id;
                 $orderItem->product_id = $item->product->id;
                 $orderItem->quantity = $item->quantity;
                 $orderItem->price = $item->product->price;
-                $orderItem->size = $item->size;
-                $orderItem->color = $item->color;
+                // Removed size and color as they don't exist in the order_items table
                 $orderItem->save();
             }
             
@@ -159,9 +143,9 @@ class OrdersController extends Controller
             $cart->cartItems()->delete();
             $cart->delete();
             
-            // Redirect to order confirmation
-            return redirect()->route('orders.confirmation', $order->id)
-                ->with('success', 'Your order has been placed successfully!');
+            // Redirect to homepage with success message
+            return redirect()->route('homepage')
+                ->with('success', 'Your payment was successful! Thank you for your order.');
         });
     }
 }

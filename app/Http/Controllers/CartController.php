@@ -291,9 +291,7 @@ class CartController extends Controller
             $order = new Order();
             $order->user_id = Auth::id();
             $order->address_id = $address->id;
-            $order->payment_method = $request->payment_method;
             $order->subtotal = $subtotal;
-            $order->shipping = $shipping;
             $order->total = $total;
             $order->status = 'pending';
             $order->save();
