@@ -1,8 +1,8 @@
 <h2>Add New Address</h2>
 
 <form method="POST" action="{{ route('address.store') }}">
-        @csrf
-        <div>
+    @csrf
+    <div>
         <label for="street">Street</label><br>
         <input type="text" name="street" id="street" value="{{ old('street') }}" required>
     </div><br>
@@ -18,8 +18,8 @@
     </div><br>
 
     <div>
-        <label for="zip_code">Postcode:</label><br>
-        <input type="text" name="zip_code" id="zip_code" value="{{ old('zip_code') }}" required>
+        <label for="postcode">Postcode:</label><br>
+        <input type="text" name="postcode" id="postcode" value="{{ old('postcode') }}" required>
     </div><br>
     <button type="submit">Save Address</button>
 </form>
