@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductSpecific;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -23,13 +24,13 @@ class OrdersController extends Controller
     {
         // Get the user's cart using Eloquent
         $cart = Cart::where('user_id', Auth::id())->first();
-        
-        if (!$cart || $cart->cartItems()->count() === 0) {
+
+        if (! $cart || $cart->cartItems()->count() === 0) {
             return redirect()->route('cart')->with('error', 'Your cart is empty.');
         }
-        
+
         // Get cart items with product details using Eloquent relationships
-        $cartItems = $cart->cartItems()->with('product')->get()->map(function($item) {
+        $cartItems = $cart->cartItems()->with('product')->get()->map(function ($item) {
             return [
                 'id' => $item->id,
                 'product' => $item->product,
@@ -38,19 +39,19 @@ class OrdersController extends Controller
                 'color' => $item->color
             ];
         });
-        
+
         // Calculate totals
         $subtotal = 0;
         foreach ($cartItems as $item) {
             $subtotal += $item['product']->price * $item['quantity'];
         }
-        
+
         // Set shipping cost
         $shipping = count($cartItems) > 0 ? 10.00 : 0;
-        
+
         // Calculate total
         $total = $subtotal + $shipping;
-        
+
         return view('payment', [
             'cartItems' => $cartItems,
             'subtotal' => $subtotal,
@@ -65,18 +66,18 @@ class OrdersController extends Controller
     public function store(Request $request)
     {
         // Check if this is just a payment method selection without final submission
-        if ($request->has('payment_method') && !$request->has('final_submit')) {
+        if ($request->has('payment_method') && ! $request->has('final_submit')) {
             // Just updating the payment method display, store in session and return
             session(['payment_method' => $request->payment_method]);
             return redirect()->back()->withInput();
         }
-        
+
         // Initialize validation rules for the address
         $rules = [
             'selected_address' => 'required|exists:addresses,id',
             'payment_method' => 'required|in:credit_card,paypal,bank_transfer',
         ];
-        
+
         // Add payment-specific validation rules only if final submission
         if ($request->has('final_submit')) {
             if ($request->payment_method == 'credit_card') {
@@ -90,36 +91,36 @@ class OrdersController extends Controller
                 $rules['transfer_reference'] = 'required';
             }
         }
-        
+
         // Perform validation
         $validator = Validator::make($request->all(), $rules);
-        
+
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        
+
         // Continue with order creation within a database transaction
-        return DB::transaction(function() use ($request) {
+        return DB::transaction(function () use ($request) {
             // Get the selected address from database
             $selectedAddress = Address::findOrFail($request->selected_address);
             $userProfile = UserProfile::where('user_id', Auth::id())->first();
-            
+
             // Get cart and calculate totals
             $cart = Cart::where('user_id', Auth::id())->first();
-            if (!$cart) {
+            if (! $cart) {
                 return redirect()->route('cart')->with('error', 'Your cart is empty.');
             }
-            
+
             $cartItems = $cart->cartItems()->with('product')->get();
-            
+
             $subtotal = 0;
             foreach ($cartItems as $item) {
                 $subtotal += $item->product->price * $item->quantity;
             }
-            
+
             $shipping = $cartItems->count() > 0 ? 10.00 : 0;
             $total = $subtotal + $shipping;
-            
+
             // Create new order
             $order = new Order();
             $order->user_id = Auth::id();
@@ -127,28 +128,33 @@ class OrdersController extends Controller
             $order->status = 'pending';
             $order->order_date = now();
             $order->total_amount = $total;
-            $order->save();
-            
-            // Add order items - removed size and color fields
-            foreach ($cartItems as $item) {
-                $orderItem = new OrderItem();
-                $orderItem->order_id = $order->id;
-                $orderItem->product_id = $item->product->id;
-                $orderItem->quantity = $item->quantity;
-                $orderItem->price = $item->product->price;
-                // Removed size and color as they don't exist in the order_items table
-                $orderItem->save();
+            $order_success = $order->save();
+
+            if ($order_success) {
+                // Add order items - removed size and color fields
+                foreach ($cartItems as $item) {
+                    ProductSpecific::where(['product_id' => $item->product->id, 'size' => $item->size, 'color' => $item->color])->decrement('stock_quantity', $item->quantity);
+                    $orderItem = new OrderItem();
+                    $orderItem->order_id = $order->id;
+                    $orderItem->product_id = $item->product->id;
+                    $orderItem->quantity = $item->quantity;
+                    $orderItem->price = $item->product->price;
+                    // Removed size and color as they don't exist in the order_items table
+                    $orderItem->save();
+                }
+
+                // Clear the cart
+                $cart->cartItems()->delete();
+                $cart->delete();
+
+                // Try using a different approach to set the flash message
+                Session::flash('success', 'Your payment was successful! Thank you for your order.');
+
+                // Redirect to the home page
+                return redirect('/homepage');
+            } else {
+                return redirect()->back()->with('error', 'There was an error processing your order. Please try again.');
             }
-            
-            // Clear the cart
-            $cart->cartItems()->delete();
-            $cart->delete();
-            
-            // Try using a different approach to set the flash message
-            Session::flash('success', 'Your payment was successful! Thank you for your order.');
-            
-            // Redirect to the home page
-            return redirect('/homepage');
         });
     }
 }
