@@ -29,12 +29,23 @@
         </form>
     </div>
 
-    <div class="logoutArea">
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="logout-button">
-                <i class="fas fa-sign-out-alt"></i> Log Out
-            </button>
-        </form>
-    </div>
+    @auth
+        <div class="logoutArea">
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="logout-button">
+                    <i class="fas fa-sign-out-alt"></i> Log Out
+                </button>
+            </form>
+        </div>
+    @else
+        <div class="loginArea">
+            <form action="{{ route('login') }}" method="GET">
+                @csrf
+                <button type="submit" class="login-button">
+                    <i class="fas fa-sign-in-alt"></i> Log In
+                </button>
+            </form>
+        </div>
+    @endauth
 </div>

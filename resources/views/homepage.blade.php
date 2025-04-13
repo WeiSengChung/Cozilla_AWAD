@@ -102,7 +102,7 @@
                 <img src="{{ asset('images/image/pewds.jpg') }}" alt="Elicia" class="testimonial-avatar">
                 <h3 class="testimonial-name">Elicia</h3>
             </div>
-            <p class="testimonial-text">Confortable price and fast shipping</p>
+            <p class="testimonial-text">Comfortable price and fast shipping</p>
             <div class="rating">★★★★★</div>
         </div>
     </div>
