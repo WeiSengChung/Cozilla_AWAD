@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductSpecific;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
@@ -20,7 +21,7 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect('/login')->with('message', "You must log in before search products");
         }
 
@@ -158,18 +159,52 @@ class ProductController extends Controller
     // }
     public function index(Request $request)
     {
-    $query = Product::query();
+        $query = Product::query();
 
-    if ($request->has('category')) {
-        $query->where('clothes_category', $request->category);
+        if ($request->has('category')) {
+            $query->where('clothes_category', $request->category);
+        }
+
+        $products = $query->get();
+
+        // Optional: load all categories for display
+        $category = Product::select('clothes_category')->distinct()->get()->toArray();
+
+        return view('product', compact('products', 'category'));
     }
 
-    $products = $query->get();
 
-    // Optional: load all categories for display
-    $category = Product::select('clothes_category')->distinct()->get()->toArray();
+    public function updateInventory(Request $request)
+    {
+        $productId = $request->input('product_id');
+        $stockData = $request->input('stock');
 
-    return view('product', compact('products', 'category'));
+        // Validate product exists
+        $product = Product::findOrFail($productId);
+
+        // Process each size and color combination
+        foreach ($stockData as $size => $colors) {
+            foreach ($colors as $color => $quantity) {
+                // Find existing inventory record or create new one
+                ProductSpecific::where([
+                    'product_id' => $productId,
+                    'size' => $size,
+                    'color' => $color,
+                ])->update(['stock_quantity' => $quantity]); // Delete existing record if it exists
+            }
+        }
+
+        return redirect()->route('admin.manageproducts')->with('success', 'Product inventory updated successfully');
     }
 
+
+
+    public function getProductInventory($productId)
+    {
+        $product = Product::findOrFail($productId);
+        $inventory = ProductSpecific::where('product_id', $productId)->get();
+
+        return json_encode($inventory);
+        // return view('admin.product_inventory', compact('product', 'inventory'));
+    }
 }

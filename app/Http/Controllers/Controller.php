@@ -41,20 +41,20 @@ class UserController extends Controller
             'street' => 'required|string|max:20',
             'city' => 'required|string|max:50',
             'state' => 'required|string|max:50',
-            'zip_code' => 'required|string|max:20',
+            'postcode' => 'required|string|max:20',
         ]);
 
         $user = Auth::user();
 
         //check if profile exists, or create a new one
-        $fullAddress = "{$request->street}, {$request->city}, {$request->state}, {$request->zip_code}";
+        $fullAddress = "{$request->street}, {$request->city}, {$request->state}, {$request->postcode}";
 
         $address = new Address();
         $address->user_id = $user->id;
         $address->street = $request->street;
         $address->city = $request->city;
         $address->state = $request->state;
-        $address->zip_code = $request->zip_code;
+        $address->postcode = $request->postcode;
         $address->save();
 
         return redirect()->route('profile')->with('success', 'Address saved successfully!');

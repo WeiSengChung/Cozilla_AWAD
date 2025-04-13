@@ -59,7 +59,9 @@ Route::middleware(['auth'])->group(function () {
     // Store a new order
     Route::post('/orders', [OrdersController::class, 'store'])->name('orders.store');
 });
-
+Route::get('/payment', [CartController::class, 'payment'])->name('payment');
+Route::post('/orders', [CartController::class, 'storeOrder'])->name('orders.store');
+Route::get('/order/confirmation/{id}', [CartController::class, 'orderConfirmation'])->name('order.confirmation');
 // Product routes
 Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
@@ -132,6 +134,11 @@ Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(functi
     Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('editproduct');
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('updateproduct');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('deleteproduct');
+
+    //test
+    Route::post('updateinventory', [ProductController::class, 'updateInventory'])->name('updateinventory');
+    Route::get('updateinventory/{id}', [ProductController::class, 'updateInventory'])->name('updateinventory.id');
+    Route::get('productinventory/{id}', [ProductController::class, 'getProductInventory'])->name('productinventory');
 });
 
 Route::get('/contactus', [ContactUsController::class, 'view'])->name('manageContactUs');
