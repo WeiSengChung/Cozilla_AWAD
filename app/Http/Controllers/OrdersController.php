@@ -12,6 +12,7 @@ use App\Models\OrderItem;
 use App\Models\Address;
 use App\Models\UserProfile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class OrdersController extends Controller
 {
@@ -143,9 +144,11 @@ class OrdersController extends Controller
             $cart->cartItems()->delete();
             $cart->delete();
             
-            // Redirect to homepage with success message
-            return redirect()->route('homepage')
-                ->with('success', 'Your payment was successful! Thank you for your order.');
+            // Try using a different approach to set the flash message
+            Session::flash('success', 'Your payment was successful! Thank you for your order.');
+            
+            // Redirect to the home page
+            return redirect('/homepage');
         });
     }
 }
