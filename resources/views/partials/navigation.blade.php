@@ -39,10 +39,10 @@
             </form>
         </div>
     @else
-        <div class="loginArea">
+        <div class="logoutArea">
             <form action="{{ route('login') }}" method="GET">
                 @csrf
-                <button type="submit" class="login-button">
+                <button type="submit" class="logout-button">
                     <i class="fas fa-sign-in-alt"></i> Log In
                 </button>
             </form>
