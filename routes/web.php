@@ -48,8 +48,8 @@ Route::get('/homepage', function () {
 })->name('homepage');
 
 // Cart routes - KEEP ONLY THESE CART ROUTES
-Route::get('/cart', [CartController::class, 'index'])->name('cart');
-Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart', [CartController::class, 'index'])->name('cart')->middleware('auth');
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
 Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
 Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 Route::middleware(['auth'])->group(function () {
