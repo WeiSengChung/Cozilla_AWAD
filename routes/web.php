@@ -86,7 +86,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout.post');
 // })->name('profile');
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/login/admin', [LoginController::class, 'showAdminLoginForm']);
 Route::post('/login/admin', [LoginController::class, 'adminLogin']);
 Route::get('/register/admin', [RegisterController::class, 'showAdminRegisterForm']);

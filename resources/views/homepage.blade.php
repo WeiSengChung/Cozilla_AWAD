@@ -16,6 +16,7 @@
 <body>
     <div class="header">
         <div class="menu-icon">@include('partials.navigation')</div>
+        
         <div class="search-container">
             <form action="{{ route('products.search') }}" method="GET">
                 <div class="search-bar">

@@ -10,7 +10,7 @@
 
 <div id="sideMenu" class="side-menu">
     <div class="menuArea">
-        <a href="{{ url('/home') }}">
+        <a href="{{ url('/homepage') }}">
             <img src="{{ asset('images/Cozilla.jpg') }}" alt="Cozilla Logo" class="CozillaLogo">
         </a>
         <ul>
