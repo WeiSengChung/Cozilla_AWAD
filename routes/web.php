@@ -147,6 +147,7 @@ Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(functi
 
     // Update order status
     Route::post('/update-order-status', [OrdersController::class, 'updateStatus'])->name('updateOrderStatus');
+    Route::get('address/{id}', [UserController::class, 'getAddress'])->name('address.get');
 });
 
 Route::get('/contactus', [ContactUsController::class, 'view'])->name('manageContactUs');

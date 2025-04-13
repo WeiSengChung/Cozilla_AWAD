@@ -110,7 +110,6 @@
                     <div>
                         <p><strong>Customer:</strong> <span id="customerName"></span></p>
                         <p><strong>Email:</strong> <span id="customerEmail"></span></p>
-                        <p><strong>Phone:</strong> <span id="customerPhone"></span></p>
                     </div>
                     <div>
                         <p><strong>Order Date:</strong> <span id="orderDate"></span></p>
@@ -185,15 +184,18 @@
             fetch(`{{ url('admin/order-details') }}/${orderId}`)
                 .then(response => response.json())
                 .then(data => {
+                    fetch(`{{ url('admin/address') }}/${data.address_id}`)
+                        .then(response => response.json())
+                        .then(addressData => {
+                            document.getElementById("shippingAddress").textContent = addressData.street + ", " + addressData.city + ", " + addressData.postcode + ", " + addressData.state;
+                        })
                     // Fill order details
-                    document.getElementById("customerName").textContent = data.user.name;
+                    document.getElementById("customerName").textContent = data.user.id;
                     document.getElementById("customerEmail").textContent = data.user.email;
-                    document.getElementById("customerPhone").textContent = data.user.phone || 'N/A';
                     document.getElementById("orderDate").textContent = new Date(data.created_at).toLocaleDateString();
                     document.getElementById("orderTotal").textContent = parseFloat(data.total_amount).toFixed(2);
 
                     // Fill shipping address
-                    document.getElementById("shippingAddress").textContent = data.shipping_address;
 
                     // Fill order items
                     const orderItemsContainer = document.getElementById("orderItems");
