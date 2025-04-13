@@ -1,26 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="en">
-    
-    <head>
-        
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="{{ asset('css/productsDetail.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
-        <script src="{{ asset('js/navigation.js') }}"></script>
-        
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Homepage</title>
-        <link rel="stylesheet" href="{{ asset('css/homepage.css') }}">
-    </head>
-    
-    <body>
-    @if ($showPopup)
-        <div class="welcome-popup">
-            <p>🎉 Welcome back, {{$userProfile -> first_name . " " . $userProfile->last_name}}!</p>
-            <button onclick="document.querySelector('.welcome-popup').style.display='none'">Close</button>
-        </div>
-    @endif
+
+<head>
+
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ asset('css/productsDetail.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+    <script src="{{ asset('js/navigation.js') }}"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="{{ asset('css/homepage.css') }}">
+</head>
+
+<body>
     <div class="header">
         <div class="menu-icon">@include('partials.navigation')</div>
             <div class="search-container">
