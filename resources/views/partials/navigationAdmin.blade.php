@@ -21,14 +21,7 @@
         </ul>
     </div>
 
-    <div class="myAccountArea">
-        <form action="{{ route('profile') }}" method="GET">
-            @csrf
-            <button type="submit" class="profile-button">
-                <i class="fas fa-user"></i> My Account
-            </button>
-        </form>
-    </div>
+    
 
     <div class="logoutArea">
         <form action="{{ route('logout') }}" method="POST">

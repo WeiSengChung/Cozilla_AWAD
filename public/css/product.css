@@ -45,3 +45,76 @@ img {
     height: 150px;
     object-fit: cover;
 }
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    flex-wrap: wrap;
+}
+
+.menu-icon {
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.logo img {
+    height: 50px;
+}
+
+.search-container {
+    flex-grow: 1;
+    margin: 0 20px;
+    position: relative;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    padding: 5px 10px;
+    max-width: flex;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 5px;
+    font-family: inherit;
+    
+    font-size: 16px;    
+}
+
+.search-bar button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.cart-button {
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.cart-icon {
+    font-size: 24px;
+}
+
+.cart-count {
+    background-color: #36473c;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
