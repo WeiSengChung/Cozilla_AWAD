@@ -17,14 +17,17 @@ class CartController extends Controller
     // Show the cart contents
     public function index()
     {
+        if (! Auth::check()) {
+            return redirect('/login')->with('message', "You must log in before accessing cart.");
+        }
         // Get the user's cart
         $cart = Cart::where('user_id', Auth::id())->first();
-        
+
         $cartItems = [];
         $subtotal = 0;
         $shipping = 0;
         $total = 0;
-        
+
         if ($cart) {
             // Get cart items with product details
             $cartItems = CartItem::where('cart_id', $cart->id)
@@ -40,25 +43,25 @@ class CartController extends Controller
                     ];
                 })
                 ->toArray();
-                
+
             // Calculate totals
             foreach ($cartItems as $item) {
                 $subtotal += $item['product']->price * $item['quantity'];
             }
-            
+
             // Set shipping cost (could be dynamic based on rules)
             $shipping = count($cartItems) > 0 ? 10.00 : 0;
-            
+
             // Calculate total
             $total = $subtotal + $shipping;
         }
-        
+
         // Get cart item count for header display
         $cartItemCount = $this->getCartItemCount();
-        
+
         return view('cart', compact('cartItems', 'subtotal', 'shipping', 'total', 'cartItemCount'));
     }
-    
+
     // Add an item to the cart
     public function addToCart(Request $request)
     {
@@ -70,10 +73,10 @@ class CartController extends Controller
         ]);
 
         $product = Product::findOrFail($request->product_id);
-        
+
         // Get or create user's cart
         $cart = Cart::where('user_id', Auth::id())->first();
-        if (!$cart) {
+        if (! $cart) {
             $cart = new Cart();
             $cart->user_id = Auth::id();
             $cart->save();
@@ -81,9 +84,9 @@ class CartController extends Controller
 
         // Check if this exact same cart item already exists
         $existingCartItem = CartItem::where([
-            'cart_id' => $cart->id, 
-            'product_id' => $request->product_id, 
-            'size' => $request->size, 
+            'cart_id' => $cart->id,
+            'product_id' => $request->product_id,
+            'size' => $request->size,
             'color' => $request->color
         ])->first();
 
@@ -104,15 +107,15 @@ class CartController extends Controller
 
         return redirect()->route('cart')->with('success', 'Item added to cart successfully!');
     }
-    
+
     // Update item quantity in cart
     public function update(Request $request, $id)
     {
         $change = $request->input('change_quantity');
-        
+
         $cartItem = CartItem::findOrFail($id);
         $newQuantity = $cartItem->quantity + $change;
-        
+
         if ($newQuantity > 0) {
             $cartItem->quantity = $newQuantity;
             $cartItem->save();
@@ -136,91 +139,91 @@ class CartController extends Controller
     // Helper method to get cart item count for displaying in the header
     public function getCartItemCount()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return 0;
         }
-        
+
         $cart = Cart::where('user_id', Auth::id())->first();
-        
-        if (!$cart) {
+
+        if (! $cart) {
             return 0;
         }
-        
+
         // Sum the quantities of all items in the cart
         return CartItem::where('cart_id', $cart->id)->sum('quantity');
     }
-    
+
     // Method to retrieve cart item count for middleware or view composers
     public static function getCartCount()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return 0;
         }
-        
+
         $cart = Cart::where('user_id', Auth::id())->first();
-        
-        if (!$cart) {
+
+        if (! $cart) {
             return 0;
         }
-        
+
         return CartItem::where('cart_id', $cart->id)->sum('quantity');
     }
-    
+
     /**
      * Display the checkout/payment page
      *
      * @return \Illuminate\View\View
      */
     public function payment()
-{
-    // Get the user's cart
-    $cart = Cart::where('user_id', Auth::id())->first();
-    
-    if (!$cart) {
-        return redirect()->route('cart')->with('error', 'Your cart is empty. Please add items before checkout.');
+    {
+        // Get the user's cart
+        $cart = Cart::where('user_id', Auth::id())->first();
+
+        if (! $cart) {
+            return redirect()->route('cart')->with('error', 'Your cart is empty. Please add items before checkout.');
+        }
+
+        // Get cart items with product details
+        $cartItems = CartItem::where('cart_id', $cart->id)
+            ->with('product')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'product' => $item->product,
+                    'quantity' => $item->quantity,
+                    'size' => $item->size,
+                    'color' => $item->color
+                ];
+            })
+            ->toArray();
+
+        // If cart is empty, redirect back to cart page
+        if (empty($cartItems)) {
+            return redirect()->route('cart')->with('error', 'Your cart is empty. Please add items before checkout.');
+        }
+
+        // Get user's addresses from the addresses table
+        $addresses = \App\Models\Address::where('user_id', Auth::id())->get();
+
+        // Calculate totals
+        $subtotal = 0;
+        foreach ($cartItems as $item) {
+            $subtotal += $item['product']->price * $item['quantity'];
+        }
+
+        // Set shipping cost
+        $shipping = 10.00;
+
+        // Calculate total
+        $total = $subtotal + $shipping;
+
+        // Get cart item count for header display
+        $cartItemCount = $this->getCartItemCount();
+
+        return view('payment', compact('cartItems', 'subtotal', 'shipping', 'total', 'cartItemCount', 'addresses'));
     }
-    
-    // Get cart items with product details
-    $cartItems = CartItem::where('cart_id', $cart->id)
-        ->with('product')
-        ->get()
-        ->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'product' => $item->product,
-                'quantity' => $item->quantity,
-                'size' => $item->size,
-                'color' => $item->color
-            ];
-        })
-        ->toArray();
-        
-    // If cart is empty, redirect back to cart page
-    if (empty($cartItems)) {
-        return redirect()->route('cart')->with('error', 'Your cart is empty. Please add items before checkout.');
-    }
-    
-    // Get user's addresses from the addresses table
-    $addresses = \App\Models\Address::where('user_id', Auth::id())->get();
-    
-    // Calculate totals
-    $subtotal = 0;
-    foreach ($cartItems as $item) {
-        $subtotal += $item['product']->price * $item['quantity'];
-    }
-    
-    // Set shipping cost
-    $shipping = 10.00;
-    
-    // Calculate total
-    $total = $subtotal + $shipping;
-    
-    // Get cart item count for header display
-    $cartItemCount = $this->getCartItemCount();
-    
-    return view('payment', compact('cartItems', 'subtotal', 'shipping', 'total', 'cartItemCount', 'addresses'));
-}
-    
+
     /**
      * Process the order from checkout form
      *
@@ -234,7 +237,7 @@ class CartController extends Controller
             'address_id' => 'required|exists:addresses,id',
             'payment_method' => 'required|in:credit_card,paypal,bank_transfer',
         ]);
-        
+
         // Additional validation based on payment method
         if ($request->payment_method == 'credit_card') {
             $validator->addRules([
@@ -252,39 +255,39 @@ class CartController extends Controller
                 'transfer_reference' => 'required|string|max:255',
             ]);
         }
-        
+
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-        
+
         // Get the selected address and verify it belongs to the authenticated user
         $address = \App\Models\Address::findOrFail($request->address_id);
         if ($address->user_id != Auth::id()) {
             return redirect()->back()->with('error', 'Invalid address selected.');
         }
-        
+
         // Get the user's cart
         $cart = Cart::where('user_id', Auth::id())->first();
-        if (!$cart) {
+        if (! $cart) {
             return redirect()->route('cart')->with('error', 'Your cart is empty. Please add items before checkout.');
         }
-        
+
         // Get cart items
         $cartItems = CartItem::where('cart_id', $cart->id)
             ->with('product')
             ->get();
-            
+
         // Calculate totals
         $subtotal = 0;
         foreach ($cartItems as $item) {
             $subtotal += $item->product->price * $item->quantity;
         }
-        
+
         $shipping = 10.00; // Fixed shipping rate
         $total = $subtotal + $shipping;
-        
+
         // Create order
         try {
             // Create the order
@@ -295,7 +298,7 @@ class CartController extends Controller
             $order->total = $total;
             $order->status = 'pending';
             $order->save();
-            
+
             // Create order items
             foreach ($cartItems as $item) {
                 $orderItem = new OrderItem();
@@ -307,24 +310,24 @@ class CartController extends Controller
                 $orderItem->color = $item->color;
                 $orderItem->save();
             }
-            
+
             // Clear the cart after successful order
             foreach ($cartItems as $item) {
                 $item->delete();
             }
-            
+
             // Redirect to thank you page or order confirmation
             return redirect()->route('order.confirmation', $order->id)
                 ->with('success', 'Your order has been placed successfully!');
-                
+
         } catch (\Exception $e) {
             // Handle any errors
             return redirect()->back()
-                ->with('error', 'There was a problem processing your order: ' . $e->getMessage())
+                ->with('error', 'There was a problem processing your order: '.$e->getMessage())
                 ->withInput();
         }
     }
-    
+
     /**
      * Display the order confirmation page.
      *
@@ -334,15 +337,15 @@ class CartController extends Controller
     public function orderConfirmation($id)
     {
         $order = Order::with('items.product')->findOrFail($id);
-        
+
         // Make sure the order belongs to the logged in user
         if ($order->user_id != Auth::id()) {
             abort(403, 'Unauthorized action.');
         }
-        
+
         // Get cart item count for header display
         $cartItemCount = $this->getCartItemCount();
-        
+
         return view('order.confirmation', compact('order', 'cartItemCount'));
     }
 }

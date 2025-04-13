@@ -24,6 +24,9 @@ class UserController extends Controller
 {
     public function profile()
     {
+        if (! Auth::check()) {
+            return redirect('/login')->with('message', "You must log in to access your account.");
+        }
         $user = Auth::user();
         $userProfile = UserProfile::where('user_id', $user->id)->first();
 
