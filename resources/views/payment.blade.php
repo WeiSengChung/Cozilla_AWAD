@@ -474,7 +474,7 @@
                             @else
                                 <div class="no-addresses-message">
                                     <p>You don't have any saved addresses. Please add a new address before proceeding with checkout.</p>
-                                    <a href="{{ route('user.addresses.create') }}" class="checkout-button" style="margin-top: 10px;">
+                                    <a href="{{ route('address.form') }}" class="checkout-button" style="margin-top: 10px;">
                                         <i class="fas fa-plus"></i> Add New Address
                                     </a>
                                 </div>

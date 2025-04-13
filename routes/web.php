@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactUsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -139,5 +140,11 @@ Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(functi
     Route::get('updateinventory/{id}', [ProductController::class, 'updateInventory'])->name('updateinventory.id');
     Route::get('productinventory/{id}', [ProductController::class, 'getProductInventory'])->name('productinventory');
 });
+
+Route::get('/contactus', [ContactUsController::class, 'view'])->name('manageContactUs');
+
+// update the contact us information
+Route::put('/contactus', [ContactUsController::class, 'update'])->name('manageContactUs');
+
 
 

@@ -2,101 +2,20 @@
 <html lang="en">
 
 <head>
+<link rel = "stylesheet" href = "{{asset('css/profile.css')}}">
+<link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+<script src="{{ asset('js/navigation.js') }}"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <meta charset="UTF-8">
     <title>User Dashboard</title>
-    <style>
-        body {
-            font-family: Georgia, serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
 
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h2,
-        h3 {
-            color: #333;
-        }
-
-        .info,
-        .orders,
-        .contact-box {
-            margin-bottom: 30px;
-            text-align: left;
-        }
-
-        .info p,
-        .contact-box p {
-            margin: 8px 0;
-            color: #444;
-        }
-
-        .address-box {
-            border: 1px solid #ccc;
-            padding: 12px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            margin-bottom: 12px;
-        }
-
-        .address-actions {
-            margin-top: 10px;
-        }
-
-        .address-actions a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-
-        .address-actions a:hover {
-            text-decoration: underline;
-        }
-
-        .icon-row {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .icon {
-            text-align: center;
-            margin: 10px;
-        }
-
-        .icon-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .icon-button img {
-            width: 50px;
-            height: 50px;
-        }
-
-        .contact-box {
-            border: 1px solid #000;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: #fafafa;
-        }
-    </style>
 </head>
 
 <body>
 
     <div class="container">
-        <h2>Welcome <strong>{{ $userProfile['first_name'] }}</strong>,</h2>
+    @include('partials.navigation')
+        <h2>Welcome <strong>{{ $userProfile['first_name'] }}</strong> <i class="far fa-smile"></i></h2>
 
         <div class="info">
             <p><strong>Name:</strong> {{ $userProfile['first_name'] }} {{ $userProfile['last_name'] }}</p>
@@ -129,27 +48,15 @@
             <div class="icon-row">
                 <div class="icon">
                     <a href="{{ route('cart') }}" class="icon-button">
-                        <img src="{{ asset('icons/cart.png') }}" alt="Cart">
+                    <i class="fas fa-shopping-cart"></i>
                     </a>
                     <div>Cart</div>
                 </div>
                 <div class="icon">
-                    <a href="{{ route('status') }}" class="icon-button">
-                        <img src="{{ asset('icons/status.png') }}" alt="Status">
-                    </a>
-                    <div>Status</div>
-                </div>
-                <div class="icon">
                     <a href="{{ route('history') }}" class="icon-button">
-                        <img src="{{ asset('icons/history.png') }}" alt="History">
+                    <i class="fas fa-history"></i>
                     </a>
                     <div>History</div>
-                </div>
-                <div class="icon">
-                    <a href="{{ route('contact') }}" class="icon-button">
-                        <img src="{{ asset('icons/contact.png') }}" alt="Contact Us">
-                    </a>
-                    <div>Contact Us</div>
                 </div>
             </div>
         </div>
