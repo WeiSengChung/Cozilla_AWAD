@@ -172,51 +172,54 @@ class CartController extends Controller
      * @return \Illuminate\View\View
      */
     public function payment()
-    {
-        // Get the user's cart
-        $cart = Cart::where('user_id', Auth::id())->first();
-        
-        if (!$cart) {
-            return redirect()->route('cart')->with('error', 'Your cart is empty. Please add items before checkout.');
-        }
-        
-        // Get cart items with product details
-        $cartItems = CartItem::where('cart_id', $cart->id)
-            ->with('product')
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'id' => $item->id,
-                    'product' => $item->product,
-                    'quantity' => $item->quantity,
-                    'size' => $item->size,
-                    'color' => $item->color
-                ];
-            })
-            ->toArray();
-            
-        // If cart is empty, redirect back to cart page
-        if (empty($cartItems)) {
-            return redirect()->route('cart')->with('error', 'Your cart is empty. Please add items before checkout.');
-        }
-        
-        // Calculate totals
-        $subtotal = 0;
-        foreach ($cartItems as $item) {
-            $subtotal += $item['product']->price * $item['quantity'];
-        }
-        
-        // Set shipping cost
-        $shipping = 10.00;
-        
-        // Calculate total
-        $total = $subtotal + $shipping;
-        
-        // Get cart item count for header display
-        $cartItemCount = $this->getCartItemCount();
-        
-        return view('payment', compact('cartItems', 'subtotal', 'shipping', 'total', 'cartItemCount'));
+{
+    // Get the user's cart
+    $cart = Cart::where('user_id', Auth::id())->first();
+    
+    if (!$cart) {
+        return redirect()->route('cart')->with('error', 'Your cart is empty. Please add items before checkout.');
     }
+    
+    // Get cart items with product details
+    $cartItems = CartItem::where('cart_id', $cart->id)
+        ->with('product')
+        ->get()
+        ->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'product' => $item->product,
+                'quantity' => $item->quantity,
+                'size' => $item->size,
+                'color' => $item->color
+            ];
+        })
+        ->toArray();
+        
+    // If cart is empty, redirect back to cart page
+    if (empty($cartItems)) {
+        return redirect()->route('cart')->with('error', 'Your cart is empty. Please add items before checkout.');
+    }
+    
+    // Get user's addresses from the addresses table
+    $addresses = \App\Models\Address::where('user_id', Auth::id())->get();
+    
+    // Calculate totals
+    $subtotal = 0;
+    foreach ($cartItems as $item) {
+        $subtotal += $item['product']->price * $item['quantity'];
+    }
+    
+    // Set shipping cost
+    $shipping = 10.00;
+    
+    // Calculate total
+    $total = $subtotal + $shipping;
+    
+    // Get cart item count for header display
+    $cartItemCount = $this->getCartItemCount();
+    
+    return view('payment', compact('cartItems', 'subtotal', 'shipping', 'total', 'cartItemCount', 'addresses'));
+}
     
     /**
      * Process the order from checkout form
@@ -228,15 +231,7 @@ class CartController extends Controller
     {
         // Validate the input
         $validator = Validator::make($request->all(), [
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'state' => 'required|string|max:255',
-            'postal_code' => 'required|string|max:20',
-            'country' => 'required|string|max:255',
+            'address_id' => 'required|exists:addresses,id',
             'payment_method' => 'required|in:credit_card,paypal,bank_transfer',
         ]);
         
@@ -264,6 +259,12 @@ class CartController extends Controller
                 ->withInput();
         }
         
+        // Get the selected address and verify it belongs to the authenticated user
+        $address = \App\Models\Address::findOrFail($request->address_id);
+        if ($address->user_id != Auth::id()) {
+            return redirect()->back()->with('error', 'Invalid address selected.');
+        }
+        
         // Get the user's cart
         $cart = Cart::where('user_id', Auth::id())->first();
         if (!$cart) {
@@ -289,15 +290,7 @@ class CartController extends Controller
             // Create the order
             $order = new Order();
             $order->user_id = Auth::id();
-            $order->first_name = $request->first_name;
-            $order->last_name = $request->last_name;
-            $order->email = $request->email;
-            $order->phone = $request->phone;
-            $order->address = $request->address;
-            $order->city = $request->city;
-            $order->state = $request->state;
-            $order->postal_code = $request->postal_code;
-            $order->country = $request->country;
+            $order->address_id = $address->id;
             $order->payment_method = $request->payment_method;
             $order->subtotal = $subtotal;
             $order->shipping = $shipping;

@@ -4,6 +4,7 @@
 
 @section('content')
     <style>
+        /* All the existing CSS styles remain unchanged */
         /* Base styles */
         * {
             box-sizing: border-box;
@@ -364,6 +365,46 @@
                 font-size: 22px;
             }
         }
+
+        /* Address selector styles */
+        .address-selector {
+            margin-bottom: 20px;
+        }
+        
+        .address-option {
+            margin-bottom: 15px;
+        }
+        
+        .address-card {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .address-card:hover {
+            border-color: #4a574b;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .address-card.selected {
+            border-color: #4a574b;
+            background-color: rgba(74, 87, 75, 0.05);
+        }
+        
+        .address-content {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+        
+        .divider {
+            margin: 20px 0;
+            border-top: 1px solid #eee;
+        }
     </style>
 
     <div class="checkout-container">
@@ -397,55 +438,47 @@
                     <div class="checkout-section">
                         <h2 class="section-title">Shipping Address</h2>
                         
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="first_name">First Name <span class="required">*</span></label>
-                                <input type="text" id="first_name" name="first_name" required value="{{ old('first_name') }}">
-                            </div>
+                        <div class="address-selector">
+                            <label>Select delivery address:</label>
                             
-                            <div class="form-group">
-                                <label for="last_name">Last Name <span class="required">*</span></label>
-                                <input type="text" id="last_name" name="last_name" required value="{{ old('last_name') }}">
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email Address <span class="required">*</span></label>
-                            <input type="email" id="email" name="email" required value="{{ old('email') }}">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="phone">Phone Number <span class="required">*</span></label>
-                            <input type="tel" id="phone" name="phone" required value="{{ old('phone') }}">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="address">Address <span class="required">*</span></label>
-                            <input type="text" id="address" name="address" required value="{{ old('address') }}">
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="city">City <span class="required">*</span></label>
-                                <input type="text" id="city" name="city" required value="{{ old('city') }}">
-                            </div>
+                            <!-- Retrieve user's saved addresses from the database -->
+                            @php
+                                $user = Auth::user();
+                                $userAddresses = App\Models\Address::where('user_id', $user->id)->get();
+                                $userProfile = App\Models\UserProfile::where('user_id', $user->id)->first();
+                                
+                                // Set default selected address (first one or from old input)
+                                $selectedAddressId = old('selected_address', $userAddresses->count() > 0 ? $userAddresses->first()->id : null);
+                            @endphp
                             
-                            <div class="form-group">
-                                <label for="state">State <span class="required">*</span></label>
-                                <input type="text" id="state" name="state" required value="{{ old('state') }}">
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="postal_code">Postal Code <span class="required">*</span></label>
-                                <input type="text" id="postal_code" name="postal_code" required value="{{ old('postal_code') }}">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="country">Country <span class="required">*</span></label>
-                                <input type="text" id="country" name="country" required value="{{ old('country', 'Malaysia') }}">
-                            </div>
+                            @if(count($userAddresses) > 0)
+                                @foreach($userAddresses as $address)
+                                    <div class="address-option">
+                                        <div class="address-card {{ $selectedAddressId == $address->id ? 'selected' : '' }}">
+                                            <label>
+                                                <input type="radio" name="selected_address" value="{{ $address->id }}" 
+                                                    {{ $selectedAddressId == $address->id ? 'checked' : '' }}>
+                                                <strong>{{ $address->address_name ?? 'Address ' . $loop->iteration }}</strong>
+                                                
+                                                <div class="address-content">
+                                                    {{ $userProfile->first_name ?? '' }} {{ $userProfile->last_name ?? '' }}<br>
+                                                    {{ $address->street }}<br>
+                                                    {{ $address->city }}, {{ $address->state }} {{ $address->postcode }}<br>
+                                                    {{ $address->country }}<br>
+                                                    {{ $userProfile->phone ?? '' }}
+                                                </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="no-addresses-message">
+                                    <p>You don't have any saved addresses. Please add a new address before proceeding with checkout.</p>
+                                    <a href="{{ route('user.addresses.create') }}" class="checkout-button" style="margin-top: 10px;">
+                                        <i class="fas fa-plus"></i> Add New Address
+                                    </a>
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -471,7 +504,8 @@
                             
                             <div class="form-group">
                                 <label for="card_name">Name on Card <span class="required">*</span></label>
-                                <input type="text" id="card_name" name="card_name" required value="{{ old('card_name') }}">
+                                <input type="text" id="card_name" name="card_name" required 
+                                    value="{{ old('card_name', ($userProfile->first_name ?? '') . ' ' . ($userProfile->last_name ?? '')) }}">
                             </div>
                             
                             <div class="form-group">
@@ -501,7 +535,7 @@
                             
                             <div class="form-group">
                                 <label for="paypal_email">PayPal Email <span class="required">*</span></label>
-                                <input type="email" id="paypal_email" name="paypal_email" required value="{{ old('paypal_email') }}">
+                                <input type="email" id="paypal_email" name="paypal_email" required value="{{ old('paypal_email', $user->email ?? '') }}">
                             </div>
                         </div>
                         @endif
@@ -521,7 +555,7 @@
                             
                             <div class="form-group">
                                 <label for="transfer_reference">Transfer Reference <span class="required">*</span></label>
-                                <input type="text" id="transfer_reference" name="transfer_reference" required placeholder="Your email or phone number" value="{{ old('transfer_reference') }}">
+                                <input type="text" id="transfer_reference" name="transfer_reference" required placeholder="Your email or phone number" value="{{ old('transfer_reference', $user->email ?? '') }}">
                             </div>
                         </div>
                         @endif
@@ -563,16 +597,16 @@
                             
                             <div class="total-row grand-total">
                                 <span>Total</span>
-                                <span>RM {{ number_format($total, 2) }}</span>
+                                            <span>RM {{ number_format($total, 2) }}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="submit" name="final_submit" value="1" class="checkout-button" {{ count($userAddresses) == 0 ? 'disabled' : '' }}>
+                <i class="fas fa-lock"></i> Confirm Order & Pay
+            </button>
+                                </div>
                             </div>
                         </div>
-                        
-                        <button type="submit" class="checkout-button">
-                            <i class="fas fa-lock"></i> Confirm Order & Pay
-                        </button>
-                    </div>
+                    </form>
                 </div>
-            </div>
-        </form>
-    </div>
 @endsection
