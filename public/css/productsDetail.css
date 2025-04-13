@@ -1,8 +1,9 @@
 * {
     margin: 0;
     padding: 0;
+    font-size: 20px;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family:  "Times New Roman";;
 }
 
 body {
@@ -37,6 +38,7 @@ body {
     width: 100%;
     position: relative;
 }
+
 
 .search-bar input {
     width: 100%;
@@ -75,6 +77,7 @@ body {
 
 .search-results.active {
     display: block;
+    
 }
 
 .search-result-item {
@@ -105,6 +108,7 @@ body {
 
 .search-result-info {
     flex-grow: 1;
+    
 }
 
 .search-result-title {
