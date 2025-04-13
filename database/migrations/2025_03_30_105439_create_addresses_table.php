@@ -19,7 +19,7 @@ class CreateAddressesTable extends Migration
             $table->string('street', 100);
             $table->string('city', 50);
             $table->string('state', 50);
-            $table->string('zip_code', 20);
+            $table->string('postcode', 20);
             $table->timestamps();
         });
     }

@@ -109,7 +109,7 @@
                             <p><strong>Street:</strong> {{ $address['street'] }}</p>
                             <p><strong>City:</strong> {{ $address['city'] }}</p>
                             <p><strong>State:</strong> {{ $address['state'] }}</p>
-                            <p><strong>Postcode:</strong> {{ $address['zip_code'] }}</p>
+                            <p><strong>Postcode:</strong> {{ $address['postcode'] }}</p>
                         </div>
                     @endforeach
                     <div class="address-actions">
