@@ -35,14 +35,16 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 // Product routes
 // Home routes
 Route::get('/', function () {
-    return redirect('/homepage'); });
+    return redirect('/homepage');
+});
 
 // Product routes
 
 Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
-Route::get('/homepage', function () {return view('homepage');
-}) -> name('homepage');
+Route::get('/homepage', function () {
+    return view('homepage');
+})->name('homepage');
 
 // Cart routes - KEEP ONLY THESE CART ROUTES
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
@@ -52,7 +54,7 @@ Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.
 Route::middleware(['auth'])->group(function () {
     // Show payment page
     Route::get('/payment', [OrdersController::class, 'payment'])->name('payment');
-    
+
     // Store a new order
     Route::post('/orders', [OrdersController::class, 'store'])->name('orders.store');
 });
@@ -67,7 +69,8 @@ Route::get('/', [TestDB::class, 'testDB']);
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/navigation', function () {
-    return view('navigation'); });
+    return view('navigation');
+});
 
 Route::get('/category/{gender_category}', [CategoryController::class, 'showGenderCategories'])->name('category');
 
@@ -75,9 +78,9 @@ Route::get('/category/{gender_category}', [CategoryController::class, 'showGende
 Route::get('logout', [LoginController::class, 'logout']);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout.post');
 
-Route::get('/profile', function () {
-    return view('profile');
-})->name('profile');
+// Route::get('/profile', function () {
+//     return view('profile');
+// })->name('profile');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -88,10 +91,10 @@ Route::post('/register/admin', [RegisterController::class, 'createAdmin']);
 Route::middleware(['auth'])->group(function () {
     // Show payment page
     Route::get('/payment', [OrdersController::class, 'payment'])->name('payment');
-    
+
     // Store a new order
     Route::post('/orders', [OrdersController::class, 'store'])->name('orders.store');
-    
+
     // Show order confirmation
     Route::get('/orders/confirmation/{id}', [OrdersController::class, 'confirmation'])->name('orders.confirmation');
 });

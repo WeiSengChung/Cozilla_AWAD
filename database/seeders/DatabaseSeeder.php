@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         $this->call(ProductSeeder::class);
         $this->call(ProductSpecificSeeder::class);
-        $this->call(UserProfileSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(UserProfileSeeder::class);
     }
 }

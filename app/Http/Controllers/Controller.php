@@ -24,15 +24,10 @@ class UserController extends Controller
     public function profile()
     {
         $user = Auth::user();
-        $userProfile = UserProfile::where('user_id',$user->id)->first();
-        if ($userProfile) {
-            $user->profile = $userProfile;
-        } else {
-            $user->profile = new UserProfile();
-        }
+        $userProfile = UserProfile::where('user_id', $user->id)->first();
 
         $userAddresses = Address::where('user_id', $user->id)->get();
-        return view('profile', compact (['user', 'userProfile', 'userAddresses']));
+        return view('profile', compact(['user', 'userProfile', 'userAddresses']));
     }
 
     public function showAddressForm()
@@ -61,7 +56,7 @@ class UserController extends Controller
         $address->state = $request->state;
         $address->zip_code = $request->zip_code;
         $address->save();
-    
+
         return redirect()->route('profile')->with('success', 'Address saved successfully!');
     }
 
