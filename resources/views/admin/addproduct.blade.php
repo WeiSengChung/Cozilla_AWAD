@@ -351,14 +351,14 @@
         const genderSelect = document.getElementById('gender_category');
         const topBottomSelect = document.getElementById('top_bottom_category');
         const clothesSelect = document.getElementById('clothes_category');
-        
+
         // File upload custom handling
         const fileInput = document.getElementById('image');
         const fileNameDisplay = document.querySelector('.file-name');
         const fileText = document.querySelector('.file-text');
-        
-        fileInput.addEventListener('change', function() {
-            if(this.files && this.files[0]) {
+
+        fileInput.addEventListener('change', function () {
+            if (this.files && this.files[0]) {
                 const fileName = this.files[0].name;
                 fileNameDisplay.textContent = fileName;
                 fileText.textContent = 'File selected';
@@ -443,5 +443,5 @@
                 }
             }
         }
-    });
+    });
 </script>
