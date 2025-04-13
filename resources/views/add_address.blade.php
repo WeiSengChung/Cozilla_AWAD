@@ -1,25 +1,29 @@
-<h2>Add New Address</h2>
+@include('partials.navigation')
+<link rel="stylesheet" href="{{ asset('css/addAddress.css') }}">
 
-<form method="POST" action="{{ route('address.store') }}">
+<h2 class="addressTitle">Add New Address</h2>
+
+<form method="POST" action="{{ route('address.store') }}" class="addressForm">
     @csrf
-    <div>
-        <label for="street">Street</label><br>
-        <input type="text" name="street" id="street" value="{{ old('street') }}" required>
-    </div><br>
+    <div class="addressField">
+        <p class="addressLabel">Street</p>
+        <input type="text" name="street" id="street" class="addressInput" value="{{ old('street') }}" required>
+    </div>
 
-    <div>
-        <label for="city">City:</label><br>
-        <input type="text" name="city" id="city" value="{{ old('city') }}" required>
-    </div><br>
+    <div class="addressField">
+        <p class="addressLabel">City</p>
+        <input type="text" name="city" id="city" class="addressInput" value="{{ old('city') }}" required>
+    </div>
 
-    <div>
-        <label for="state">State:</label><br>
-        <input type="text" name="state" id="state" value="{{ old('state') }}" required>
-    </div><br>
+    <div class="addressField">
+        <p class="addressLabel">State</p>
+        <input type="text" name="state" id="state" class="addressInput" value="{{ old('state') }}" required>
+    </div>
 
-    <div>
-        <label for="postcode">Postcode:</label><br>
-        <input type="text" name="postcode" id="postcode" value="{{ old('postcode') }}" required>
-    </div><br>
-    <button type="submit">Save Address</button>
+    <div class="addressField">
+        <p class="addressLabel">Postcode</p>
+        <input type="text" name="postcode" id="postcode" class="addressInput" value="{{ old('postcode') }}" required>
+    </div>
+
+    <button type="submit" class="saveButton">Save Address</button>
 </form>
