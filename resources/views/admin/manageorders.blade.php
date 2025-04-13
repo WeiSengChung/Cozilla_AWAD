@@ -1,3 +1,7 @@
+<link rel="stylesheet" href="{{ asset('css/navigationAdmin.css') }}">
+<link rel="stylesheet" href="{{asset('css/manageProducts.css')}}">
+<script src="{{ asset('js/navigation.js') }}"></script>
+@include('partials.navigationAdmin')
 <div class="container mt-5" style="font-family: 'Times New Roman', Times, serif;">
     <h1 class="mb-4">Manage Orders</h1>
 
