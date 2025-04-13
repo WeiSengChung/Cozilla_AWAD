@@ -20,6 +20,7 @@ class CreateOrdersTable extends Migration
             $table->timestamp('order_date')->useCurrent();
             $table->decimal('total_amount', 10, 2);
             $table->string('status', 20)->default('pending');
+            $table->timestamp('delivered_at')->nullable();
             $table->timestamps();
         });
     }

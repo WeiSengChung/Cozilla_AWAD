@@ -240,9 +240,8 @@ class OrdersController extends Controller
     public function history()
     {
         $orders = Order::where('user_id', Auth::id())
-        ->where('status', 'completed')
-        ->orderByDesc('order_date')
-        ->get();
+            ->orderByDesc('order_date')
+            ->get();
 
         return view('history', compact('orders'));
     }
