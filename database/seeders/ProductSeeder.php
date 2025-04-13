@@ -74,12 +74,12 @@ class ProductSeeder extends Seeder
                         $firstChar = substr($clothesCategoryKey, 0, 1);
                         Product::create([
                             'name' => $clotheName,
-                            'description'=>'👍',
+                            'description' => '👍',
                             'price' => $clothesCategories['price'],
                             'gender_category' => $genderKey,
                             'top_bottom_category' => $top_or_bottom_key,
                             'clothes_category' => $clothesCategoryKey,
-                            'image_path' => $genderKey . "\\" . $top_or_bottom_key . "\\" . $clothesCategoryKey . "\\" . $firstChar . $i++ . ".jpg"
+                            'image_path' => "images\\".$genderKey."\\".$top_or_bottom_key."\\".$clothesCategoryKey."\\".$firstChar.$i++.".jpg"
                         ]);
                     }
                 }

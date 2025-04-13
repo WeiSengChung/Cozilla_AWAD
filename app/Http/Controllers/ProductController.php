@@ -101,9 +101,9 @@ class ProductController extends Controller
             'gender_category' => 'required|string|max:255',
             'top_bottom_category' => 'required|string|max:255',
             'clothes_category' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,pdf|max:2048',
         ]);
-        $imagePath = $request->file('image')->store('images', 'public');
+        $imagePath = $request->file('image')->store('admin/uploads', 'public');
 
         $product = new Product();
         $product->fill($request->all());
@@ -201,10 +201,8 @@ class ProductController extends Controller
 
     public function getProductInventory($productId)
     {
-        $product = Product::findOrFail($productId);
         $inventory = ProductSpecific::where('product_id', $productId)->get();
 
         return json_encode($inventory);
-        // return view('admin.product_inventory', compact('product', 'inventory'));
     }
 }

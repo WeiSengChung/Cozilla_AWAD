@@ -536,7 +536,7 @@
                             @foreach($cartItems as $item)
                                 <div class="order-item">
                                     <div class="item-image">
-                                        <img src="{{ asset('images/'.$item['product']->image_path) }}" alt="{{ $item['product']->name }}">
+                                        <img src="{{ asset($item['product']->image_path) }}" alt="{{ $item['product']->name }}">
                                     </div>
                                     <div class="item-details">
                                         <h4 class="item-title">{{ $item['product']->name }}</h4>

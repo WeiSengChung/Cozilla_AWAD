@@ -28,7 +28,7 @@
                     @if(isset($products) && count($products ?? []) > 0)
                         @foreach($products as $searchProduct)
                             <a href="{{ route('products.show', $searchProduct->id) }}" class="search-result-item">
-                                <img src="{{ asset('images/'.$searchProduct->image_path) }}" alt="{{ $searchProduct->name }}"
+                                <img src="{{ asset($searchProduct->image_path) }}" alt="{{ $searchProduct->name }}"
                                     class="search-result-img">
                                 <div class="search-result-info">
                                     <div class="search-result-title">{{ $searchProduct->name }}</div>
@@ -70,7 +70,7 @@
 
         <div class="product-detail">
             <div class="product-gallery">
-                <img src="{{ asset('images/'.$product->image_path) }}" alt="{{ $product->name }}" class="main-image">
+                <img src="{{ asset($product->image_path) }}" alt="{{ $product->name }}" class="main-image">
             </div>
 
             <div class="product-info">

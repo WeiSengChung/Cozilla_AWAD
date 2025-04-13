@@ -409,7 +409,7 @@
     <img src="{{ asset('images\men\top\t_shirt\t1.jpg') }}">
     @foreach($data as $product)
         <h2>{{ $product->image_path }}</h2>
-        <img src="{{ asset("images\\".$product->image_path) }}">
+        <img src="{{ asset("".$product->image_path) }}">
     @endforeach
     {{ $data }}
     <div

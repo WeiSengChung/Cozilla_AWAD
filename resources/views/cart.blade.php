@@ -47,7 +47,7 @@
                     @foreach($cartItems as $item)
                         <div class="cart-item">
                             <div class="cart-item-image">
-                                <img src="{{ asset('images/'.$item['product']->image_path) }}"
+                                <img src="{{ asset($item['product']->image_path) }}"
                                     alt="{{ $item['product']->name }}">
                             </div>
 

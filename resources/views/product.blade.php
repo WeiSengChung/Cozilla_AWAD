@@ -73,7 +73,7 @@
                 @foreach ($products as $product)
                 <a href = '{{route("products.show", $product -> id)}}'>
                         <div class="product-card">
-                            <img src="{{ asset('images/' . $product->image_path) }}" alt="{{ $product->name }}">
+                            <img src="{{ asset($product->image_path) }}" alt="{{ $product->name }}">
                             <h3>{{ $product->name }}</h3>
                             <p>RM {{ number_format($product->price, 2) }}</p>
                         </div>
