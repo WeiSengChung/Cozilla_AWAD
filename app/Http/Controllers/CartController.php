@@ -8,6 +8,9 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CartItem;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -161,5 +164,194 @@ class CartController extends Controller
         }
         
         return CartItem::where('cart_id', $cart->id)->sum('quantity');
+    }
+    
+    /**
+     * Display the checkout/payment page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function payment()
+    {
+        // Get the user's cart
+        $cart = Cart::where('user_id', Auth::id())->first();
+        
+        if (!$cart) {
+            return redirect()->route('cart')->with('error', 'Your cart is empty. Please add items before checkout.');
+        }
+        
+        // Get cart items with product details
+        $cartItems = CartItem::where('cart_id', $cart->id)
+            ->with('product')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'product' => $item->product,
+                    'quantity' => $item->quantity,
+                    'size' => $item->size,
+                    'color' => $item->color
+                ];
+            })
+            ->toArray();
+            
+        // If cart is empty, redirect back to cart page
+        if (empty($cartItems)) {
+            return redirect()->route('cart')->with('error', 'Your cart is empty. Please add items before checkout.');
+        }
+        
+        // Calculate totals
+        $subtotal = 0;
+        foreach ($cartItems as $item) {
+            $subtotal += $item['product']->price * $item['quantity'];
+        }
+        
+        // Set shipping cost
+        $shipping = 10.00;
+        
+        // Calculate total
+        $total = $subtotal + $shipping;
+        
+        // Get cart item count for header display
+        $cartItemCount = $this->getCartItemCount();
+        
+        return view('payment', compact('cartItems', 'subtotal', 'shipping', 'total', 'cartItemCount'));
+    }
+    
+    /**
+     * Process the order from checkout form
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function storeOrder(Request $request)
+    {
+        // Validate the input
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'postal_code' => 'required|string|max:20',
+            'country' => 'required|string|max:255',
+            'payment_method' => 'required|in:credit_card,paypal,bank_transfer',
+        ]);
+        
+        // Additional validation based on payment method
+        if ($request->payment_method == 'credit_card') {
+            $validator->addRules([
+                'card_name' => 'required|string|max:255',
+                'card_number' => 'required|string|max:19',
+                'expiry_date' => 'required|string|max:5',
+                'cvv' => 'required|string|max:4',
+            ]);
+        } elseif ($request->payment_method == 'paypal') {
+            $validator->addRules([
+                'paypal_email' => 'required|email|max:255',
+            ]);
+        } elseif ($request->payment_method == 'bank_transfer') {
+            $validator->addRules([
+                'transfer_reference' => 'required|string|max:255',
+            ]);
+        }
+        
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        
+        // Get the user's cart
+        $cart = Cart::where('user_id', Auth::id())->first();
+        if (!$cart) {
+            return redirect()->route('cart')->with('error', 'Your cart is empty. Please add items before checkout.');
+        }
+        
+        // Get cart items
+        $cartItems = CartItem::where('cart_id', $cart->id)
+            ->with('product')
+            ->get();
+            
+        // Calculate totals
+        $subtotal = 0;
+        foreach ($cartItems as $item) {
+            $subtotal += $item->product->price * $item->quantity;
+        }
+        
+        $shipping = 10.00; // Fixed shipping rate
+        $total = $subtotal + $shipping;
+        
+        // Create order
+        try {
+            // Create the order
+            $order = new Order();
+            $order->user_id = Auth::id();
+            $order->first_name = $request->first_name;
+            $order->last_name = $request->last_name;
+            $order->email = $request->email;
+            $order->phone = $request->phone;
+            $order->address = $request->address;
+            $order->city = $request->city;
+            $order->state = $request->state;
+            $order->postal_code = $request->postal_code;
+            $order->country = $request->country;
+            $order->payment_method = $request->payment_method;
+            $order->subtotal = $subtotal;
+            $order->shipping = $shipping;
+            $order->total = $total;
+            $order->status = 'pending';
+            $order->save();
+            
+            // Create order items
+            foreach ($cartItems as $item) {
+                $orderItem = new OrderItem();
+                $orderItem->order_id = $order->id;
+                $orderItem->product_id = $item->product_id;
+                $orderItem->quantity = $item->quantity;
+                $orderItem->price = $item->product->price;
+                $orderItem->size = $item->size;
+                $orderItem->color = $item->color;
+                $orderItem->save();
+            }
+            
+            // Clear the cart after successful order
+            foreach ($cartItems as $item) {
+                $item->delete();
+            }
+            
+            // Redirect to thank you page or order confirmation
+            return redirect()->route('order.confirmation', $order->id)
+                ->with('success', 'Your order has been placed successfully!');
+                
+        } catch (\Exception $e) {
+            // Handle any errors
+            return redirect()->back()
+                ->with('error', 'There was a problem processing your order: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+    
+    /**
+     * Display the order confirmation page.
+     *
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
+    public function orderConfirmation($id)
+    {
+        $order = Order::with('items.product')->findOrFail($id);
+        
+        // Make sure the order belongs to the logged in user
+        if ($order->user_id != Auth::id()) {
+            abort(403, 'Unauthorized action.');
+        }
+        
+        // Get cart item count for header display
+        $cartItemCount = $this->getCartItemCount();
+        
+        return view('order.confirmation', compact('order', 'cartItemCount'));
     }
 }

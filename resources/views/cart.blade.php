@@ -101,7 +101,7 @@
                             <div>RM {{ number_format($total, 2) }}</div>
                         </div>
 
-                        <a href="#" class="checkout-btn"><span class="btn-icon">✓</span> Check Out</a>
+                        <a href="{{ route('payment') }}" class="checkout-btn"><span class="btn-icon">✓</span> Check Out</a>
                         <a href="/homepage" class="add-more-btn"><span class="btn-icon">+</span> Add More Items</a>
                     </div>
                 </div>
