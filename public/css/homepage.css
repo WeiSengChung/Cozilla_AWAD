@@ -234,3 +234,15 @@ body {
         flex-direction: column;
     }
 }
+
+.welcome-popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #dff0d8;
+    color: #3c763d;
+    padding: 15px 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
