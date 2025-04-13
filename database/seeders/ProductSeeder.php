@@ -18,7 +18,7 @@ class ProductSeeder extends Seeder
         $clothes_category = [
             'Men' => [
                 'top' => [
-                    't_shirt' => ["price" => 59.90, "items" => ["Bold Stripes T-shirt", "Classic Creeeck T-shirt", "Urban Essentials T-shirt", "Vintage Cotton T-shirt", "Everyday Comfort T-shirt"]],
+                    't_shirt' => ["price" => 59.90, "items" => ["Bold Stripes T-shirt", "Classic Creck T-shirt", "Urban Essentials T-shirt", "Vintage Cotton T-shirt", "Everyday Comfort T-shirt"]],
                     'long_sleeve' => ["price" => 47.90, "items" => ["Classic Henley", "Thermal Knit Long Sleeve", "Slim Fit Pullover", "WInter Warmth Long Sleeve", "Essential Layering Top"]],
                     'hoodies' => ["price" => 79.90, "items" => ["Urban Comfort Hoodie", "Classic Zip-Up Hoodie", "Relaxed Fit Hoodie", "Adventure Pullover Hoodie", "Cozy Fleece Hoodie"]],
                     'sweatshirt' => ["price" => 69.90, "items" => ["Vintage Crewneck Sweatshirt", "Rugged Outdoor Sweatshirt", "Comfy Cotton Sweatshirt", "Retro Sport Sweatshirt", "Casual Fleece Sweatshirt"]],

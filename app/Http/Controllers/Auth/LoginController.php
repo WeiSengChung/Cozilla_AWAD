@@ -32,11 +32,11 @@ class LoginController extends Controller
     protected function redirectTo()
     {
         $user = Auth::user();
-    
+
         if ($user->role === 'admin') {
             return '/admin/manageproducts';
         }
-    
+
         return '/homepage';
     }
     /**
@@ -53,7 +53,7 @@ class LoginController extends Controller
     {
         return view('auth.login', ['url' => 'admin']);
     }
-    
+
     public function adminLogin(Request $request)
     {
         $this->validate($request, [
@@ -64,5 +64,18 @@ class LoginController extends Controller
             return redirect()->intended('/admin/manageproducts');
         }
         return back()->withInput($request->only('email', 'remember'));
+    }
+
+    public function logout(Request $request)
+    {
+        $isAdmin = Auth::check() && Auth::user()->role === 'admin'; // or is_admin == true
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Redirect based on role
+        return $isAdmin ? redirect('/login/admin') : redirect('/login');
     }
 }

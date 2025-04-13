@@ -2,10 +2,10 @@
 <html lang="en">
 
 <head>
-<link rel = "stylesheet" href = "{{asset('css/profile.css')}}">
-<link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
-<script src="{{ asset('js/navigation.js') }}"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('css/profile.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+    <script src="{{ asset('js/navigation.js') }}"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <meta charset="UTF-8">
     <title>User Dashboard</title>
 
@@ -14,7 +14,7 @@
 <body>
 
     <div class="container">
-    @include('partials.navigation')
+        @include('partials.navigation')
         <h2>Welcome <strong>{{ $userProfile['first_name'] }}</strong> <i class="far fa-smile"></i></h2>
 
         <div class="info">
@@ -48,13 +48,13 @@
             <div class="icon-row">
                 <div class="icon">
                     <a href="{{ route('cart') }}" class="icon-button">
-                    <i class="fas fa-shopping-cart"></i>
+                        <i class="fas fa-shopping-cart"></i>
                     </a>
                     <div>Cart</div>
                 </div>
                 <div class="icon">
                     <a href="{{ route('history') }}" class="icon-button">
-                    <i class="fas fa-history"></i>
+                        <i class="fas fa-history"></i>
                     </a>
                     <div>History</div>
                 </div>
@@ -63,9 +63,9 @@
 
         <div class="contact-box">
             <h2>Contact Us</h2>
-            <p><strong>Address:</strong> XXXXX</p>
-            <p><strong>Email:</strong> XXXXX</p>
-            <p><strong>Company Phone:</strong> XXXX</p>
+            <p><strong>Address:</strong> {{ $companyInfo->company_address }}</p>
+            <p><strong>Email:</strong>{{ $companyInfo->email}}</p>
+            <p><strong>Company Phone:</strong> {{ $companyInfo->contact_number }}</p>
         </div>
     </div>
 

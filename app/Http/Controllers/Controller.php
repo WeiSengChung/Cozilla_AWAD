@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactUs;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -27,7 +28,8 @@ class UserController extends Controller
         $userProfile = UserProfile::where('user_id', $user->id)->first();
 
         $userAddresses = Address::where('user_id', $user->id)->get();
-        return view('profile', compact(['user', 'userProfile', 'userAddresses']));
+        $companyInfo = ContactUs::first();
+        return view('profile', compact(['user', 'userProfile', 'userAddresses', 'companyInfo']));
     }
 
     public function showAddressForm()
