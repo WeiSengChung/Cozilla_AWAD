@@ -1,31 +1,136 @@
-@foreach ($orders as $order)
-    <div style="border: 2px solid #333; border-radius: 15px; padding: 20px; margin: 20px 0; font-family: 'Times New Roman', Times, serif;">
-        <p><strong>Order ID:</strong> {{ $order->id }}</p>
-        <p><strong>Product Name:</strong> {{ $order->product_name }}</p>
-        <p><strong>Product Quantity:</strong> {{ $order->quantity }}</p>
-        <p><strong>Total Price:</strong> RM {{ number_format($order->total_price, 2) }}</p>
-
-        <form action="{{ route('user.order.received', $order->id) }}" method="POST" style="text-align: right;" onsubmit="handleReceived(event, this)">
-            @csrf
-            <button type="submit"
-                style="background-color: #4a5643; color: white; padding: 8px 20px; font-size: 16px; border: none; border-radius: 2px;"
-                class="received-btn">
-                Order Received
-            </button>
-        </form>
+@extends('layouts.app')
+@section('content')
+<div class="container">
+    <h2 class="mb-4 text-center fw-bold">Order History</h2>
+    
+    @forelse($orders as $order)
+        <div class="order-card mb-3 shadow-sm rounded">
+            <div class="order-header d-flex justify-content-between align-items-center">
+                <span class="order-id">Order #{{ $order->id }}</span>
+                <span class="order-status {{ strtolower($order->status) }}">{{ ucfirst($order->status) }}</span>
+            </div>
+            <div class="order-body">
+                <div class="order-detail">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>{{ $order->order_date }}</span>
+                </div>
+                <div class="order-detail">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>RM {{ number_format($order->total_amount, 2) }}</span>
+                </div>
+            </div>
+        </div>
+    @empty
+        <div class="empty-state text-center p-5">
+            <i class="fas fa-shopping-bag empty-icon"></i>
+            <p class="mt-3">No completed orders yet.</p>
+        </div>
+    @endforelse
+    
+    <div class="text-center mt-4">
+        <a href="{{ route('profile') }}" class="btn btn-back">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
     </div>
-@endforeach
+</div>
 
-<script>
-    function handleReceived(event, form) {
-        event.preventDefault(); // prevent form from submitting normally
-
-        const button = form.querySelector('.received-btn');
-        button.innerText = 'Received ✅';
-        button.style.backgroundColor = '#2f3a29'; // darker green
-        button.disabled = true;
-
-        // Optionally submit the form after changing button text
-        // setTimeout(() => { form.submit(); }, 500);
+<style>
+    .order-card {
+        border: none;
+        background-color: #fff;
+        transition: transform 0.2s;
+        overflow: hidden;
     }
-</script>
+    
+    .order-card:hover {
+        transform: translateY(-3px);
+    }
+    
+    .order-header {
+        background-color: #f8f9fa;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .order-id {
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .order-status {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+    
+    .order-status.completed {
+        background-color: #d4edda;
+        color: #155724;
+    }
+    
+    .order-status.processing {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+    
+    .order-status.pending {
+        background-color: #cce5ff;
+        color: #004085;
+    }
+    
+    .order-status.cancelled {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+    
+    .order-body {
+        padding: 20px;
+    }
+    
+    .order-detail {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    
+    .order-detail:last-child {
+        margin-bottom: 0;
+    }
+    
+    .order-detail i {
+        color: #6c757d;
+        margin-right: 10px;
+        width: 18px;
+    }
+    
+    .empty-state {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+    
+    .empty-icon {
+        font-size: 3rem;
+        color: #adb5bd;
+    }
+    
+    .btn-back {
+        background-color: #6c757d;
+        color: white;
+        padding: 8px 20px;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+    }
+    
+    .btn-back:hover {
+        background-color: #5a6268;
+        color: white;
+        text-decoration: none;
+    }
+    
+    h2 {
+        color: #343a40;
+        margin-bottom: 30px;
+    }
+</style>
+@endsection

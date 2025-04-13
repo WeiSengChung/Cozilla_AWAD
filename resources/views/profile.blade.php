@@ -53,6 +53,12 @@
                     <div>Cart</div>
                 </div>
                 <div class="icon">
+                    <a href="{{ route('status') }}" class="icon-button">
+                        <i class="fas fa-truck"></i>
+                    </a>
+                    <div>Status</div>
+                </div>
+                <div class="icon">
                     <a href="{{ route('history') }}" class="icon-button">
                         <i class="fas fa-history"></i>
                     </a>

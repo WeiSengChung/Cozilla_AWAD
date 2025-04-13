@@ -146,5 +146,8 @@ Route::get('/contactus', [ContactUsController::class, 'view'])->name('manageCont
 // update the contact us information
 Route::put('/contactus', [ContactUsController::class, 'update'])->name('manageContactUs');
 
+Route::get('/status', [OrdersController::class, 'showStatus'])->name('status')->middleware('auth');
+Route::get('/history', [OrdersController::class, 'history'])->name('history')->middleware('auth');
+
 
 
