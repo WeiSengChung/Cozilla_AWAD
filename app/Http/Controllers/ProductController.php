@@ -107,7 +107,7 @@ class ProductController extends Controller
 
         $product = new Product();
         $product->fill($request->all());
-        $product->image_path = $imagePath;
+        $product->image_path = "storage/".$imagePath;
         $product->save();
         return redirect(route('admin.manageproducts'))->with('success', 'Product added successfully!');
     }
