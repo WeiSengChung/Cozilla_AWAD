@@ -131,6 +131,11 @@ Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(functi
     Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('editproduct');
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('updateproduct');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('deleteproduct');
+
+    //test
+    Route::post('updateinventory', [ProductController::class, 'updateInventory'])->name('updateinventory');
+    Route::get('updateinventory/{id}', [ProductController::class, 'updateInventory'])->name('updateinventory.id');
+    Route::get('productinventory/{id}', [ProductController::class, 'getProductInventory'])->name('productinventory');
 });
 
 
