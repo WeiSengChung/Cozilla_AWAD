@@ -39,7 +39,7 @@
                                         {{ str_replace('_', ' ', $searchProduct->clothes_category) }}
                                     </div>
                                 </div>
-                                <div class="search-result-price">RM{{ number_format($searchProduct->price, 2) }}</div>
+                                <div class="search-result-price">RM blablabla{{ number_format($searchProduct->price, 2) }}</div>
                             </a>
                         @endforeach
                     @else
