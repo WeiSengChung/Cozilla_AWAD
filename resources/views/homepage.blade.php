@@ -2,8 +2,9 @@
 <html lang="en">
 
 <head>
-    
+
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ asset('css/productsDetail.css') }}">
     <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
     <script src="{{ asset('js/navigation.js') }}"></script>
 
@@ -26,17 +27,19 @@
 
             @if(request()->has('query') && request('query') != '')
                 <div class="search-results active" id="search-results">
-                    @if(isset($products) && count($products) > 0)
-                        @foreach($products as $product)
-                            <a href="{{ route('products.show', $product->id) }}" class="search-result-item">
-                                <img src="{{ asset($product->image_path) }}" alt="{{ $product->name }}" class="search-result-img">
+                    @if(isset($products) && count($products ?? []) > 0)
+                        @foreach($products as $searchProduct)
+                            <a href="{{ route('products.show', $searchProduct->id) }}" class="search-result-item">
+                                <img src="{{ asset($searchProduct->image_path) }}" alt="{{ $searchProduct->name }}"
+                                    class="search-result-img">
                                 <div class="search-result-info">
-                                    <div class="search-result-title">{{ $product->name }}</div>
-                                    <div class="search-result-category">{{ $product->gender_category }} >
-                                        {{ $product->top_bottom_category }} >
-                                        {{ str_replace('_', ' ', $product->clothes_category) }}</div>
+                                    <div class="search-result-title">{{ $searchProduct->name }}</div>
+                                    <div class="search-result-category">{{ $searchProduct->gender_category }} >
+                                        {{ $searchProduct->top_bottom_category }} >
+                                        {{ str_replace('_', ' ', $searchProduct->clothes_category) }}
+                                    </div>
                                 </div>
-                                <div class="search-result-price">${{ number_format($product->price, 2) }}</div>
+                                <div class="search-result-price">${{ number_format($searchProduct->price, 2) }}</div>
                             </a>
                         @endforeach
                     @else
@@ -45,9 +48,13 @@
                 </div>
             @endif
         </div>
-        <!-- <div class="logo">
-            <img src="{{ asset('images/image/logo.jpg') }}" alt="COZILLA">
-        </div> -->
+        <div class="logo">
+            <a href="/homepage"><img src="{{ asset('images/image/logo.jpg') }}" alt="COZILLA"></a>
+        </div>
+        <a href="{{ route('cart') }}" class="cart-button">
+            <div class="cart-icon">🛒</div>
+            <div class="cart-count">{{ $cartItemCount ?? 0 }}</div>
+        </a>
     </div>
 
     <div class="carousel-container">
