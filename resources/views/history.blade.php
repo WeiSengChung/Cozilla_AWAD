@@ -10,39 +10,48 @@
 
         <h2 class="mb-4 text-center fw-bold">Order History</h2>
 
-        @forelse($orders as $order)
-            <div class="order-card mb-3 shadow-sm rounded">
-                <div class="order-header d-flex justify-content-between align-items-center">
-                    <span class="order-id">Order #{{ $order->id }}</span>
-                    <span class="order-status {{ strtolower($order->status) }}">{{ ucfirst($order->status) }}</span>
-                </div>
-                <div class="order-body">
-                    <div class="order-detail">
-                        <i class="fas fa-calendar-alt"></i>
-                        @php
-                            $orderDate = Carbon\Carbon::parse($order->order_date)->timezone('GMT+8');
-                        @endphp
-                        <span>{{ "Ordered at: ".$orderDate->format('F j, Y \a\t g:i A') }}</span>
-                        @if ($order->delivered_at)
-                                    <i class="fas fa-check-circle text-success ms-3"></i>
-                                    @php
-                                        $deliveredDate = Carbon\Carbon::parse($order->delivered_at)->timezone('GMT+8');
-                                    @endphp
-                                    <span>Delivered at: {{$deliveredDate->format('F j, Y \a\t g:i A') }}</span>
-                        @endif
-                    </div>
-                    <div class="order-detail">
-                        <i class="fas fa-money-bill-wave"></i>
-                        <span>RM {{ number_format($order->total_amount, 2) }}</span>
-                    </div>
-                </div>
+        @php
+            // Filter to only include delivered orders
+            $deliveredOrders = $orders->where('status', 'delivered');
+        @endphp
+
+        @if($deliveredOrders->count() > 0)
+            <div class="text-center mb-3">
+                <h4 class="text-success">Completed Orders</h4>
             </div>
-        @empty
+
+            @foreach($deliveredOrders as $order)
+                <div class="order-card mb-3 shadow-sm rounded">
+                    <div class="order-header d-flex justify-content-between align-items-center">
+                        <span class="order-id">Order #{{ $order->id }}</span>
+                        <span class="order-status delivered">Delivered</span>
+                    </div>
+                    <div class="order-body">
+                        <div class="order-detail">
+                            <i class="fas fa-calendar-alt"></i>
+                            @php
+                                $orderDate = Carbon\Carbon::parse($order->order_date)->timezone('GMT+8');
+                            @endphp
+                            <span>{{ "Ordered at: ".$orderDate->format('F j, Y \a\t g:i A') }}</span>
+                            <i class="fas fa-check-circle text-success ms-3"></i>
+                            @php
+                                $deliveredDate = Carbon\Carbon::parse($order->delivered_at)->timezone('GMT+8');
+                            @endphp
+                            <span>Delivered at: {{$deliveredDate->format('F j, Y \a\t g:i A') }}</span>
+                        </div>
+                        <div class="order-detail">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>RM {{ number_format($order->total_amount, 2) }}</span>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @else
             <div class="empty-state text-center p-5">
                 <i class="fas fa-shopping-bag empty-icon"></i>
                 <p class="mt-3">No completed orders yet.</p>
             </div>
-        @endforelse
+        @endif
 
         <div class="text-center mt-4">
             <a href="{{ route('profile') }}" class="btn btn-back">
@@ -81,7 +90,7 @@
             font-weight: 500;
         }
 
-        .order-status.completed {
+        .order-status.delivered {
             background-color: #d4edda;
             color: #155724;
         }
