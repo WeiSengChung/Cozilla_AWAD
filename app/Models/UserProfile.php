@@ -15,11 +15,7 @@ class UserProfile extends Model
         'user_id',
         'first_name',
         'last_name',
-        'phone_number',
-        'address',
-        'city',
-        'state',
-        'zip_code',
+        'phone',
     ];
 
     /**
