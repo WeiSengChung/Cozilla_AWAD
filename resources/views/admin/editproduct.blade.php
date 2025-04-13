@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="{{asset('css/addProduct.css')}}">
+@include('partials.navigationAdmin')
+
 <div class="product-form-container">
     <h1 class="form-title">Edit Product</h1>
 
@@ -19,8 +22,8 @@
         @csrf
         @method('PUT')
 
-        <input type="hidden" name="id" value="{{ old('id', $product->id)? old('id', $product->id) : $product['id'] }}">
-        
+        <input type="hidden" name="id" value="{{ old('id', $product->id) ? old('id', $product->id) : $product['id'] }}">
+
         <div class="form-group">
             <label for="name" class="form-label">Product Name</label>
             <input type="text" value="{{ old('name', $product->name) }}" name="name" class="form-input" id="name"
@@ -29,8 +32,8 @@
 
         <div class="form-group">
             <label for="price" class="form-label">Price (RM)</label>
-            <input type="number" step="0.01" value="{{ old('price', $product->price) }}" name="price"
-                class="form-input" id="price" required>
+            <input type="number" step="0.01" value="{{ old('price', $product->price) }}" name="price" class="form-input"
+                id="price" required>
         </div>
 
         <div class="form-group">
@@ -202,5 +205,5 @@
         .btn {
             width: 100%;
         }
-    }
+    }
 </style>
