@@ -7,11 +7,16 @@ use App\Models\ProductSpecific;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
     public function indexAdmin()
     {
+        
+        if(!Gate::allows('isAdmin')) {
+            return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
+        }
         // Fetch all products from the database
         $products = Product::orderBy('id', 'asc')->get();
 
@@ -81,11 +86,19 @@ class ProductController extends Controller
 
     public function create()
     {
+        
+        if(!Gate::allows('isAdmin')) {
+            return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
+        }
         return view('admin.addproduct');
     }
 
     public function edit($id)
     {
+        
+        if(!Gate::allows('isAdmin')) {
+            return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
+        }
         $product = DB::table('products')->where('id', $id)->first();
 
         if (! $product) {
@@ -97,6 +110,10 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        
+        if(!Gate::allows('isAdmin')) {
+            return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
+        }
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
@@ -117,6 +134,10 @@ class ProductController extends Controller
 
     public function update(Request $request)
     {
+        
+        if(!Gate::allows('isAdmin')) {
+            return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
+        }
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
@@ -136,6 +157,10 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
+        
+        if(!Gate::allows('isAdmin')) {
+            return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
+        }
         $product = Product::find($id);
         if (! $product) {
             return redirect()->route('homepage')->with('error', 'Product not found');
@@ -179,6 +204,10 @@ class ProductController extends Controller
 
     public function updateInventory(Request $request)
     {
+        
+        if(!Gate::allows('isAdmin')) {
+            return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
+        }
         $productId = $request->input('product_id');
         $stockData = $request->input('stock');
 
@@ -204,6 +233,10 @@ class ProductController extends Controller
 
     public function getProductInventory($productId)
     {
+        
+        if(!Gate::allows('isAdmin')) {
+            return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
+        }
         $inventory = ProductSpecific::where('product_id', $productId)->get();
 
         return json_encode($inventory);

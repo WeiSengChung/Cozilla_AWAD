@@ -51,6 +51,11 @@
                 {{session("success")}}
             </div>
         @endif
+        @if (session("error"))
+            <div id="slide-alert" class="slide-alert">
+                {{session("error")}}
+            </div>
+        @endif
         <div class="menu-icon">@include('partials.navigation')</div>
         <div class="search-container">
             <form action="{{ route('products.search') }}" method="GET">

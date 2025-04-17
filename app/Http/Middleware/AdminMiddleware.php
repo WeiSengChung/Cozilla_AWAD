@@ -21,6 +21,9 @@ class AdminMiddleware
         if (Gate::allows('isAdmin')) {
             return $next($request);
         }
+        if(Gate::allows('isUser')) {
+            return redirect('/homepage')->with('error', 'You are not authorized to access this page.');
+        }
         return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
     }
 }

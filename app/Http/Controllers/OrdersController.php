@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ProductSpecific;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Cart;
 use App\Models\CartItem;
@@ -19,6 +20,10 @@ class OrdersController extends Controller
 {
     public function index(Request $request)
     {
+        
+        if(!Gate::allows('isAdmin')) {
+            return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
+        }
         $query = Order::with(['user', 'orderItems.product']);
 
         // Apply status filter
@@ -46,6 +51,10 @@ class OrdersController extends Controller
 
     public function getOrderDetails($id)
     {
+        
+        if(!Gate::allows('isAdmin')) {
+            return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
+        }
         $order = Order::with([
             'user',
             'orderItems.product'
