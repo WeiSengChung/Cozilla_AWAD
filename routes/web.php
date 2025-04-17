@@ -34,12 +34,6 @@ Route::get('/', function () {
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Product routes
-// Home routes
-Route::get('/', function () {
-    return redirect('/homepage');
-});
-
-// Product routes
 
 Route::get('/products/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.show');
@@ -68,7 +62,6 @@ Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.
 
 // Checkout route
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
-Route::get('/', [TestDB::class, 'testDB']);
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/navigation', function () {
