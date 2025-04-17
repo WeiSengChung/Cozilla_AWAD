@@ -158,8 +158,6 @@ Route::put('/contactus', [ContactUsController::class, 'update'])->name('manageCo
 
 Route::get('/status', [OrdersController::class, 'showStatus'])->name('status')->middleware('auth');
 Route::get('/history', [OrdersController::class, 'history'])->name('history')->middleware('auth');
-Route::put('updateAddress/{id}', [UserController::class, 'editAddress'])->name('updateAddress');
-Route::put('updateProfile/{id}', [UserController::class, 'updateProfile'])->name('updateProfile');
 
 
 
