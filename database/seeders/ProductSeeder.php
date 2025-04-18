@@ -76,19 +76,19 @@ class ProductSeeder extends Seeder
                         if ($genderKey === 'Men') {
                             if ($top_or_bottom_key === 'top') {
                                 $description = '👨👕👍';
-                            } else if ($top_or_bottom_key === '') {
+                            } else if ($top_or_bottom_key === 'bottom') {
                                 $description = '👨👖👍';
                             }
                         } elseif ($genderKey === 'Women') {
                             if ($top_or_bottom_key === 'top') {
                                 $description = '👩👕👍';
-                            } else if ($top_or_bottom_key === '') {
+                            } else if ($top_or_bottom_key === 'bottom') {
                                 $description = '👩👖👍';
                             }
                         } else {
                             if ($top_or_bottom_key === 'top') {
                                 $description = '👶👕👍';
-                            } else if ($top_or_bottom_key === '') {
+                            } else if ($top_or_bottom_key === 'bottom') {
                                 $description = '👶👖👍';
                             }
                         }
