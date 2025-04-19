@@ -120,12 +120,14 @@ Route::post('/store-address', [UserController::class, 'storeAddress'])->name('ad
 Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/manageproducts', [ProductController::class, 'indexAdmin'])->name('manageproducts');
     Route::get('/products/create', [ProductController::class, 'create'])->name('createproduct');
+    Route::get('/products', [ProductController::class, 'store'])->name('storeproduct');
     Route::post('/products', [ProductController::class, 'store'])->name('storeproduct');
     Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('editproduct');
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('updateproduct');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('deleteproduct');
 
     //test
+    Route::get('updateinventory', [ProductController::class, 'updateInventory'])->name('updateinventory');
     Route::post('updateinventory', [ProductController::class, 'updateInventory'])->name('updateinventory');
     Route::get('updateinventory/{id}', [ProductController::class, 'updateInventory'])->name('updateinventory.id');
     Route::get('productinventory/{id}', [ProductController::class, 'getProductInventory'])->name('productinventory');
@@ -137,6 +139,7 @@ Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(functi
     Route::get('/order-details/{id}', [OrdersController::class, 'getOrderDetails']);
 
     // Update order status
+    Route::get('/update-order-status', [OrdersController::class, 'updateStatus'])->name('updateOrderStatus');
     Route::post('/update-order-status', [OrdersController::class, 'updateStatus'])->name('updateOrderStatus');
     Route::get('address/{id}', [UserController::class, 'getAddress'])->name('address.get');
 });
