@@ -76,6 +76,6 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         // Redirect based on role
-        return $isAdmin ? redirect('/login/admin') : redirect('/login');
+        return $isAdmin ? redirect('/login/admin') : redirect('/login')->with('message', 'Logout successfully!');
     }
 }
