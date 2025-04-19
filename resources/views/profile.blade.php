@@ -96,28 +96,6 @@
             margin-bottom: 20px;
         }
 
-        .icon-row {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 15px;
-        }
-
-        .icon {
-            text-align: center;
-        }
-
-        .icon-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            margin: 0 auto;
-        }
 
         .contact-box {
             background-color: #f9f9f9;
@@ -134,7 +112,7 @@
         <h2>Welcome <strong>{{ $userProfile['first_name'] }}</strong> <i class="far fa-smile"></i></h2>
 
         <div class="info">
-        <div id="personal-info-display">
+            <div id="personal-info-display">
                 <p><strong>Name:</strong> {{ $userProfile['first_name'] }} {{ $userProfile['last_name'] }}</p>
                 <p><strong>Email:</strong> {{ $user['email'] }}</p>
                 <button class="edit-btn" onclick="togglePersonalInfoEdit()"><i class="fas fa-edit"></i> Edit</button>
@@ -165,8 +143,8 @@
             <div>
                 <p><strong>Addresses:</strong></p>
                 @if($userAddresses->isNotEmpty())
-                @foreach($userAddresses as $index => $address)
-                <div class="address-box" id="address-display-{{ $index }}">
+                    @foreach($userAddresses as $index => $address)
+                        <div class="address-box" id="address-display-{{ $index }}">
                             <p><strong>Street:</strong> {{ $address['street'] }}</p>
                             <p><strong>City:</strong> {{ $address['city'] }}</p>
                             <p><strong>State:</strong> {{ $address['state'] }}</p>
@@ -207,10 +185,10 @@
                             </form>
                         </div>
                     @endforeach
-                    
+
                 @else
                     <p>No addresses found.</p>
-                    
+
                 @endif
                 <div class="address-actions">
                     <a href="{{ route('address.form') }}" class="edit-btn">Add new address</a>
