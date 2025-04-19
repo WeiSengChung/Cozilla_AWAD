@@ -23,6 +23,7 @@
                                         <input id="first_name" type="text"
                                             class="form-control @error('first_name') is-invalid @enderror" name="first_name"
                                             value="{{ old('first_name') }}" required autocomplete="first_name" autofocus>
+                                        <br>
 
                                         @error('first_name')
                                             <span class="invalid-feedback" role="alert">
@@ -40,6 +41,7 @@
                                             class="form-control @error('name') is-invalid @enderror" name="last_name"
                                             value="{{ old('last_name') }}" required autocomplete="last_name" autofocus>
 
+                                        <br>
                                         @error('last_name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -57,6 +59,7 @@
                                             class="form-control @error('email') is-invalid @enderror" name="email"
                                             value="{{ old('email') }}" required autocomplete="email">
 
+                                        <br>
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -74,11 +77,6 @@
                                             class="form-control @error('password') is-invalid @enderror" name="password"
                                             required autocomplete="new-password">
 
-                                        @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
                                     </div>
                                 </div>
 
@@ -89,6 +87,12 @@
                                     <div class="col-md-6">
                                         <input id="password-confirm" type="password" class="form-control"
                                             name="password_confirmation" required autocomplete="new-password">
+                                        <br>
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -98,12 +102,12 @@
                                             {{ __('Register') }}
                                         </button>
                                     </div>
-                                        <h3>or</h3>
-                                        <div class="loginButtonContainer">
-                                            <div class="loginButton">
-                                                <a href="{{ route('login') }}" class="register-Button">Login</a>
-                                            </div>
+                                    <h3>or</h3>
+                                    <div class="loginButtonContainer">
+                                        <div class="loginButton">
+                                            <a href="{{ route('login') }}" class="register-Button">Login</a>
                                         </div>
+                                    </div>
                                 </div>
                             </form>
                     </div>

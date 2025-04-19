@@ -237,6 +237,10 @@ class OrdersController extends Controller
 
     public function showStatus()
     {
+        if(!Auth::user())
+        {
+            return redirect('/login')->with('error','You are not authenticated, please log in!');
+        }
         $orders = Order::where('user_id', Auth::id())->with('orderItems.product')->get();
 
         if ($orders->isEmpty()) {
@@ -248,6 +252,10 @@ class OrdersController extends Controller
 
     public function history()
     {
+        if(!Auth::user())
+        {
+            return redirect('/login')->with('error','You are not authenticated, please log in!');
+        }
         $orders = Order::where('user_id', Auth::id())
             ->orderByDesc('order_date')
             ->get();

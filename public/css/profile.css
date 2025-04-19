@@ -51,7 +51,7 @@ h3 {
 }
 
 .address-actions a {
-    color: #007BFF;
+    color: #007bff;
     text-decoration: none;
 }
 
@@ -90,4 +90,13 @@ h3 {
     padding: 20px;
     border-radius: 10px;
     background-color: #fafafa;
+}
+.edit-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
 }

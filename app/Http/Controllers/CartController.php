@@ -232,6 +232,10 @@ class CartController extends Controller
      */
     public function storeOrder(Request $request)
     {
+        if(!Auth::user())
+        {
+            return redirect('/login')->with('error','You are not authenticated, please log in!');
+        }
         // Validate the input
         $validator = Validator::make($request->all(), [
             'address_id' => 'required|exists:addresses,id',

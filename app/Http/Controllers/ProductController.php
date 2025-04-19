@@ -66,7 +66,7 @@ class ProductController extends Controller
     public function show($id)
     {
         if (! Auth::check()) {
-            return redirect('/login')->with('message', "You must log in before search products");
+            return redirect('/login')->with('message', "You must log in to see product.");
         }
         $product = DB::table('products')->where('id', $id)->first();
 

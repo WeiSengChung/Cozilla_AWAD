@@ -31,7 +31,9 @@ Auth::routes();
 Route::get('/', function () {
     return redirect('/homepage');
 });
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/home', function () {
+    return redirect('/homepage');
+})->name('home');
 
 // Product routes
 
@@ -62,10 +64,6 @@ Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.
 
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/navigation', function () {
-    return view('navigation');
-});
-
 Route::get('/category/{gender_category}', [CategoryController::class, 'showGenderCategories'])->name('category');
 
 
@@ -121,12 +119,14 @@ Route::post('/store-address', [UserController::class, 'storeAddress'])->name('ad
 Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/manageproducts', [ProductController::class, 'indexAdmin'])->name('manageproducts');
     Route::get('/products/create', [ProductController::class, 'create'])->name('createproduct');
+    Route::get('/products', [ProductController::class, 'store'])->name('storeproduct');
     Route::post('/products', [ProductController::class, 'store'])->name('storeproduct');
     Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('editproduct');
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('updateproduct');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('deleteproduct');
 
     //test
+    Route::get('updateinventory', [ProductController::class, 'updateInventory'])->name('updateinventory');
     Route::post('updateinventory', [ProductController::class, 'updateInventory'])->name('updateinventory');
     Route::get('updateinventory/{id}', [ProductController::class, 'updateInventory'])->name('updateinventory.id');
     Route::get('productinventory/{id}', [ProductController::class, 'getProductInventory'])->name('productinventory');
@@ -138,17 +138,18 @@ Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(functi
     Route::get('/order-details/{id}', [OrdersController::class, 'getOrderDetails']);
 
     // Update order status
+    Route::get('/update-order-status', [OrdersController::class, 'updateStatus'])->name('updateOrderStatus');
     Route::post('/update-order-status', [OrdersController::class, 'updateStatus'])->name('updateOrderStatus');
     Route::get('address/{id}', [UserController::class, 'getAddress'])->name('address.get');
+    Route::get('/contactus', [ContactUsController::class, 'view'])->name('manageContactUs');
+
+    // update the contact us information
+    Route::put('/contactus', [ContactUsController::class, 'update'])->name('manageContactUs');
 });
 
-Route::get('/contactus', [ContactUsController::class, 'view'])->name('manageContactUs');
 
-// update the contact us information
-Route::put('/contactus', [ContactUsController::class, 'update'])->name('manageContactUs');
-
-Route::get('/status', [OrdersController::class, 'showStatus'])->name('status')->middleware('auth');
-Route::get('/history', [OrdersController::class, 'history'])->name('history')->middleware('auth');
+Route::get('/status', [OrdersController::class, 'showStatus'])->name('status');
+Route::get('/history', [OrdersController::class, 'history'])->name('history');
 
 
 

@@ -191,7 +191,9 @@
 
                 @endif
                 <div class="address-actions">
-                    <a href="{{ route('address.form') }}" class="edit-btn">Add new address</a>
+                    <a href="{{ route('address.form') }}" class="edit-btn"
+                        style="color:white;text-decoration: none;">Add new
+                        address</a>
                 </div>
             </div>
         </div>
