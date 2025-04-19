@@ -16,7 +16,7 @@
         <ul>
             <li><a href="{{ url('/admin/products/create')}}">Add New Product</a></li>
             <li><a href="{{ url('/admin/manageproducts')}}">Manage Product</a></li>
-            <li><a href="{{ url('contactus') }}">Edit Contact Us</a></li>
+            <li><a href="{{ url('/admin/contactus') }}">Edit Contact Us</a></li>
             <li><a href="{{ url('/admin/orders') }}">Manage Order</a></li>
         </ul>
     </div>
