@@ -239,7 +239,7 @@ class OrdersController extends Controller
     {
         if(!Auth::user())
         {
-            return redirect()->route('/login')->with('error','Hey Xuanying You need to log in!!!');
+            return redirect('/login')->with('error','Hey Xuanying You need to log in!!!');
         }
         $orders = Order::where('user_id', Auth::id())->with('orderItems.product')->get();
 
@@ -254,7 +254,7 @@ class OrdersController extends Controller
     {
         if(!Auth::user())
         {
-            return redirect()->route('/login')->with('error','Hey Xuanying You need to log in!!!');
+            return redirect('/login')->with('error','Hey Xuanying You need to log in!!!');
         }
         $orders = Order::where('user_id', Auth::id())
             ->orderByDesc('order_date')
