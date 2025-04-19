@@ -11,6 +11,9 @@ class ProductSpecific extends Model
 
     protected $fillable = [
         'product_id', // and other specific fields like size, color, etc.
+        'size',
+        'color',
+        'stock_quantity'
     ];
 
     /**
