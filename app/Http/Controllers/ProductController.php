@@ -13,8 +13,8 @@ class ProductController extends Controller
 {
     public function indexAdmin()
     {
-        
-        if(!Gate::allows('isAdmin')) {
+
+        if (! Gate::allows('isAdmin')) {
             return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
         }
         // Fetch all products from the database
@@ -86,8 +86,8 @@ class ProductController extends Controller
 
     public function create()
     {
-        
-        if(!Gate::allows('isAdmin')) {
+
+        if (! Gate::allows('isAdmin')) {
             return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
         }
         return view('admin.addproduct');
@@ -95,8 +95,8 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        
-        if(!Gate::allows('isAdmin')) {
+
+        if (! Gate::allows('isAdmin')) {
             return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
         }
         $product = DB::table('products')->where('id', $id)->first();
@@ -110,8 +110,8 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        
-        if(!Gate::allows('isAdmin')) {
+
+        if (! Gate::allows('isAdmin')) {
             return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
         }
         $request->validate([
@@ -129,13 +129,25 @@ class ProductController extends Controller
         $product->fill($request->all());
         $product->image_path = "storage/".$imagePath;
         $product->save();
+        $sizes = ['XS', 'S', 'M', 'L', 'XL'];
+        $colors = ['black', 'white', 'red', 'blue', 'green'];
+        foreach ($sizes as $size) {
+            foreach ($colors as $color) {
+                ProductSpecific::create([
+                    'product_id' => $product->id,
+                    'size' => $size,
+                    'color' => $color,
+                    'stock_quantity' => 100, // Default stock quantity
+                ]);
+            }
+        }
         return redirect(route('admin.manageproducts'))->with('success', 'Product added successfully!');
     }
 
     public function update(Request $request)
     {
-        
-        if(!Gate::allows('isAdmin')) {
+
+        if (! Gate::allows('isAdmin')) {
             return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
         }
         $request->validate([
@@ -157,8 +169,8 @@ class ProductController extends Controller
 
     public function destroy($id)
     {
-        
-        if(!Gate::allows('isAdmin')) {
+
+        if (! Gate::allows('isAdmin')) {
             return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
         }
         $product = Product::find($id);
@@ -189,8 +201,8 @@ class ProductController extends Controller
 
     public function updateInventory(Request $request)
     {
-        
-        if(!Gate::allows('isAdmin')) {
+
+        if (! Gate::allows('isAdmin')) {
             return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
         }
         $productId = $request->input('product_id');
@@ -218,8 +230,8 @@ class ProductController extends Controller
 
     public function getProductInventory($productId)
     {
-        
-        if(!Gate::allows('isAdmin')) {
+
+        if (! Gate::allows('isAdmin')) {
             return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
         }
         $inventory = ProductSpecific::where('product_id', $productId)->get();

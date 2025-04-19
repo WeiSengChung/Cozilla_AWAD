@@ -72,9 +72,29 @@ class ProductSeeder extends Seeder
                     $i = 1;
                     foreach ($clothesCategories['items'] as $clotheName) {
                         $firstChar = substr($clothesCategoryKey, 0, 1);
+                        $description = '';
+                        if ($genderKey === 'Men') {
+                            if ($top_or_bottom_key === 'top') {
+                                $description = '👨👕👍';
+                            } else if ($top_or_bottom_key === 'bottom') {
+                                $description = '👨👖👍';
+                            }
+                        } elseif ($genderKey === 'Women') {
+                            if ($top_or_bottom_key === 'top') {
+                                $description = '👩👕👍';
+                            } else if ($top_or_bottom_key === 'bottom') {
+                                $description = '👩👖👍';
+                            }
+                        } else {
+                            if ($top_or_bottom_key === 'top') {
+                                $description = '👶👕👍';
+                            } else if ($top_or_bottom_key === 'bottom') {
+                                $description = '👶👖👍';
+                            }
+                        }
                         Product::create([
                             'name' => $clotheName,
-                            'description' => '👍',
+                            'description' => $description,
                             'price' => $clothesCategories['price'],
                             'gender_category' => $genderKey,
                             'top_bottom_category' => $top_or_bottom_key,
