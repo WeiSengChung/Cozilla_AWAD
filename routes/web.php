@@ -149,8 +149,8 @@ Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(functi
 });
 
 
-Route::get('/status', [OrdersController::class, 'showStatus'])->name('status')->middleware('auth');
-Route::get('/history', [OrdersController::class, 'history'])->name('history')->middleware('auth');
+Route::get('/status', [OrdersController::class, 'showStatus'])->name('status');
+Route::get('/history', [OrdersController::class, 'history'])->name('history');
 
 Route::put('updateAddress/{id}', [UserController::class, 'editAddress'])->name('updateAddress');
 Route::put('updateProfile/{id}', [UserController::class, 'updateProfile'])->name('updateProfile');
