@@ -97,13 +97,13 @@
     border-color: #4a574b;
     box-shadow: 0 0 0 3px rgba(74, 87, 75, 0.1);
     outline: none;
-    font-family:"Times New Roman";
+    font-family: "Times New Roman";
 }
 
 .form-textarea {
     min-height: 120px;
     resize: vertical;
-    font-family:"Times New Roman";
+    font-family: "Times New Roman";
 }
 
 .form-select {
@@ -137,7 +137,6 @@
     height: 0;
     width: 0;
     opacity: 0;
-    
 }
 
 .file-label {
@@ -232,4 +231,7 @@
     .btn {
         width: 100%;
     }
+}
+.invalid-feedback {
+    color: red;
 }
