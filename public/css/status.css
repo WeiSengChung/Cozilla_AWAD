@@ -86,6 +86,17 @@
     color: #1a5bb5;
 }
 
+.status-shipped {
+    background-color: #c3e6cb;
+    color: #155724;
+}
+
+.status-delivered {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
 .status-cancelled {
     background-color: #ffe6e6;
     color: #c93030;
