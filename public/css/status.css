@@ -1,13 +1,8 @@
-* {
-    font-family: "Times New Roman", Times, serif;
-    color: #333;
-}
-
 .container {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    font-family: 'Times New Roman', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .order-title {
