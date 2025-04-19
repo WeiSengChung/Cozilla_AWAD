@@ -1,4 +1,4 @@
-<link rel = "stylesheet" href = "{{asset('css/addProduct.css')}}">
+<link rel="stylesheet" href="{{asset('css/addProduct.css')}}">
 @include('partials.navigationAdmin')
 
 <div class="product-form-container">
@@ -57,7 +57,7 @@
             <div class="form-group">
                 <label for="top_bottom_category" class="form-label">Top or Bottom</label>
                 <select name="top_bottom_category" id="top_bottom_category" class="form-select" required disabled>
-                    <option value="" styel = "font-family: Times">-- Select Option --</option>
+                    <option value="" styel="font-family: Times">-- Select Option --</option>
                 </select>
             </div>
 
@@ -77,6 +77,12 @@
                     <i class="fas fa-cloud-upload-alt"></i>
                     <span class="file-text">Choose a file</span>
                 </label>
+
+                @error('image')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
                 <div class="file-name"></div>
             </div>
         </div>
