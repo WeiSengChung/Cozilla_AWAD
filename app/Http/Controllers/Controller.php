@@ -71,4 +71,26 @@ class UserController extends Controller
         return response()->json($address);
     }
 
+    public function editAddress(Request $request, $id)
+    {
+        $address = Address::findOrFail($id);
+        $address->street = $request->input('street');
+        $address->city = $request->input('city');
+        $address->state = $request->input('state');
+        $address->postcode = $request->input('postcode');
+        $address->save();
+        return redirect()->route('profile')->with('success', 'Address updated successfully!');
+    }
+
+    public function updateProfile(Request $request, $userProfileId)
+    {
+        $userProfile = UserProfile::findOrFail($userProfileId);
+        $userProfile->first_name = $request->input('first_name');
+        $userProfile->last_name = $request->input('last_name');
+        $userProfile->save();
+        $user = Auth::user();
+        $user->email = $request->input('email');
+        $user->save();
+        return redirect()->route('profile')->with('success', 'Profile updated successfully!');
+    }
 }

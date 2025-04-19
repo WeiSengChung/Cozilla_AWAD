@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="{{asset('css/addProduct.css')}}">
+@include('partials.navigationAdmin')
+
 <div class="product-form-container">
     <h1 class="form-title">Edit Product</h1>
 
