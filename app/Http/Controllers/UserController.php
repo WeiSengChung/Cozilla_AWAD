@@ -26,6 +26,9 @@ class UserController extends Controller
 
     public function showAddressForm()
     {
+        if (! Auth::check()) {
+            return redirect('/login')->with('message', "You are not authenticated, please log in!");
+        }
         return view('add_address');
     }
 
