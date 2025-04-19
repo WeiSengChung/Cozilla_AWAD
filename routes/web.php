@@ -62,10 +62,6 @@ Route::get('/product/{id}', [ProductController::class, 'show'])->name('products.
 
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/navigation', function () {
-    return view('navigation');
-});
-
 Route::get('/category/{gender_category}', [CategoryController::class, 'showGenderCategories'])->name('category');
 
 
