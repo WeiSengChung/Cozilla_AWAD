@@ -31,7 +31,9 @@ Auth::routes();
 Route::get('/', function () {
     return redirect('/homepage');
 });
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/home', function () {
+    return redirect('/homepage');
+})->name('home');
 
 // Product routes
 
@@ -139,7 +141,7 @@ Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(functi
     Route::post('/update-order-status', [OrdersController::class, 'updateStatus'])->name('updateOrderStatus');
     Route::get('address/{id}', [UserController::class, 'getAddress'])->name('address.get');
     Route::get('/contactus', [ContactUsController::class, 'view'])->name('manageContactUs');
-    
+
     // update the contact us information
     Route::put('/contactus', [ContactUsController::class, 'update'])->name('manageContactUs');
 });
