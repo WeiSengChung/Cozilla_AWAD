@@ -142,12 +142,12 @@ Route::middleware(['auth.admin'])->prefix('admin')->name('admin.')->group(functi
     Route::get('/update-order-status', [OrdersController::class, 'updateStatus'])->name('updateOrderStatus');
     Route::post('/update-order-status', [OrdersController::class, 'updateStatus'])->name('updateOrderStatus');
     Route::get('address/{id}', [UserController::class, 'getAddress'])->name('address.get');
+    Route::get('/contactus', [ContactUsController::class, 'view'])->name('manageContactUs');
+    
+    // update the contact us information
+    Route::put('/contactus', [ContactUsController::class, 'update'])->name('manageContactUs');
 });
 
-Route::get('/contactus', [ContactUsController::class, 'view'])->name('manageContactUs');
-
-// update the contact us information
-Route::put('/contactus', [ContactUsController::class, 'update'])->name('manageContactUs');
 
 Route::get('/status', [OrdersController::class, 'showStatus'])->name('status')->middleware('auth');
 Route::get('/history', [OrdersController::class, 'history'])->name('history')->middleware('auth');
