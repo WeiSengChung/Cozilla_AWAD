@@ -85,4 +85,14 @@ class UserController extends Controller
         $user->save();
         return redirect()->route('profile')->with('success', 'Profile updated successfully!');
     }
+
+    public function deleteAddress(Request $request, $id)
+    {
+        if (! Auth::check()) {
+            return redirect('login')->with('message', "You are not authenticated, please log in!");
+        }
+        $address = Address::findOrFail($id);
+        $address->delete();
+        return redirect()->route('profile')->with('success', 'Address deleted successfully!');
+    }
 }

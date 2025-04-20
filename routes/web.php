@@ -152,4 +152,6 @@ Route::get('/history', [OrdersController::class, 'history'])->name('history');
 
 Route::put('updateAddress/{id}', [UserController::class, 'editAddress'])->name('updateAddress');
 Route::put('updateProfile/{id}', [UserController::class, 'updateProfile'])->name('updateProfile');
+Route::get('deleteAddress/{id}', [UserController::class, 'deleteAddress'])->name('deleteAddress');
+Route::delete('deleteAddress/{id}', [UserController::class, 'deleteAddress'])->name('deleteAddress');
 

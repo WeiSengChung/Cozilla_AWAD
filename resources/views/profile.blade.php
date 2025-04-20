@@ -4,6 +4,17 @@
 <head>
     <link rel="stylesheet" href="{{asset('css/profile.css')}}">
     <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const alertBox = document.getElementById('slide-alert');
+            if (alertBox) {
+                alertBox.classList.add('show');
+                setTimeout(() => {
+                    alertBox.classList.remove('show');
+                }, 4000);
+            }
+        });
+    </script>
     <script src="{{ asset('js/navigation.js') }}"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <meta charset="UTF-8">
@@ -102,13 +113,38 @@
             padding: 20px;
             border-radius: 8px;
         }
+
+        .slide-alert {
+            position: fixed;
+            top: 20px;
+            right: -400px;
+            background-color: #ffc107;
+            color: #000;
+            padding: 15px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: right 0.5s ease-in-out;
+        }
+
+        .slide-alert.show {
+            right: 20px;
+        }
     </style>
 </head>
 
 <body>
 
+    @if (session("success"))
+        <div id="slide-alert" class="slide-alert">
+            {{session("success")}}
+        </div>
+    @endif
     <div class="container">
         @include('partials.navigation')
+
         <h2>Welcome <strong>{{ $userProfile['first_name'] }}</strong> <i class="far fa-smile"></i></h2>
 
         <div class="info">
@@ -150,10 +186,17 @@
                             <p><strong>State:</strong> {{ $address['state'] }}</p>
                             <p><strong>Postcode:</strong> {{ $address['postcode'] }}</p>
                             <div class="edit-section">
-                                <button class="edit-btn" onclick="toggleAddressEdit({{ $index }})"><i class="fas fa-edit"></i>
+                                <button class="edit-btn" onclick="toggleAddressEdit({{ $address->id}})"><i
+                                        class="fas fa-edit"></i>
                                     Edit</button>
-                                <button class="delete-btn" onclick="confirmDeleteAddress({{ $index }})"><i
-                                        class="fas fa-trash"></i> Delete</button>
+                                <!-- <button class="delete-btn" onclick="confirmDeleteAddress({{ $index }})"><i
+                                                                                                                                class="fas fa-trash"></i> Delete</button> -->
+                                <form action="{{ route('deleteAddress', $address->id) }}" method="POST"
+                                    onsubmit="return confirm('Are you sure to delete this address?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="delete-btn"><i class="fas fa-trash"></i>Delete</button>
+                                </form>
                             </div>
                         </div>
 
@@ -290,21 +333,6 @@
 
             toggleAddressEdit(index);
             alert('Address updated successfully!');
-        }
-
-        // Confirm delete address
-        function confirmDeleteAddress(index) {
-            if (confirm('Are you sure you want to delete this address?')) {
-                // In a real app, you would send a delete request to the server
-                // For now, just hide the address
-                const displaySection = document.getElementById(`address-display-${index}`);
-                const editSection = document.getElementById(`address-edit-${index}`);
-
-                displaySection.style.display = 'none';
-                editSection.style.display = 'none';
-
-                alert('Address deleted successfully!');
-            }
         }
     </script>
 </body>
