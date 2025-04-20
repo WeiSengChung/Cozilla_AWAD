@@ -10,11 +10,11 @@
         <div class="contactUs-content">
             <h2 class = 'contactUsTitle'>Edit Contact Us Information</h2>
 
-            @if (session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
+            @if (session('updatecontactussuccess'))
+                <div class="alert alert-success">{{ session('updatecontactussuccess') }}</div>
             @endif
 
-            <form action="contactus" method="POST">
+            <form action="{{ route('admin.manageContactUs') }}" method="POST">
                 @csrf
                 @method('PUT')
 

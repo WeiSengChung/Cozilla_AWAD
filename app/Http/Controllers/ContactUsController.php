@@ -29,6 +29,6 @@ class ContactUsController extends Controller
             ContactUs::create($request->only(['company_address', 'email', 'contact_number']));
         }
 
-        return redirect ()-> route('manageContactUs') -> with ('message', 'Contact informatin updated successfully !');
+        return redirect ()-> route('admin.manageContactUs') -> with ('updatecontactussuccess', 'Contact information updated successfully !');
     }
 }
