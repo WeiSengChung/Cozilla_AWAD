@@ -186,11 +186,9 @@
                             <p><strong>State:</strong> {{ $address['state'] }}</p>
                             <p><strong>Postcode:</strong> {{ $address['postcode'] }}</p>
                             <div class="edit-section">
-                                <button class="edit-btn" onclick="toggleAddressEdit({{ $address->id}})"><i
+                                <button class="edit-btn" onclick="toggleAddressEdit({{ $index}})"><i
                                         class="fas fa-edit"></i>
                                     Edit</button>
-                                <!-- <button class="delete-btn" onclick="confirmDeleteAddress({{ $index }})"><i
-                                                                                                                                class="fas fa-trash"></i> Delete</button> -->
                                 <form action="{{ route('deleteAddress', $address->id) }}" method="POST"
                                     onsubmit="return confirm('Are you sure to delete this address?')">
                                     @csrf
