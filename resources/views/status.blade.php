@@ -13,7 +13,7 @@
                 </div>
                 <div class="order-row">
                     <div class="order-label">Date:</div>
-                    <div class="order-value">{{ $order->order_date }}</div>
+                    <div class="order-value">{{ Carbon\Carbon::parse($order->order_date)->timezone('GMT+8')->format('F j, Y \a\t g:i A') }}</div>
                 </div>
                 <div class="order-row">
                     <div class="order-label">Total:</div>
