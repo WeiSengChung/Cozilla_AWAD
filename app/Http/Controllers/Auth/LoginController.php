@@ -68,6 +68,9 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        if(!Auth::check()){
+            return redirect('/login')->with('message', 'You were not logged in!');
+        }
         $isAdmin = Auth::check() && Auth::user()->role === 'admin'; // or is_admin == true
 
         Auth::logout();
