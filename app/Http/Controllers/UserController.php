@@ -92,6 +92,10 @@ class UserController extends Controller
             return redirect('login')->with('message', "You are not authenticated, please log in!");
         }
         $address = Address::findOrFail($id);
+        if (Auth::id() !== $address->user_id) {
+            return redirect(route('profile'))->with('success', "You are not authorized to delete other addresses!");
+        }
+
         $address->delete();
         return redirect()->route('profile')->with('success', 'Address deleted successfully!');
     }
