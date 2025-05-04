@@ -72,7 +72,7 @@
         <div class="form-group file-upload-container">
             <label for="image" class="form-label">Product Image</label>
             <div class="file-upload">
-                <input type="file" name="image" class="file-input" id="image" accept="image/*">
+                <input type="file" name="image" class="file-input" id="image" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.rtf,.odt,.csv">
                 <label for="image" class="file-label">
                     <i class="fas fa-cloud-upload-alt"></i>
                     <span class="file-text">Choose a file</span>

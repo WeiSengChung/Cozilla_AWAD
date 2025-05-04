@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Document;
 use App\Models\Product;
 use App\Models\ProductSpecific;
 use Illuminate\Http\Request;
@@ -13,7 +14,9 @@ class ProductController extends Controller
 {
     public function indexAdmin()
     {
+        $docs = Document::all();
 
+        return view("test", compact("docs"));
         if (! Gate::allows('isAdmin')) {
             return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
         }
@@ -110,7 +113,24 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'image' => 'required|file|max:20480',
+        ]);
 
+        $file = $request->file('image');
+
+        Document::create([
+            'name' => $file->getClientOriginalName(),
+            'file_data' => file_get_contents($file->getRealPath()),
+            'mime_type' => $file->getMimeType(),
+        ]);
+
+        return back()->with('success', 'File uploaded to DB!');
+        $file = $request->file('image');
+        $name = $file->getClientOriginalName();
+        $file_data = file_get_contents($file->getRealPath());
+        $mime_type = $file->getMimeType();
+        return view("test", compact("name", "file_data", "mime_type"));
         if (! Gate::allows('isAdmin')) {
             return redirect('/login/admin')->with('error', 'You are not authorized to access this page.');
         }
@@ -252,5 +272,15 @@ class ProductController extends Controller
         $inventory = ProductSpecific::where('product_id', $productId)->get();
 
         return json_encode($inventory);
+    }
+
+    public function serveDoc($fileName)
+    {
+        $document = Document::where('name', $fileName)->firstOrFail();
+
+        // Stream the PDF file content
+        return response($document->file_data)
+            ->header('Content-Type', $document->mime_type) // Set MIME type to application/pdf
+            ->header('Content-Disposition', 'inline; filename="'.$document->name.'"'); // Display inline
     }
 }

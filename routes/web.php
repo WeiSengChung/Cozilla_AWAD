@@ -155,3 +155,4 @@ Route::put('updateProfile/{id}', [UserController::class, 'updateProfile'])->name
 Route::get('deleteAddress/{id}', [UserController::class, 'deleteAddress'])->name('deleteAddress');
 Route::delete('deleteAddress/{id}', [UserController::class, 'deleteAddress'])->name('deleteAddress');
 
+Route::get('servedoc/{filename}', [ProductController::class, 'serveDoc'])->name('servedoc');
